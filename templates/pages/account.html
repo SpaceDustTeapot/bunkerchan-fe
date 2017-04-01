@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<link
+  href="/.static/css/global.css"
+  type="text/css"
+  rel="stylesheet" />
+</head>
+<body>
+
+  <nav>
+    <span id="navLinkSpan"> <span>[</span> <a
+        href="/"
+        id="navLinkHome">home</a> <span>/</span> <a
+        href="/boards.js"
+        id="navBoardList">boards</a> <span>/</span> <a
+        href="/overboard"
+        id="navOverboard">overboard</a> <span>/</span> <a
+        href="/.static/posting.html"
+        id="navPosting">help</a> <span>]</span>
+		<span>[</span>
+		<a href="https://bunkerchan.xyz/left">left</a>
+		<span>/</span>
+		<a href="https://bunkerchan.xyz/dprk">dprk</a>
+		<span>/</span>
+		<a href="https://bunkerchan.xyz/gulag">gulag</a>
+		<span>/</span> 
+		<a href="https://bunkerchan.xyz/dead">dead</a>
+		<span>/</span>
+		<a href="https://bunkerchan.xyz/tech">tech</a>
+		<span>/</span>
+		<a href="https://bunkerchan.xyz/e">e</a>
+		<span>]</span>
+    </span> <span id="navBoardsSpan"> </span> <span id="navOptionsSpan"> </span>
+  </nav>
+
+  <header>
+    <img
+      src="/.static/bunker.png"
+      alt="logo" />
+  </header>
+
+  <div id="settingsWrapper">
+
+    <fieldset id="settingsFieldset">
+
+      <legend>Account</legend>
+      <h3 class="title">
+        Logged in as: <span id="labelLogin"></span>
+      </h3>
+
+      <form action="/logout.js">
+        <input
+          id="logoutFormButton"
+          type="submit"
+          value="logout">
+        <input
+          type="button"
+          id="logoutJsButton"
+          onClick="logout()"
+          value="logout"
+          class="hidden">
+      </form>
+
+      <hr />
+      <a
+        href="/globalManagement.js"
+        id="globalManagementLink">Global Management</a>
+      <br />
+      <a href="/.static/moderation.html">Moderation Manual</a>
+      <hr />
+
+      <h3>Settings</h3>
+
+      <form
+        action="/changeAccountSettings.js"
+        method="post"
+        enctype="multipart/form-data">
+
+        <label>
+          E-mail:
+          <input
+            type="email"
+            name="email"
+            id="emailField">
+        </label>
+        <label>
+          <input
+            type="checkbox"
+            name="alwaysSignRole"
+            id="checkboxAlwaysSign">
+          Always use role signature
+        </label>
+        <label>
+          <input
+            type="checkbox"
+            name="lockEnabled"
+            id="checkboxLock">
+          Lock account for 24 hours after too many failed login attempts
+        </label>
+
+        <p>If you entered an email you will receive a link to unlock it
+          immediately</p>
+
+        <input
+          type="submit"
+          value="Save"
+          id="saveFormButton">
+        <input
+          type="button"
+          onClick="save()"
+          value="Save"
+          id="saveJsButton"
+          class="hidden">
+
+      </form>
+
+      <hr />
+
+      <h3>Password Change</h3>
+
+      <form
+        action="/changeAccountPassword.js"
+        method="post"
+        enctype="multipart/form-data">
+
+        <label>
+          Current Password:
+          <input
+            type="password"
+            name="password"
+            id="fieldPassword">
+        </label>
+        <label>
+          New Password:
+          <input
+            type="password"
+            name="newPassword"
+            id="fieldNewPassword">
+        </label>
+        <label>
+          Confirm New Password:
+          <input
+            type="password"
+            name="confirmation"
+            id="fieldConfirmation">
+        </label>
+
+        <input
+          type="submit"
+          value="Change password"
+          id="passwordFormButton">
+
+        <input
+          type="button"
+          onClick="changePassword()"
+          value="Change password"
+          id="passwordJsButton"
+          class="hidden">
+
+      </form>
+
+      <hr />
+
+      <h3>Owned Boards</h3>
+      <div id="ownedDiv"></div>
+      <hr />
+
+      <h3>Volunteered Boards</h3>
+      <div id="volunteeredDiv"></div>
+
+      <hr />
+
+      <div id="boardCreationDiv">
+
+        <h3>Create Board</h3>
+
+        <form
+          action="/createBoard.js"
+          enctype="multipart/form-data"
+          method="post">
+
+          <label>
+            Board URI:
+            <input
+              type="text"
+              name="boardUri"
+              id="newBoardFieldUri">
+          </label>
+          <label>
+            Board Name:
+            <input
+              type="text"
+              name="boardName"
+              id="newBoardFieldName">
+          </label>
+          <label>
+            Board Description:
+            <input
+              type="text"
+              name="boardDescription"
+              id="newBoardFieldDescription">
+          </label>
+
+          <div class="captchaDiv">
+            <img
+              src="/captcha.js"
+              class="captchaImage"
+              id="captchaImage" />
+
+            <br>
+            <input
+              type="button"
+              onClick="reloadCaptcha()"
+              value="Reload"
+              id="reloadCaptchaButton"
+              class="hidden">
+            <span class="captchaTimer"></span>
+            <br>
+
+            <input
+              type="text"
+              class="captchaField"
+              name="captcha"
+              id="fieldCaptcha"
+              placeholder="answer">
+
+            <a
+              href="/noCookieCaptcha.js"
+              class="small">no cookies?</a>
+
+          </div>
+
+          <input
+            type="submit"
+            value="create board"
+            id="newBoardFormButton">
+
+          <input
+            type="button"
+            onClick="createBoard()"
+            value="create board"
+            id="newBoardJsButton"
+            class="hidden">
+
+        </form>
+
+      </div>
+
+    </fieldset>
+
+  </div>
+
+</body>
+
+<script src="/.static/js/settings.js"></script>
+<script src="/.static/js/api.js"></script>
+<script src="/.static/js/account.js"></script>
+<script src="/.static/js/captcha.js"></script>
+<script src="/.static/js/themes.js"></script>
+
+</html>

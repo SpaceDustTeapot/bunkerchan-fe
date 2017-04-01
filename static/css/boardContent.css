@@ -1,0 +1,121 @@
+/*Elements shown on board and thread pages*/
+.selectedCell, .dropzone {
+  top: 5px;
+  text-align: center;
+  margin-bottom: 5px;
+  padding: 5px 0px;
+}
+
+.selectedCell {
+  margin-top: 10px;
+}
+
+.dropzone {
+  cursor: pointer;
+  transition: all 0.2s ease 0s;
+}
+
+.dragAndDropThumb {
+  max-height: 100px;
+  max-width: 100px;
+}
+
+.removeButton {
+  cursor: pointer;
+  color: rgba(125, 125, 125, 0.5);
+  display: inline-block;
+  margin-right: 5px;
+  font-size: 20px;
+}
+
+.removeButton:hover {
+  color: #7D7D7D;
+}
+
+#panelMessage {
+  margin: 1em;
+}
+
+#postBox div.wider input, #flagsDiv, #flagsDiv select {
+  width: 100%;
+  margin-bottom: 0.25em;
+}
+
+#flagsDiv {
+  margin-top: 0.5em;
+}
+
+#postBox textarea {
+  width: 100%;
+  height: 12em;
+}
+
+#divUpload, .centered {
+  text-align: center;
+}
+
+#newPostFieldset {
+  display: inline-block;
+  padding-right: 0.75em;
+  width: 25em;
+}
+
+#newPostFieldset, #quick-reply table {
+  border: 1px dashed #FF0000;
+}
+
+#postingForm {
+  text-align: center;
+  margin: 1em auto;
+}
+
+#postBox {
+  text-align: left;
+}
+
+#postBox input, #postBox textarea {
+  margin-top: 0.5em;
+}
+
+#postBox input:focus, #postBox textarea:focus {
+  box-shadow: 0px 0px 5px 2px #FF0000;
+}
+
+#postingForm button, #qrbutton {
+  width: 8em;
+  margin: 0.5em auto;
+  font-size: 125%;
+}
+
+#postingForm button:active {
+  box-shadow: 0px 0px 5px #FF0000;
+}
+
+#postingForm label {
+  font-size: 80%;
+}
+
+input[type=checkbox]#checkboxSpoiler {
+  display: none;
+}
+
+input[type=checkbox]#checkboxSpoiler+label:before {
+  font-family: Icons;
+  content: "\e0db";
+  margin-right: 0.5em;
+  color: #FF0000;
+  display: inline-block;
+}
+
+input[type=checkbox]#checkboxSpoiler:checked+label:before {
+  font-family: Icons;
+  content: "\e033";
+  margin-right: 0.5em;
+  color: #FF0000;
+  display: inline-block;
+}
+
+#boardContentLinks {
+  margin-top: 0.5em;
+  font-size: 80%;
+}

@@ -1,0 +1,37 @@
+#watcherButton::before {
+  font-family: 'Icons';
+  content: '\e065';
+  margin-right: 0.25em;
+}
+
+.watchButton::before {
+  font-family: 'Icons';
+  content: '\e065';
+}
+
+#closeWatcherMenuButton::before, .close-btn::before, .watchedCellCloseButton::before
+  {
+  font-family: 'Icons';
+  content: '\e0db';
+}
+
+.watchedCell {
+  display: table;
+  width: 100%;
+}
+
+.watchedCellLabel {
+  display: table-cell;
+  width: 90%;
+}
+
+.watchedMenuLabel {
+  font-size: 80%
+}
+
+.watchedNotification::before {
+  font-family: 'Icons';
+  content: '\e0D8';
+  margin-left: 0.25em;
+  color: #A00;
+}

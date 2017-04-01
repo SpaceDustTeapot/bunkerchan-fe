@@ -1,0 +1,346 @@
+.small {
+  font-size: 75%;
+  text-decoration: none;
+}
+
+.clearer {
+  clear: both;
+}
+
+.small a {
+  text-decoration: none;
+}
+
+#themeSelector {
+  font-size: 100%
+}
+
+h3, p, label {
+  margin: 0.25em 0;
+}
+
+hr {
+  height: 0px;
+  border-width: 1px medium medium;
+  border-style: solid none none;
+  border-color: #FF0000;
+}
+
+a, .navClickable {
+  color: #FFB300;
+  text-decoration: none;
+}
+
+a:hover, .hideButton:hover, .unhideButton:hover, .embedButton:hover,
+  .navClickable:hover, #closeWatcherMenuButton:hover, .watchButton:hover,
+  .watchedCellCloseButton:hover, .hideFileButton:hover {
+  text-shadow: 0px 0px 5px #FF0000;
+}
+
+.navClickable, .watchButton {
+  cursor: pointer
+}
+
+u {
+  text-decoration: underline;
+}
+
+s {
+  text-decoration: line-through;
+}
+
+strong {
+  font-weight: bold;
+}
+
+em {
+  font-style: italic;
+}
+
+input, select, textarea {
+  border: 1px double #07371F;
+  border-radius: 5px;
+  background: #282A2E;
+  color: #ACACAC;
+  font-family: 'Hack', monospace, sans-serif;
+  font-size: 80%;
+}
+
+input[type=button], input[type=submit], button, .dropzone, .selectedCell {
+  border: 3px double #07371F;
+  border-radius: 5px;
+  background: #16171A;
+  color: #ACACAC;
+  padding-left: 0.25em;
+  font-family: 'Hack', monospace, sans-serif;
+  font-size: 80%;
+  font-weight: bold;
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+.title, .unhideButton {
+  font-weight: bold;
+}
+
+.fileBrowser {
+  background: none;
+}
+
+/* import resources here; external CSS, fonts, etc */
+@font-face {
+  font-family: 'Hack';
+  src: url('../hack-regular-webfont.eot?v=2.018');
+  src: url('../hack-regular-webfont.eot?#iefix&v=2.018')
+    format('embedded-opentype'), url('../hack-regular-webfont.woff2?v=2.018')
+    format('woff2'), url('../hack-regular-webfont.woff?v=2.018') format('woff'),
+    url('../hack-regular-webfont.ttf?v=2.018') format('truetype'),
+    url('../hack-regular-webfont.svg?v=2.018#hackregular') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Icons';
+  src: url('../open-iconic.eot');
+  src: url('../open-iconic.eot?#iconic-sm') format('embedded-opentype'),
+    url('../open-iconic.woff') format('woff'), url('../open-iconic.ttf')
+    format('truetype'), url('../open-iconic.otf') format('opentype'),
+    url('../open-iconic.svg#iconic-sm') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* body styles, inherited by whole page */
+body {
+  color: #ACACAC;
+  background: #1D1F21;
+  font-family: 'Hack', monospace, sans-serif;
+  font-size: 100%;
+  margin: 0px;
+}
+
+/* header and nav / top of page styles */
+header {
+  width: 50%;
+  margin: 3em auto 0 auto;
+  text-align: center;
+}
+
+nav {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background-color: #151515;
+  border-bottom: 1px solid #FF0000;
+  padding-bottom: 3px;
+  font-size: 70%;
+  text-align: center;
+}
+
+nav span, nav a {
+  display: inline-block;
+  text-decoration: none;
+  margin: 0 0.2em;
+}
+
+#navLinkSpan {
+  float: left;
+}
+
+#navOptionsSpan {
+  float: right;
+}
+
+#navLinkHome:before {
+  font-family: Icons;
+  content: "\e082";
+  margin-right: 0.25em;
+}
+
+#navBoardList:before {
+  font-family: Icons;
+  content: "\e03a";
+  margin-right: 0.25em;
+}
+
+#linkOverboard:before, #navOverboard:before {
+  font-family: Icons;
+  content: "\e007";
+  margin-right: 0.25em;
+}
+
+#navPosting:before {
+  font-family: Icons;
+  content: "\e09a";
+  margin-right: 0.25em;
+}
+
+#navCatalog:before {
+  font-family: Icons;
+  content: "\e072";
+  margin-right: 0.25em;
+}
+
+#linkRss:before {
+  font-family: Icons;
+  content: "\e0b7";
+  margin-right: 0.25em;
+}
+
+#linkTop:before {
+  font-family: Icons;
+  content: "\e012";
+  margin-right: 0.25em;
+}
+
+#linkBottom:before {
+  font-family: Icons;
+  content: "\e00f";
+  margin-right: 0.25em;
+}
+
+#linkBack:before {
+  font-family: Icons;
+  content: "\e003";
+  margin-right: 0.25em;
+}
+
+/* board list */
+#divPages {
+  display: inline-block;
+}
+
+#divPages a {
+  text-decoration: none;
+  padding: 0 0.25em;
+}
+
+a.rules:after {
+  font-family: Icons;
+  content: "\e052";
+  margin-right: 0.5em;
+  color: #FF0000;
+  height: 80%;
+  font-size: 80%;
+  padding-left: 0.25em;
+  vertical-align: middle;
+}
+
+/* markdown */
+.greenText {
+  color: #789922;
+}
+
+.redText {
+  color: #AF0A0F;
+  font-weight: bold;
+  font-size: 125%;
+}
+
+span.spoiler {
+  background: #000;
+  color: #000;
+  padding: 0 1px;
+}
+
+.spoiler:hover {
+  color: #ACACAC;
+  background: none;
+}
+
+.red {
+  color: #FF0000;
+}
+
+/* CSS for pages that deal with site and account settings and bans */
+#settingsWrapper {
+  text-align: center;
+  width: 80%;
+  margin: 2em auto;
+}
+
+#settingsFieldset {
+  border: 1px dashed #FF0000;
+  padding: 1em;
+  display: inline-block;
+  text-align: left;
+}
+
+#settingsWrapper input {
+  display: block;
+  margin-top: 0.25em;
+  margin-bottom: 0.25em;
+}
+
+.banners {
+  margin: 1em;
+  width: auto;
+  padding: 0.5em;
+}
+
+#settingsFieldset textarea {
+  display: block;
+  height: 5em;
+}
+
+#settingsFieldset label {
+  display: block;
+}
+
+#settingsFieldset label input {
+  display: inline-block;
+}
+
+#settingsWrapper .captchaDiv input {
+  display: inline-block;
+}
+
+.subCaptchaDiv {
+  text-align: left;
+}
+
+.captchaTimer {
+  font-size: 80%;
+}
+
+input.wide, textarea.wide {
+  width: 100%;
+}
+
+#redirect, #maint {
+  text-align: center;
+}
+
+#labelCaptchaId {
+  color: #ff0000;
+}
+
+#staticPageWrapper {
+  margin: 2em auto;
+  text-align: center;
+}
+
+#staticPageFieldset {
+  display: inline-block;
+  padding: 0.5em 1em;
+  border: 1px dashed #FF0000;
+  text-align: left;
+}
+
+/* footer styles */
+footer {
+  width: 100%;
+  margin: 3em 0px 2em 0px;
+  text-align: center;
+  font-size: 75%;
+}
+
+/* this has to go down here to override anything above it */
+.hidden {
+  display: none;
+}
+
+#settingsWrapper input.hidden {
+  display: none;
+}
