@@ -1,12 +1,4 @@
 var themes = [ {
-  file : 'clear.css',
-  label : 'Clear',
-  id : 'clear'
-}, {
-  file : 'jungle.css',
-  label : 'Jungle',
-  id : 'jungle'
-}, {
   file : 'yotsuba.css',
   label : 'Yotsuba',
   id : 'yotsuba'
