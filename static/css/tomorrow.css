@@ -1,0 +1,205 @@
+body {
+	background: #1E1E1E;
+	color: #999999;
+	font-family: sans-serif;
+}
+hr {
+	border: none;
+	border-top: 1px solid #333333;
+}
+
+/* LINKS */
+a, .hideButton, .unhideButton, .embedButton, .navClickable, #closeWatcherMenuButton, .watchButton, .watchedCellCloseButton, .hideFileButton {
+	color: #CCCCCC;
+}
+a:hover, .hideButton:hover, .unhideButton:hover, .embedButton:hover, .navClickable:hover, #closeWatcherMenuButton:hover, .watchButton:hover, .watchedCellCloseButton:hover, .hideFileButton:hover {
+	color: #FFFFFF;
+	text-shadow: none; /* gets rid of the stupid glow effect */
+}
+
+/* BOARD TITLE */
+.boardHeader p {
+	color: #32DD72;
+	font-family: Arial, Helvetica, sans-serif;
+}
+.boardHeader p#labelName {
+	font-size: 28px;
+	font-weight: bold;
+}
+.boardHeader p#labelDescription {
+	color: #AF0A0F;
+	font-size: 8pt;
+}
+
+/* REPLY + MAKE THREAD FIELDS */
+#newPostFieldset, #quick-reply table {
+	border: 1px dashed #333333;
+}
+input, select, textarea {
+	background: #333333;
+	border-radius: 0px;
+	border: 1px solid #666666;
+	color: #CCCCCC;
+	font-family: arial,helvetica,sans-serif;
+}
+input:hover, select:hover, textarea:hover {
+	border: 1px solid #AAAAAA;
+}
+
+/* BUTTON, DROPZONE, CAPTCHA */
+input[type="button"], input[type="submit"], button {
+	background: #d4d0c8;
+	border-radius: 0px;
+	color: #000000;
+	font-family: arial,helvetica,sans-serif;
+	font-weight: 400;
+}
+.dropzone, .selectedCell {
+	background: #7D7D7D;
+	border: 0px;
+	border-radius: 0px;
+	color: rgba(0, 0, 0, 0.5);
+	cursor: pointer;
+	transition: 0.2s;
+	text-align:center;
+}
+.subCaptchaDiv {
+    text-align: center;
+}
+
+/* ANNOUNCEMENT */
+#divMessage {
+	color: #FF0000;
+	font-size: 13px;
+	font-weight: bold;
+}
+
+/* THREAD FIELDS */
+.title, .unhideButton {
+	font-weight: 400; /* makes timestamp not bold */
+}
+.labelSubject { /* subject */
+	color: #446655;
+	font-weight: bold; /* needed for catalog */
+}
+.linkName { /* email field, sage */
+	font-weight: bold;
+	color: #32DDAF;
+	text-decoration: underline;
+}
+.noEmailName, .noEmailName:hover { /* regular anonymous */
+	color: #32DD72;
+	text-decoration: none;
+	text-shadow: none;
+}
+.linkSelf, .linkQuote { /* post number */
+	color: #CCCCCC;
+}
+.linkSelf:hover, .linkQuote:hover {
+	color: #32DD72;
+	text-decoration: underline overline;
+}
+.panelBacklinks a { /* backlinks */
+	color: #CCCCCC;
+}
+.panelBacklinks a:hover {
+	color: #DD0000;
+}
+.quoteLink { /* >> */
+	color: #CCCCCC;
+}
+.quoteLink:hover { /* >> */
+	color: #32DD72;
+}
+.labelRole:before { /* capcode prefix */
+	font-size: 10px;
+}
+.labelOmission { /* posts omitted */
+}
+.labelLastEdit { /* edited post */
+	font-size: 10px;
+}
+.labelId { /* id font */
+	font-size: 12px;
+}
+.greenText { /* >IMBLYGN */
+    color: #B8D962;
+}
+
+/* THREAD POSTS */
+.innerPost {  /* normal reply */
+	background-color: #333333;
+	border: 1px solid #555555;
+	border-radius: 10px;
+	-webkit-border-radius: 10px;
+	-khtml-border-radius: 10px;
+	-moz-border-radius: 10px;
+}
+.markedPost { /* highlighted reply */
+	background-color: #555555;
+	border: 1px solid transparent;
+	border-radius: 10px;
+	-webkit-border-radius: 10px;
+	-khtml-border-radius: 10px;
+	-moz-border-radius: 10px;
+}
+span.spoiler:hover { /* spoiler hover */
+	background: #000000;
+	color: #FFFFFF;
+}
+
+/* QUICK REPLY */
+#quick-reply table {
+	background-color: #333333;
+	border: 0px;
+}
+#quick-reply table {
+	padding: 0em;
+}
+#quick-reply th {
+	background-color: #333333;
+}
+.post-table td {
+    padding-bottom: 0em;
+}
+
+/* NAVIGATION BAR */
+nav {
+	background-color: #666666;
+	text-shadow: black 1px 1px 1px, black -1px -1px 1px, black -1px 1px 1px, black 1px -1px 1px;
+	border-bottom: 1px solid #999999;
+	color: #8899AA;
+	font-size: 12px;
+	margin: 0 0.2em;
+	padding-top: 1px;
+	padding-bottom: 1px;
+}
+nav:hover {
+	background-color: rgba(30%, 30%, 30%, 0.65);
+}
+
+/* DELETE AND REPORT */
+.reportFieldset {
+	border: 1px dashed #333333;
+}
+
+/* CATALOG */
+#catalogId {
+	color: #32DD72;
+}
+.catalogCell {
+	background: 303030;
+	border: 1px solid #464646;
+	border-radius: 0px;
+}
+
+/* BOARD LIST */
+.boardPages {
+    color: #8899AA;
+}
+
+/* FRONT PAGE */
+#divLatestPosts .latestPostCell {
+    background: #333333;
+    border: 1px solid #555555;
+}
