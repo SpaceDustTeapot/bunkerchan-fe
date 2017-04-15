@@ -193,3 +193,9 @@ nav {
     background: #D6DAF0;
     border: 1px solid #B7C5D9;
 }
+
+/* Watched threads menu box */
+#watchedMenu{
+	background: #D6DAF0;
+	border: 1px dashed #8899AA;
+}
