@@ -249,3 +249,27 @@
   {
   font-size: 80%;
 }
+
+#selectedDivQr, #selectedDiv{
+	max-height:6em;
+	overflow-x:hidden;
+}
+
+.leftselectedCell, .rightselectedCell{
+	display: inline-block;
+	margin-left: 20px;
+	float:left;
+}
+
+.rightselectedCell{
+	overflow-wrap: break-word;
+}
+#selectedDiv .rightselectedCell{
+	max-width: 200px;
+}
+#selectedDivQr .rightselectedCell{
+	max-width: 90px;
+}
+.leftselectedCell{
+	margin-top: 12px;
+}

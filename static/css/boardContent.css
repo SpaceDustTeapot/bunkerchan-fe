@@ -1,23 +1,29 @@
 /*Elements shown on board and thread pages*/
 .selectedCell, .dropzone {
   top: 5px;
-  text-align: center;
+  /*text-align: center;*/
   margin-bottom: 5px;
   padding: 5px 0px;
 }
 
 .selectedCell {
   margin-top: 10px;
+  text-align: left;
+  height: 50px;
+  overflow: hidden;
 }
 
 .dropzone {
+  text-align: center;
   cursor: pointer;
   transition: all 0.2s ease 0s;
 }
 
 .dragAndDropThumb {
-  max-height: 100px;
+  max-height: 50px;
   max-width: 100px;
+  float: right;
+  margin-right: 5px;
 }
 
 .removeButton {

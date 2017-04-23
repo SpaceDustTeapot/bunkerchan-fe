@@ -60,7 +60,6 @@ input[type="button"], input[type="submit"], button {
 	color: rgba(0, 0, 0, 0.5);
 	cursor: pointer;
 	transition: 0.2s;
-	text-align:center;
 }
 .subCaptchaDiv {
     text-align: center;

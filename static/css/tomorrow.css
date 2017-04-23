@@ -63,6 +63,11 @@ input[type="button"], input[type="submit"], button {
 	transition: 0.2s;
 	text-align:center;
 }
+
+.removeButton{
+color: rgba(0,0,0,0.5);
+}
+
 .subCaptchaDiv {
     text-align: center;
 }

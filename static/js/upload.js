@@ -1,6 +1,4 @@
-var selectedCell = '<div class="removeButton">✖</div>'
-    + '<span class="nameLabel"></span><div class="spoilerPanel">'
-    + '<input type="checkbox" class="spoilerCheckBox">Spoiler</div>';
+var selectedCell = '<div class="leftselectedCell"><div class="removeButton">✖</div></div><div class="rightselectedCell"><div class="spoilerPanel"><input type="checkbox" class="spoilerCheckBox">Spoiler</div><span class="nameLabel"></span></div>';
 
 var selectedFiles = [];
 var selectedDiv;
