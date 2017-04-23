@@ -3,6 +3,7 @@ var selectedCell = '<div class="leftselectedCell"><div class="removeButton">✖<
 var selectedFiles = [];
 var selectedDiv;
 var selectedDivQr;
+var UID = 0;
 
 function addDndCell(cell, removeButton) {
 
@@ -20,6 +21,9 @@ function addSelectedFile(file) {
 
   var cell = document.createElement('div');
   cell.setAttribute('class', 'selectedCell');
+  cell.setAttribute('fileUID', UID);
+  file["fileUID"] = UID;
+  UID++;
 
   cell.innerHTML = selectedCell;
 
@@ -29,12 +33,23 @@ function addSelectedFile(file) {
   var removeButton = cell.getElementsByClassName('removeButton')[0];
 
   removeButton.onclick = function() {
-    var index = selectedFiles.indexOf(file);
-
-    selectedDiv.removeChild(selectedDiv.childNodes[index]);
+    
+    var targetnode;
+    selectedDiv.childNodes.forEach(function(node){
+        if(node.getAttribute("fileUID") == file['fileUID']){
+            targetnode = node;
+        }
+    });
+    
+    selectedDiv.removeChild(targetnode);
 
     if (selectedDivQr) {
-      selectedDivQr.removeChild(selectedDivQr.childNodes[index]);
+        selectedDivQr.childNodes.forEach(function(node){
+            if(node.getAttribute("fileUID") == file['fileUID']){
+                targetnode = node;
+            }
+        });
+      selectedDivQr.removeChild(targetnode);
     }
 
     selectedFiles.splice(selectedFiles.indexOf(file), 1);
