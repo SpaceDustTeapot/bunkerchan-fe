@@ -25,6 +25,7 @@ a:hover, .hideButton:hover, .unhideButton:hover, .embedButton:hover, .navClickab
 .boardHeader p#labelName {
 	font-size: 28px;
 	font-weight: bold;
+	letter-spacing: -2px;
 }
 .boardHeader p#labelDescription {
 	font-size: 8pt;
