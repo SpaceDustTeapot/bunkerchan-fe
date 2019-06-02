@@ -489,7 +489,7 @@ posting.setPostLinks = function(postCell, post, boardUri, link, threadId,
 
   var complement = (post.postId ? 'postId' : 'threadId') + '=' + postingId;
 
-  if (thread.mod) {
+  if (api.mod) {
     linkEdit.href = '/edit.js?boardUri=' + boardUri + '&';
     linkEdit.href += complement;
   } else if (linkEdit) {

@@ -70,7 +70,7 @@ sideCatalog.loadThread = function(cell, threadData) {
 
   sideCatalog.loadingThread = true;
 
-  if (thread.mod) {
+  if (api.mod) {
 
     api.formApiRequest('mod', {}, function(status, data) {
 
