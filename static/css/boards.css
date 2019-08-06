@@ -38,10 +38,6 @@
   display: inline-block;
 }
 
-#divBoards {
-  width: 100%;
-}
-
 #legend {
   width: 15%;
   text-align: left;
@@ -66,4 +62,18 @@
   width: 33%;
   text-align: center;
   display: inherit;
+}
+
+@media only screen and (max-width: 812px) {
+  #boardsWrapper #divBoards {
+    display: inline;
+  }
+  .boardsCellHeader {
+    width: 100%;
+    display: inline-table;
+    text-align: center;
+  }
+  .boardsCellStats, #divBoardsLegend, .labelTags {
+    display: none;
+  }
 }

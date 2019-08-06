@@ -2,6 +2,9 @@
 <html>
 <head>
 <meta charset="UTF-8" />
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0">
 <link
   href="/.static/css/global.css"
   type="text/css"
@@ -9,35 +12,14 @@
 </head>
 <body>
 
-  <nav>
-    <span id="navLinkSpan"> <span>[</span> <a
-        href="/"
-        id="navLinkHome">home</a> <span>/</span> <a
-        href="/boards.js"
-        id="navBoardList">boards</a> <span>/</span> <a
-        href="/overboard"
-        id="navOverboard">overboard</a> <span>/</span> <a
-        href="/.static/posting.html"
-        id="navPosting">help</a> <span>]</span>
-		<span>[</span>
-		<a href="https://bunkerchan.xyz/left">left</a>
-		<span>/</span>
-		<a href="https://bunkerchan.xyz/dprk">dprk</a>
-		<span>/</span>
-		<a href="https://bunkerchan.xyz/gulag">gulag</a>
-		<span>/</span> 
-		<a href="https://bunkerchan.xyz/dead">dead</a>
-		<span>/</span>
-		<a href="https://bunkerchan.xyz/tech">tech</a>
-		<span>/</span>
-		<a href="https://bunkerchan.xyz/e">e</a>
-		<span>]</span>
-    </span> <span id="navBoardsSpan"> </span> <span id="navOptionsSpan"> </span>
-  </nav>
+  <script src="/.static/js/themeLoader.js"></script>
+
+  <nav id="dynamicHeader"></nav>
 
   <header>
     <img
-      src="/.static/bunker.png"
+      src="/.static/logo.png"
+      class="logoImg"
       alt="logo" />
   </header>
 
@@ -46,21 +28,15 @@
     <fieldset id="settingsFieldset">
 
       <legend>Account</legend>
-      <h3 class="title">
-        Logged in as: <span id="labelLogin"></span>
+      <h3>
+        Logged in as: <span id="labelLogin"></span>, <span id="labelGlobalRole"></span>
       </h3>
 
       <form action="/logout.js">
-        <input
+        <button
           id="logoutFormButton"
-          type="submit"
-          value="logout">
-        <input
-          type="button"
-          id="logoutJsButton"
-          onClick="logout()"
-          value="logout"
-          class="hidden">
+          type="submit">Logout</button>
+
       </form>
 
       <hr />
@@ -68,8 +44,23 @@
         href="/globalManagement.js"
         id="globalManagementLink">Global Management</a>
       <br />
-      <a href="/.static/moderation.html">Moderation Manual</a>
+      <a href="/.static/pages/moderation.html">Moderation Manual</a>
       <hr />
+
+      <form
+        action="/requestEmailConfirmation.js"
+        method="post"
+        enctype="multipart/form-data"
+        id="confirmationForm">
+        <p>Your e-mail haven't been confirmed yet.</p>
+        <p>You won't be able to reset your password or receive report
+          notifications until doing so.</p>
+        <button
+          type="submit"
+          id="requestConfirmationFormButton">Request confirmation
+          e-mail</button>
+        <hr>
+      </form>
 
       <h3>Settings</h3>
 
@@ -83,11 +74,13 @@
           <input
             type="email"
             name="email"
+            class="settingsField"
             id="emailField">
         </label>
         <label>
           <input
             type="checkbox"
+            class="settingsField"
             name="alwaysSignRole"
             id="checkboxAlwaysSign">
           Always use role signature
@@ -95,24 +88,15 @@
         <label>
           <input
             type="checkbox"
-            name="lockEnabled"
-            id="checkboxLock">
-          Lock account for 24 hours after too many failed login attempts
+            class="settingsField"
+            name="reportNotify"
+            id="checkboxReportNotify">
+          Receive e-mail report notifications
         </label>
 
-        <p>If you entered an email you will receive a link to unlock it
-          immediately</p>
-
-        <input
+        <button
           type="submit"
-          value="Save"
-          id="saveFormButton">
-        <input
-          type="button"
-          onClick="save()"
-          value="Save"
-          id="saveJsButton"
-          class="hidden">
+          id="saveFormButton">Save</button>
 
       </form>
 
@@ -129,6 +113,7 @@
           Current Password:
           <input
             type="password"
+            class="passwordChangeField"
             name="password"
             id="fieldPassword">
         </label>
@@ -136,6 +121,7 @@
           New Password:
           <input
             type="password"
+            class="passwordChangeField"
             name="newPassword"
             id="fieldNewPassword">
         </label>
@@ -143,21 +129,14 @@
           Confirm New Password:
           <input
             type="password"
+            class="passwordChangeField"
             name="confirmation"
             id="fieldConfirmation">
         </label>
 
-        <input
+        <button
           type="submit"
-          value="Change password"
-          id="passwordFormButton">
-
-        <input
-          type="button"
-          onClick="changePassword()"
-          value="Change password"
-          id="passwordJsButton"
-          class="hidden">
+          id="passwordFormButton">Change password</button>
 
       </form>
 
@@ -169,6 +148,10 @@
 
       <h3>Volunteered Boards</h3>
       <div id="volunteeredDiv"></div>
+
+      <a
+        href="/latestPostings.js"
+        id="latestPostingsLink">Latest postings</a>
 
       <hr />
 
@@ -185,6 +168,7 @@
             Board URI:
             <input
               type="text"
+              class="creationField"
               name="boardUri"
               id="newBoardFieldUri">
           </label>
@@ -192,12 +176,14 @@
             Board Name:
             <input
               type="text"
+              class="creationField"
               name="boardName"
               id="newBoardFieldName">
           </label>
           <label>
             Board Description:
             <input
+              class="creationField"
               type="text"
               name="boardDescription"
               id="newBoardFieldDescription">
@@ -212,16 +198,15 @@
             <br>
             <input
               type="button"
-              onClick="reloadCaptcha()"
+              onClick="captchaUtils.reloadCaptcha()"
               value="Reload"
-              id="reloadCaptchaButton"
-              class="hidden">
+              class="hidden reloadCaptchaButton">
             <span class="captchaTimer"></span>
             <br>
 
             <input
               type="text"
-              class="captchaField"
+              class="captchaField creationField"
               name="captcha"
               id="fieldCaptcha"
               placeholder="answer">
@@ -232,17 +217,9 @@
 
           </div>
 
-          <input
+          <button
             type="submit"
-            value="create board"
-            id="newBoardFormButton">
-
-          <input
-            type="button"
-            onClick="createBoard()"
-            value="create board"
-            id="newBoardJsButton"
-            class="hidden">
+            id="newBoardFormButton">Create board</button>
 
         </form>
 
@@ -254,10 +231,10 @@
 
 </body>
 
-<script src="/.static/js/settings.js"></script>
 <script src="/.static/js/api.js"></script>
 <script src="/.static/js/account.js"></script>
-<script src="/.static/js/captcha.js"></script>
+<script src="/.static/js/captchaUtils.js"></script>
 <script src="/.static/js/themes.js"></script>
+<script src="/.static/js/favouriteBoards.js"></script>
 
 </html>

@@ -17,15 +17,21 @@
   height: 14em;
   overflow: hidden;
   overflow-y: auto;
-  background: #282A2E;
   margin: 0.1em;
-  border: 1px solid #FF0000;
-  border-radius: 5px;
+}
+
+.catalogLabel {
+  font-size: 80%;
 }
 
 .catalogCell .divMessage {
   margin: 0;
   font-size: 75%;
+}
+
+#divTools {
+  text-align: left;
+  margin-left: 15px;
 }
 
 .catalogCell .labelSubject {
@@ -45,4 +51,17 @@
 
 .threadStats {
   font-size: 75%;
+}
+
+@media only screen and (max-width: 812px) {
+  .linkThumb img {
+    max-height: 100%;
+    max-width: 100%;
+  }
+  #catalogId {
+    margin: 3em 0 2em 0;
+  }
+  .catalogCell {
+    width: 7em;
+  }
 }

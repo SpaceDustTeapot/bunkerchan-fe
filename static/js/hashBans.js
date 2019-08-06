@@ -1,86 +1,108 @@
-var boardUri;
+var hashBans = {};
 
-if (!DISABLE_JS) {
-
-  document.getElementById('reloadCaptchaButton').style.display = 'inline';
+hashBans.init = function() {
 
   var boardIdentifier = document.getElementById('boardIdentifier');
 
   if (boardIdentifier) {
-    boardUri = boardIdentifier.value;
+    api.boardUri = boardIdentifier.value;
   }
 
-  document.getElementById('createFormButton').style.display = 'none';
-  document.getElementById('createJsButton').style.display = 'inline';
+  api.convertButton('createFormButton', hashBans.placeHashBan,
+      'addHashBanField');
 
   var hashBansDiv = document.getElementById('hashBansDiv');
 
   for (var j = 0; j < hashBansDiv.childNodes.length; j++) {
-    processHashBanCell(hashBansDiv.childNodes[j]);
+    hashBans.processHashBanCell(hashBansDiv.childNodes[j]);
   }
-}
 
-function processHashBanCell(cell) {
+  hashBans.div = hashBansDiv;
 
-  var button = cell.getElementsByClassName('liftJsButton')[0];
-  button.style.display = 'inline';
+};
 
-  button.onclick = function() {
-    liftHashBan(cell.getElementsByClassName('idIdentifier')[0].value);
-  };
+hashBans.processHashBanCell = function(cell) {
 
-  cell.getElementsByClassName('liftFormButton')[0].style.display = 'none';
+  var button = cell.getElementsByClassName('liftFormButton')[0];
 
-}
+  api.convertButton(button, function() {
+    hashBans.liftHashBan(cell);
+  });
 
-function liftHashBan(hashBan) {
-  apiRequest('liftHashBan', {
-    hashBanId : hashBan
+};
+
+hashBans.liftHashBan = function(cell) {
+
+  api.formApiRequest('liftHashBan', {
+    hashBanId : cell.getElementsByClassName('idIdentifier')[0].value
   }, function requestComplete(status, data) {
 
     if (status === 'ok') {
-
-      location.reload(true);
-
+      cell.remove();
     } else {
       alert(status + ': ' + JSON.stringify(data));
     }
+
   });
-}
 
-function placeHashBan() {
+};
 
-  var typedCaptcha = document.getElementById('fieldCaptcha').value.trim();
+hashBans.showNewHashBan = function(typedHash, id) {
 
-  if (typedCaptcha.length !== 6 && typedCaptcha.length !== 24) {
-    alert('Captchas are exactly 6 (24 if no cookies) characters long.');
-    return;
-  } else if (/\W/.test(typedCaptcha)) {
-    alert('Invalid captcha.');
-    return;
-  }
+  var form = document.createElement('form');
+  form.method = 'post';
+  form.enctype = 'multipart/form-data';
+  form.action = '/liftHashBan.js';
+  form.className = 'hashBanCell';
+
+  form.appendChild(document.createElement('hr'));
+
+  var hashPara = document.createElement('p');
+  hashPara.innerHTML = 'MD5: ';
+  form.appendChild(hashPara);
+
+  var hashLabel = document.createElement('span');
+  hashLabel.className = 'hashLabel';
+  hashLabel.innerHTML = typedHash;
+  hashPara.appendChild(hashLabel);
+
+  var identifier = document.createElement('input');
+  identifier.type = 'hidden';
+  identifier.value = id;
+  identifier.name = 'hashBanId';
+  identifier.className = 'idIdentifier';
+  form.appendChild(identifier);
+
+  var submit = document.createElement('button');
+  submit.type = 'submit';
+  submit.innerHTML = 'Lift hash ban';
+  submit.className = 'liftFormButton';
+  form.appendChild(submit);
+
+  hashBans.div.appendChild(form);
+
+  hashBans.processHashBanCell(form);
+
+};
+
+hashBans.placeHashBan = function() {
 
   var typedHash = document.getElementById('hashField').value.trim();
 
-  var parameters = {
-    captcha : typedCaptcha,
-    hash : typedHash
-  };
+  api.formApiRequest('placeHashBan', {
+    hash : typedHash,
+    boardUri : api.boardUri
+  }, function requestComplete(status, data) {
 
-  if (boardUri) {
-    parameters.boardUri = boardUri;
-  }
+    if (status === 'ok') {
+      document.getElementById('hashField').value = '';
+      hashBans.showNewHashBan(typedHash, data);
+    } else {
+      alert(status + ': ' + JSON.stringify(data));
+    }
 
-  apiRequest('placeHashBan', parameters,
-      function requestComplete(status, data) {
+  });
 
-        if (status === 'ok') {
+};
 
-          location.reload(true);
-
-        } else {
-          alert(status + ': ' + JSON.stringify(data));
-        }
-      });
-
-}
+hashBans.init();

@@ -2,6 +2,9 @@
 <html>
 <head>
 <meta charset="UTF-8" />
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0">
 <link
   href="/.static/css/global.css"
   type="text/css"
@@ -10,49 +13,40 @@
   href="/.static/css/boards.css"
   type="text/css"
   rel="stylesheet" />
-<script src="/.static/js/yotCheck.js"></script>
 </head>
-<body onload="CSSYotCheck()">
+<body>
+
+  <script src="/.static/js/themeLoader.js"></script>
 
   <nav>
     <span id="navLinkSpan"> <span>[</span> <a
         href="/"
-        id="navLinkHome">home</a> <span>/</span> <a
+        class="coloredIcon"
+        id="navLinkHome"></a> <span>/</span> <a
         href="/boards.js"
-        id="navBoardList">boards</a> <span>/</span> <a id="linkOverboard">overboard</a>
-      <span>/</span> <a id="linkSfwOver">overboard sfw</a> <span>/</span> <a
-        href="/.static/posting.html"
-        id="navPosting">help</a> <span>]</span>
-		<span>[</span>
-		<a href="/leftypol">leftypol</a>
-		<!--<span>/</span>
-		<a href="/dprk">dprk</a>-->
-		<span>/</span>
-		<a href="/gulag">gulag</a>
-		<span>/</span> 
-		<a href="/dead">dead</a>
-		<span>/</span>
-		<a href="/tech">tech</a>
-		<span>/</span>
-		<a href="/e">e</a>
-		<span>]</span>
-		<span>[</span>
-		<a href="/GET">GET</a>
-		<span>/</span>
-		<a href="/ref">ref</a>
-		<span>]</span>
+        class="coloredIcon"
+        id="navBoardList"></a> <span>/</span> <a
+        class="coloredIcon"
+        id="linkOverboard"></a> <span>/</span> <a id="linkSfwOver"></a> <span>/</span>
+      <a
+        href="/.static/pages/posting.html"
+        class="coloredIcon"
+        id="navPosting"></a> <span>]</span>
     </span> <span id="navBoardsSpan"> </span> <span id="navOptionsSpan"> </span>
   </nav>
 
   <header>
     <img
-      src="/.static/bunker.png"
+      src="/.static/logo.png"
+      class="logoImg"
       alt="logo" />
   </header>
 
   <div id="boardsWrapper">
 
-    <div id="divBoards">
+    <div
+      id="divBoards"
+      class="wide">
       <span id="divBoardsLegend"> <span id="legend"><span
           id="labelPPH"
           class="cellComponent">PPH</span><span
@@ -71,14 +65,12 @@
         <input
           type="text"
           name="boardUri"
-          placeholder="board"
-          class="text">
+          placeholder="board">
 
         <input
           type="text"
           name="tags"
-          placeholder="tags"
-          class="text">
+          placeholder="tags">
 
         <div id="boardsSort">
           <select name="sorting">
@@ -122,7 +114,8 @@
 
 </body>
 
-<script src="/.static/js/settings.js"></script>
+<script src="/.static/js/api.js"></script>
 <script src="/.static/js/themes.js"></script>
+<script src="/.static/js/favouriteBoards.js"></script>
 
 </html>

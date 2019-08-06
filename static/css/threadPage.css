@@ -1,8 +1,11 @@
 /*Elements exclusive from the thread page*/
 .divRefresh {
-  display: block;
   padding: 0;
   height: 1.5em;
+}
+
+.labelId {
+  cursor: pointer;
 }
 
 .divRefresh label, .divRefresh input {
@@ -11,7 +14,7 @@
   font-size: 80%;
 }
 
-#divControls, #transferControls, #ipDelete {
+#divControls, #transferControls, #ipDelete, #divArchive {
   margin: 1em;
 }
 
@@ -25,7 +28,7 @@
   padding: 0 0 0 0;
   width: 300px;
   z-index: 100;
-  display: block;
+  display: none;
 }
 
 #quick-reply #post-form-inner {
@@ -63,21 +66,19 @@
   padding: 0 5px;
 }
 
-#quick-reply input[type="text"], #quick-reply select {
+#quick-reply input[type="text"], #quick-reply input[type="password"],
+  #quick-reply select {
   width: 100%;
   padding: 2px;
   font-size: 10pt;
   box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
 }
 
 #quick-reply select {
   padding: 2px;
   font-size: 10pt;
   box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
+  width: 85%;
 }
 
 #QRcaptchaDiv {
@@ -87,8 +88,6 @@
 #quick-reply textarea {
   min-width: 100%;
   box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
   font-size: 10pt;
   resize: both;
 }
@@ -119,13 +118,12 @@
 }
 
 #quick-reply table {
-  background: #1D1F21;
   padding: 0.25em;
   margin: 0;
   width: 100%;
   margin: 0;
 }
 
-.handle, .close-btn {
+.handle {
   cursor: move;
 }

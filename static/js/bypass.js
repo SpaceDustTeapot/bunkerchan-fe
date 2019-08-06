@@ -1,13 +1,10 @@
-if (!DISABLE_JS) {
+var bypass = {};
 
-  document.getElementById('reloadCaptchaButton').style.display = 'inline';
-  document.getElementById('bypassJsButton').style.display = 'inline';
+bypass.init = function() {
+  api.convertButton('bypassFormButton', bypass.blockBypass, 'bypassField');
+};
 
-  document.getElementById('bypassFormButton').style.display = 'none';
-
-}
-
-function blockBypass() {
+bypass.blockBypass = function() {
 
   var typedCaptcha = document.getElementById('fieldCaptcha').value.trim();
 
@@ -19,19 +16,26 @@ function blockBypass() {
     return;
   }
 
-  apiRequest('renewBypass', {
+  api.formApiRequest('renewBypass', {
     captcha : typedCaptcha
   }, function requestComplete(status, data) {
 
     if (status === 'ok') {
 
-      document.cookie = 'bypass=' + data + '; path=/';
+      var paragraph = document.getElementsByTagName('p')[0];
 
-      location.reload(true);
+      var span = document.createElement('span');
+      span.innerHTML = 'You have a valid block bypass.';
+      span.id = 'indicatorValidBypass';
+      paragraph.appendChild(span);
+
+      document.getElementById('fieldCaptcha').value = '';
 
     } else {
       alert(status + ': ' + JSON.stringify(data));
     }
   });
 
-}
+};
+
+bypass.init();

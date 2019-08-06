@@ -1,73 +1,69 @@
-if (!DISABLE_JS) {
+var bans = {};
 
-  var bansDiv = document.getElementById('bansDiv')
-      || document.getElementById('appealedBansPanel');
+bans.init = function() {
 
-  if (bansDiv) {
+  var banCells = document.getElementsByClassName('banCell');
 
-    for (var j = 0; j < bansDiv.childNodes.length; j++) {
-      processBanCell(bansDiv.childNodes[j]);
-    }
-  }
-}
-
-function processBanCell(cell) {
-
-  if (cell.className !== 'banCell') {
-    return;
+  for (var j = 0; j < banCells.length; j++) {
+    bans.processBanCell(banCells[j]);
   }
 
-  var button = cell.getElementsByClassName('liftJsButton')[0];
-  button.style.display = 'inline';
+};
 
-  button.onclick = function() {
-    liftBan(cell.getElementsByClassName('liftIdentifier')[0].value);
-  };
+bans.processBanCell = function(cell) {
 
-  cell.getElementsByClassName('liftFormButton')[0].style.display = 'none';
+  var liftButton = cell.getElementsByClassName('liftFormButton')[0];
+
+  api.convertButton(liftButton, function() {
+    bans.liftBan(cell);
+  });
 
   if (cell.getElementsByClassName('denyForm')[0]) {
 
-    var denyButton = cell.getElementsByClassName('denyJsButton')[0];
-    denyButton.style.display = 'inline'
+    var denyButton = cell.getElementsByClassName('denyFormButton')[0];
 
-    denyButton.onclick = function() {
-      denyAppeal(cell.getElementsByClassName('denyIdentifier')[0].value);
-    };
-
-    cell.getElementsByClassName('denyFormButton')[0].style.display = 'none';
+    api.convertButton(denyButton, function() {
+      bans.denyAppeal(cell);
+    });
 
   }
 
-}
+};
 
-function denyAppeal(ban) {
-  apiRequest('denyAppeal', {
-    banId : ban
+bans.denyAppeal = function(cell) {
+
+  api.formApiRequest('denyAppeal', {
+    banId : cell.getElementsByClassName('denyIdentifier')[0].value
   }, function requestComplete(status, data) {
 
     if (status === 'ok') {
 
-      location.reload(true);
-
-    } else {
-      alert(status + ': ' + JSON.stringify(data));
-    }
-  });
-}
-
-function liftBan(ban) {
-  apiRequest('liftBan', {
-    banId : ban
-  }, function requestComplete(status, data) {
-
-    if (status === 'ok') {
-
-      location.reload(true);
+      if (api.management) {
+        cell.remove();
+      } else {
+        cell.getElementsByClassName('denyFormButton')[0].remove();
+      }
 
     } else {
       alert(status + ': ' + JSON.stringify(data));
     }
   });
 
-}
+};
+
+bans.liftBan = function(cell) {
+
+  api.formApiRequest('liftBan', {
+    banId : cell.getElementsByClassName('liftIdentifier')[0].value
+  }, function requestComplete(status, data) {
+
+    if (status === 'ok') {
+      cell.remove();
+    } else {
+      alert(status + ': ' + JSON.stringify(data));
+    }
+  });
+
+};
+
+bans.init();

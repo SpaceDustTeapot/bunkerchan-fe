@@ -1,3 +1,54 @@
+.topBoards a, #divLatestImages img, #divLatestPosts .latestPostCell,
+  .innerPost, .sideCatalogCell, .markedPost, .sideCatalogMarkedCell,
+  .catalogCell {
+  background: #282A2E;
+  border-radius: 5px;
+}
+
+.theme_clear .topBoards a, .theme_clear #divLatestImages img,
+  .theme_clear #divLatestPosts .latestPostCell, .theme_clear .innerPost,
+  .theme_clear .sideCatalogCell, .theme_clear .markedPost, .theme_clear .sideCatalogMarkedCell,
+  .theme_clear .catalogCell {
+  background-color: #dddddd
+}
+
+.floatingMenu, #quick-reply table {
+  background: #1d1f21;
+}
+
+.theme_clear .floatingMenu, .theme_clear #quick-reply table {
+  background: #cccccc;
+}
+
+.markedPost, .sideCatalogMarkedCell {
+  background: rgba(59, 22, 43, 0.4);
+}
+
+.theme_clear .markedPost, .theme_clear .sideCatalogMarkedCell {
+  background: #868686;
+}
+
+#divLatestPosts .latestPostCell, .innerPost, .sideCatalogCell,
+  .markedPost, .sideCatalogMarkedCell, .catalogCell {
+  border: 1px solid #117743;
+}
+
+#newPostFieldset, #quick-reply table, .modalDecorationPanel,
+  .floatingMenu, #settingsFieldset, .reportFieldset {
+  border: 1px dashed #117743;
+}
+
+.logoImg {
+  height: 250px;
+  min-width: 1px;
+}
+
+.captchaImage {
+  width: 300px;
+  height: 100px;
+  background-color: white;
+}
+
 .small {
   font-size: 75%;
   text-decoration: none;
@@ -11,8 +62,20 @@
   text-decoration: none;
 }
 
+#panelReferences a {
+  display: block;
+}
+
+.imgLink img, .latestImageCell img, .mediaCell img, .catalogCell img {
+  image-orientation: from-image;
+}
+
+.linkList a {
+  display: block;
+}
+
 #themeSelector {
-  font-size: 100%
+  font-size: 100%;
 }
 
 h3, p, label {
@@ -23,22 +86,36 @@ hr {
   height: 0px;
   border-width: 1px medium medium;
   border-style: solid none none;
-  border-color: #FF0000;
+  border-color: #117743;
 }
 
-a, .navClickable {
+a, .coloredIcon, .unhideButton, .embedButton, .checkedFavouriteButton:before,
+  #selectedTab, #showFormsButton {
   color: #FFB300;
+  cursor: pointer
+}
+
+.theme_clear a, .theme_clear .coloredIcon, .theme_clear .unhideButton,
+  .theme_clear .embedButton, .theme_clear .checkedFavouriteButton:before,
+  .theme_clear #selectedTab, .theme_clear #showFormsButton {
+  color: #000
+}
+
+.coloredIcon::before {
+  font-family: 'Icons';
+}
+
+#navLinkSpan .coloredIcon:before, #navOptionsSpan .coloredIcon:before,
+  #links .coloredIcon:before {
+  margin-right: 0.25em;
+}
+
+a {
   text-decoration: none;
 }
 
-a:hover, .hideButton:hover, .unhideButton:hover, .embedButton:hover,
-  .navClickable:hover, #closeWatcherMenuButton:hover, .watchButton:hover,
-  .watchedCellCloseButton:hover, .hideFileButton:hover {
-  text-shadow: 0px 0px 5px #FF0000;
-}
-
-.navClickable, .watchButton {
-  cursor: pointer
+a:hover, .glowOnHover:hover {
+  text-shadow: 0px 0px 5px #117743;
 }
 
 u {
@@ -66,7 +143,13 @@ input, select, textarea {
   font-size: 80%;
 }
 
-input[type=button], input[type=submit], button, .dropzone, .selectedCell {
+.theme_clear input, .theme_clear select, .theme_clear textarea {
+  background: #dddddd;
+  color: #000;
+}
+
+input[type=button], input[type=submit], button, .dropzone, .selectedCell
+  {
   border: 3px double #07371F;
   border-radius: 5px;
   background: #16171A;
@@ -77,6 +160,14 @@ input[type=button], input[type=submit], button, .dropzone, .selectedCell {
   font-weight: bold;
   margin-top: 0.5em;
   margin-bottom: 0.5em;
+  cursor: pointer;
+}
+
+.theme_clear input[type=button], .theme_clear input[type=submit],
+  .theme_clear button, .theme_clear .dropzone, .theme_clear .selectedCell
+  {
+  background: #a7a7a7;
+  color: #000;
 }
 
 .title, .unhideButton {
@@ -92,8 +183,9 @@ input[type=button], input[type=submit], button, .dropzone, .selectedCell {
   font-family: 'Hack';
   src: url('../hack-regular-webfont.eot?v=2.018');
   src: url('../hack-regular-webfont.eot?#iefix&v=2.018')
-    format('embedded-opentype'), url('../hack-regular-webfont.woff2?v=2.018')
-    format('woff2'), url('../hack-regular-webfont.woff?v=2.018') format('woff'),
+    format('embedded-opentype'),
+    url('../hack-regular-webfont.woff2?v=2.018') format('woff2'),
+    url('../hack-regular-webfont.woff?v=2.018') format('woff'),
     url('../hack-regular-webfont.ttf?v=2.018') format('truetype'),
     url('../hack-regular-webfont.svg?v=2.018#hackregular') format('svg');
   font-weight: normal;
@@ -120,22 +212,32 @@ body {
   margin: 0px;
 }
 
+body.theme_clear {
+  background-color: #cccccc;
+  color: #000
+}
+
 /* header and nav / top of page styles */
 header {
-  width: 50%;
   margin: 3em auto 0 auto;
   text-align: center;
 }
 
 nav {
+  height: 18px;
   position: fixed;
   top: 0;
   width: 100%;
   background-color: #151515;
-  border-bottom: 1px solid #FF0000;
+  border-bottom: 1px solid #B0790A;
   padding-bottom: 3px;
   font-size: 70%;
   text-align: center;
+  z-index: 1;
+}
+
+.theme_clear nav {
+  background-color: #acacac
 }
 
 nav span, nav a {
@@ -153,57 +255,43 @@ nav span, nav a {
 }
 
 #navLinkHome:before {
-  font-family: Icons;
   content: "\e082";
-  margin-right: 0.25em;
 }
 
 #navBoardList:before {
-  font-family: Icons;
   content: "\e03a";
-  margin-right: 0.25em;
 }
 
 #linkOverboard:before, #navOverboard:before {
-  font-family: Icons;
   content: "\e007";
-  margin-right: 0.25em;
+}
+
+#settingsButton:before {
+  content: "\e041";
 }
 
 #navPosting:before {
-  font-family: Icons;
   content: "\e09a";
-  margin-right: 0.25em;
 }
 
 #navCatalog:before {
-  font-family: Icons;
   content: "\e072";
-  margin-right: 0.25em;
 }
 
 #linkRss:before {
-  font-family: Icons;
   content: "\e0b7";
-  margin-right: 0.25em;
 }
 
 #linkTop:before {
-  font-family: Icons;
   content: "\e012";
-  margin-right: 0.25em;
 }
 
 #linkBottom:before {
-  font-family: Icons;
   content: "\e00f";
-  margin-right: 0.25em;
 }
 
 #linkBack:before {
-  font-family: Icons;
   content: "\e003";
-  margin-right: 0.25em;
 }
 
 /* board list */
@@ -214,13 +302,14 @@ nav span, nav a {
 #divPages a {
   text-decoration: none;
   padding: 0 0.25em;
+  display: inline-block;
 }
 
 a.rules:after {
   font-family: Icons;
   content: "\e052";
   margin-right: 0.5em;
-  color: #FF0000;
+  color: #117743;
   height: 80%;
   font-size: 80%;
   padding-left: 0.25em;
@@ -250,7 +339,7 @@ span.spoiler {
 }
 
 .red {
-  color: #FF0000;
+  color: #117743;
 }
 
 /* CSS for pages that deal with site and account settings and bans */
@@ -261,7 +350,6 @@ span.spoiler {
 }
 
 #settingsFieldset {
-  border: 1px dashed #FF0000;
   padding: 1em;
   display: inline-block;
   text-align: left;
@@ -304,7 +392,8 @@ span.spoiler {
   font-size: 80%;
 }
 
-input.wide, textarea.wide {
+.wide, #postingForm input[type='text'], .modalTableBody input[type='text'],
+  .modalTableBody select {
   width: 100%;
 }
 
@@ -321,19 +410,18 @@ input.wide, textarea.wide {
   text-align: center;
 }
 
-#staticPageFieldset {
-  display: inline-block;
-  padding: 0.5em 1em;
-  border: 1px dashed #FF0000;
-  text-align: left;
-}
-
 /* footer styles */
 footer {
   width: 100%;
   margin: 3em 0px 2em 0px;
   text-align: center;
   font-size: 75%;
+}
+
+.innerPost, .markedPost {
+  display: inline-block;
+  padding: 0.25em;
+  max-width: 100%;
 }
 
 /* this has to go down here to override anything above it */
@@ -343,4 +431,123 @@ footer {
 
 #settingsWrapper input.hidden {
   display: none;
+}
+
+.floatingMenu {
+  padding: 0.25em;
+}
+
+.floatingMenu .headerLabel {
+  font-size: 80%;
+}
+
+.floatingMenu .header, .floatingMenu .headerLabel {
+  cursor: pointer;
+}
+
+#divRemember input {
+  display: inline;
+}
+
+#ownedDiv a, #volunteeredDiv a {
+  display: block;
+}
+
+#navBoardList::after {
+  content: 'boards';
+}
+
+#navOverboard::after, #linkOverboard::after {
+  content: 'overboard';
+}
+
+#linkSfwOver::after {
+  content: 'overboard sfw';
+}
+
+#navPosting::after {
+  content: 'help';
+}
+
+#navLinkHome::after {
+  content: 'home';
+}
+
+#watcherButton::after {
+  content: 'watched threads';
+}
+
+#settingsButton::after {
+  content: 'settings';
+}
+
+#linkLogs::after {
+  content: 'logs';
+}
+
+#linkArchives::after {
+  content: 'archives';
+}
+
+#linkGraphs::after {
+  content: 'daily graphs';
+}
+
+#linkGlobalRules::after {
+  content: 'global rules';
+}
+
+#linkLinks::after {
+  content: 'links';
+}
+
+#linkAbout::after {
+  content: 'about';
+}
+
+#linkContact::after {
+  content: 'contact';
+}
+
+#linkAccount::after {
+  content: 'account';
+}
+
+@media only screen and (max-width: 812px) {
+  #navLinkSpan span, #navOptionsSpan span, legend, #settingsButton, #links span,
+    .hideMobile {
+    display: none;
+  }
+  #navLinkSpan a::after, #navOptionsSpan a::after, #links a::after {
+    content: '';
+  }
+  nav {
+    font-size: 115%;
+    height: auto;
+    padding: 2px 2px;
+  }
+  #themeSelector {
+    max-width: 100px;
+  }
+  .logoImg {
+    margin-top: 10px;
+    height: 75px;
+  }
+  input, select, textarea {
+    font-size: 100%;
+  }
+  body {
+    font-size: 85%;
+    margin-top: 5px;
+    margin-left: 0;
+    margin-right: 0;
+    padding-top: 10px;
+    padding-left: 0;
+    padding-right: 0;
+  }
+  .captchaImage {
+    max-width: 100%;
+    height: auto;
+    max-height: 100px;
+  }
 }

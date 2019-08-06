@@ -2,6 +2,9 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0">
 <link
   rel="stylesheet"
   type="text/css"
@@ -9,22 +12,14 @@
 </head>
 <body>
 
-  <nav>
-    <span id="navLinkSpan"> <span>[</span> <a
-        href="/"
-        id="navLinkHome">home</a> <span>/</span> <a
-        href="/boards.js"
-        id="navBoardList">boards</a> <span>/</span> <a
-        href="/overboard"
-        id="navOverboard">overboard</a> <span>/</span> <a
-        href="/.static/posting.html"
-        id="navPosting">help</a> <span>]</span>
-    </span> <span id="navBoardsSpan"> </span> <span id="navOptionsSpan"> </span>
-  </nav>
+  <script src="/.static/js/themeLoader.js"></script>
+
+  <nav id="dynamicHeader"></nav>
 
   <header>
     <img
       src="/.static/logo.png"
+      class="logoImg"
       alt="logo" />
   </header>
 
@@ -37,26 +32,47 @@
       <form
         action="/mediaManagement.js"
         method="GET">
-        <button
-          type="submit"
-          value="1"
-          name="orphaned">Show only orphaned files</button>
+        Search:
+        <input
+          name="filter"
+          type="text">
+
+        <label>
+          <input
+            type="checkbox"
+            id="orphanedCheckbox"
+            name="orphaned">
+          Show only orphaned files
+        </label>
+
+        <input
+          type="hidden"
+          name="boardUri"
+          id="boardUriIdentifier">
+        <input
+          type="hidden"
+          name="threadId"
+          id="threadIdIdentifier">
+        <input
+          type="hidden"
+          name="postId"
+          id="postIdIdentifier">
+
+        <button type="submit">Filter</button>
       </form>
+
+      <button
+        class="hidden"
+        id="selectAllButton"
+        onclick="mediaManagement.selectAll()">Select all</button>
 
       <form
         action="/deleteMedia.js"
         method="POST"
         enctype="multipart/form-data">
-        <input
-          value="Delete selected media"
+        <button
           type="submit"
-          id="deleteFormButton">
-        <input
-          value="Delete selected media"
-          type="button"
-          id="deleteJsButton"
-          onclick="deleteMedia()"
-          class="hidden">
+          id="deleteFormButton">Delete selected media</button>
 
         <div id="filesDiv"></div>
       </form>
@@ -68,9 +84,9 @@
   </div>
 
 </body>
-<script src="/.static/js/settings.js"></script>
 <script src="/.static/js/api.js"></script>
 <script src="/.static/js/mediaManagement.js"></script>
 <script src="/.static/js/themes.js"></script>
+<script src="/.static/js/favouriteBoards.js"></script>
 
 </html>

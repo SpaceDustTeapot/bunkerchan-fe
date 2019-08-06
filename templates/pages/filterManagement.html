@@ -2,38 +2,24 @@
 <html>
 <head>
 <meta charset="UTF-8" />
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0">
 <link
   href="/.static/css/global.css"
   type="text/css"
   rel="stylesheet" />
-<script
-  src="/.static/js/settings.js"
-  defer></script>
-<script
-  src="/.static/js/api.js"
-  defer></script>
-<script
-  src="/.static/js/filterManagement.js"
-  defer></script>
 </head>
 <body>
 
-  <nav>
-    <span id="navLinkSpan"> <span>[</span> <a
-        href="/"
-        id="navLinkHome">home</a> <span>/</span> <a
-        href="/boards.js"
-        id="navBoardList">boards</a> <span>/</span> <a
-        href="/overboard"
-        id="navOverboard">overboard</a> <span>/</span> <a
-        href="/.static/posting.html"
-        id="navPosting">help</a> <span>]</span>
-    </span> <span id="navBoardsSpan"> </span> <span id="navOptionsSpan"> </span>
-  </nav>
+  <script src="/.static/js/themeLoader.js"></script>
+
+  <nav id="dynamicHeader"></nav>
 
   <header>
     <img
       src="/.static/logo.png"
+      class="logoImg"
       alt="logo" />
   </header>
 
@@ -55,6 +41,7 @@
           Original term:
           <input
             type="text"
+            class="addFilterField"
             name="originalTerm"
             id="fieldOriginalTerm">
         </label>
@@ -62,26 +49,22 @@
           Replacement term:
           <input
             type="text"
+            class="addFilterField"
             name="replacementTerm"
             id="fieldReplacementTerm">
         </label>
         <label>
           <input
             type="checkbox"
+            class="addFilterField"
             name="caseInsensitive"
             id="checkboxCaseInsensitive">
           Case-insensitive
         </label>
-        <input
+        <button
           type="submit"
-          value="Add filter"
-          id="addFormButton">
-        <input
-          type="button"
-          onClick="addFilter()"
-          class="hidden"
-          value="Add filter"
-          id="addJsButton">
+          id="addFormButton">Add filter</button>
+
       </form>
       <hr />
       <div id="divFilters"></div>
@@ -90,7 +73,9 @@
 
 </body>
 
-<script src="/.static/js/settings.js"></script>
+<script src="/.static/js/api.js"></script>
 <script src="/.static/js/themes.js"></script>
+<script src="/.static/js/favouriteBoards.js"></script>
+<script src="/.static/js/filterManagement.js"></script>
 
 </html>

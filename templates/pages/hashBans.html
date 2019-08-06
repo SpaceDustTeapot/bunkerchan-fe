@@ -2,6 +2,9 @@
 <html>
 <head>
 <meta charset="UTF-8" />
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0">
 <link
   href="/.static/css/global.css"
   type="text/css"
@@ -9,22 +12,14 @@
 </head>
 <body>
 
-  <nav>
-    <span id="navLinkSpan"> <span>[</span> <a
-        href="/"
-        id="navLinkHome">home</a> <span>/</span> <a
-        href="/boards.js"
-        id="navBoardList">boards</a> <span>/</span> <a
-        href="/overboard"
-        id="navOverboard">overboard</a> <span>/</span> <a
-        href="/.static/posting.html"
-        id="navPosting">help</a> <span>]</span>
-    </span> <span id="navBoardsSpan"> </span> <span id="navOptionsSpan"> </span>
-  </nav>
+  <script src="/.static/js/themeLoader.js"></script>
+
+  <nav id="dynamicHeader"></nav>
 
   <header>
     <img
       src="/.static/logo.png"
+      class="logoImg"
       alt="logo" />
   </header>
 
@@ -42,6 +37,7 @@
           Hash of the file to be banned:
           <input
             type="text"
+            class="addHashBanField"
             name="hash"
             id="hashField">
         </label>
@@ -50,42 +46,10 @@
           type="hidden"
           name="boardUri">
 
-        <div class="captchaDiv">
-
-          <img
-            class="captchaImage"
-            id="captchaImage"
-            src="/captcha.js">
-          <div>
-            <input
-              type="button"
-              class="hidden"
-              id="reloadCaptchaButton"
-              onclick="reloadCaptcha()"
-              value="Reload">
-            <span class="captchaTimer"></span>
-            <br>
-            <input
-              name="captcha"
-              type="text"
-              id="fieldCaptcha"
-              placeholder="Answer">
-            <a
-              class="small"
-              href="/noCookieCaptcha.js">No cookies?</a>
-          </div>
-
-        </div>
-        <input
+        <button
           type="submit"
-          id="createFormButton"
-          value="Place Hash Ban">
-        <input
-          type="button"
-          id="createJsButton"
-          onClick="placeHashBan()"
-          class="hidden"
-          value="Place Hash Ban">
+          id="createFormButton">Place hash ban</button>
+
       </form>
       <div id="hashBansDiv"></div>
     </fieldset>
@@ -93,10 +57,9 @@
 
 </body>
 
-<script src="/.static/js/settings.js"></script>
 <script src="/.static/js/api.js"></script>
 <script src="/.static/js/hashBans.js"></script>
-<script src="/.static/js/captcha.js"></script>
 <script src="/.static/js/themes.js"></script>
+<script src="/.static/js/favouriteBoards.js"></script>
 
 </html>

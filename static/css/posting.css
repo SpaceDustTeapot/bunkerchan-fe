@@ -1,14 +1,40 @@
 /*Used for places where posts are displayed*/
 .hideButton, .embedButton, #closeWatcherMenuButton, .watchButton,
-  .watchedCellCloseButton, .hideFileButton {
+  .watchedCellCloseButton, .hideFileButton, .extraMenuButton,
+  #closeSettingsMenuButton {
   margin-left: 0.5em;
-  cursor: pointer;
-  color: #FFB300;
+}
+
+.imgExpanded {
+  max-width: 100%;
+}
+
+video {
+  max-width: 100%;
+}
+
+code {
+  white-space: pre;
+}
+
+code br {
+  display: none;
+}
+
+.imgLink, #selectedDivQr .selectedCell, #selectedDiv .selectedCell {
+  float: left;
+}
+
+#selectedDivQr .nameLabel, #selectedDiv .nameLabel {
+  display: inline-block;
+  max-width: 70px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .reportFieldset {
   margin-top: 1em;
-  border: 1px dashed #FF0000;
   padding: 0.5em;
   margin-bottom: 1em;
 }
@@ -20,31 +46,46 @@
   text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
 }
 
-.unhideButton {
+.quoteTooltip {
+  position: absolute;
+  display: none
+}
+
+#formMore {
   cursor: pointer;
-  color: #FFB300;
+}
+
+.unhideButton, .embedButton {
   font-size: 80%;
+}
+
+.extraMenu, .hideMenu {
+  position: absolute;
+  top: 0;
+  left: 100%;
+  margin-left: 10px;
+  z-index: 1;
+  font-weight: normal;
+  white-space: nowrap;
+  cursor: default;
+  color: #ACACAC;
+  text-shadow: none;
+}
+
+.hideMenu div, .extraMenu div {
+  cursor: pointer;
+}
+
+.extraMenuButton, .hideButton {
+  position: relative;
 }
 
 .hideButton::before {
-  font-family: 'Icons';
   content: '\e017';
 }
 
-.hideMenu, #watchedMenu {
-  border: 1px dashed #FF0000;
-  background: #1d1f21;
-  padding: 0.25em;
-}
-
-.hideMenu label {
-  display: block;
-  font-size: 80%;
-  cursor: pointer;
-}
-
 .postInfo, .opHead, .divMessage, .panelUploads, .panelIp, .panelProxyIp,
-  .contentOmissionIndicator, .labelOmission, .labelId {
+  .contentOmissionIndicator, .labelOmission, .labelId, .panelASN {
   font-size: 80%;
 }
 
@@ -54,22 +95,6 @@
 
 .postCell {
   margin: 0.25em 0;
-}
-
-.innerPost, .markedPost {
-  background: #282A2E;
-  display: inline-block;
-  overflow: hidden;
-  padding-right: 0.5em;
-  padding-left: 0.25em;
-  padding-top: 0.25em;
-  max-width: 100%;
-  border: 1px solid #FF0000;
-  border-radius: 5px;
-}
-
-.markedPost {
-  background: rgba(59, 22, 43, 0.4);
 }
 
 .linkName {
@@ -82,7 +107,7 @@
 }
 
 .noEmailName, .noEmailName:hover {
-  color: #FF0000;
+  color: #117743;
   text-shadow: none;
 }
 
@@ -125,15 +150,8 @@
 }
 
 .divMessage {
-  margin-left: 3em;
-  margin-top: 1em;
-  margin-bottom: 0.5em;
+  margin: 1em 1em 1em 3em;
   word-wrap: break-word;
-}
-
-.multipleUploads .innerPost .divMessage, .multipleUploads .markedPost .divMessage
-  {
-  clear: both;
 }
 
 .divBanMessage {
@@ -160,12 +178,20 @@
   margin-bottom: 1em;
 }
 
-.multipleUploads .opUploadPanel, .multipleUploads .panelUploads {
+/*Change the dimensions if you wish for larger thumbs*/
+.uploadCell img:not(.imgExpanded) {
+  max-width: 125px;
+  height: 125px;
+  object-fit: contain;
+}
+
+.multipleUploads {
   float: left;
   width: 100%;
 }
 
-.multipleUploads .uploadCell {
+.multipleUploads .uploadCell:not(.expandedCell) {
+  max-width: 150px;
   float: left;
 }
 
@@ -173,12 +199,21 @@
   margin-bottom: 0.5em;
 }
 
-.opCell {
-  clear: left;
+.originalNameLink {
+  display: inline-block;
+  vertical-align: top;
+  max-width: 155px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
-.panelIp, .panelProxyIp {
-  margin: 0.25em 1em 0.25em 0.5em;
+.originalNameLink:hover {
+  max-width: 100%;
+}
+
+.opCell {
+  clear: left;
 }
 
 .panelBacklinks a {
@@ -199,6 +234,7 @@
 }
 
 .labelLastEdit {
+  font-size: 80%;
   margin-top: 0.75em;
   margin-left: 0.75em;
 }
@@ -224,6 +260,11 @@
 
 .boardHeader p#labelName {
   font-size: 200%;
+  display: inline-block;
+}
+
+.boardHeader #favouriteButton {
+  font-size: 200%;
 }
 
 .boardHeader p#labelDescription {
@@ -236,6 +277,10 @@
   text-decoration: none;
 }
 
+.unhideButton {
+  clear: left;
+}
+
 /*Actions form*/
 #threadList {
   margin: 1em;
@@ -245,7 +290,71 @@
   text-align: center;
 }
 
-.contentAction label, #divControls label, #transferControls label, #ipDelete label
-  {
+.multipleUploads .labelHash {
+  word-wrap: anywhere;
+}
+
+.contentAction label, #divControls label, #transferControls label,
+  #ipDelete label, #divArchive label {
   font-size: 80%;
+}
+
+.extraMenuButton::before {
+  content: '\e02f';
+}
+
+.nameLink::after {
+  content: 'Open file';
+}
+
+.hideFileButton::after {
+  content: '(Hide file)';
+}
+
+.hiddenFile::after {
+  content: '(Show file)';
+}
+
+@media only screen and (max-width: 812px) {
+  .uploadCell img:not(.imgExpanded) {
+    max-width: 75px;
+    max-height: 75px;
+    object-fit: cover;
+  }
+  .multipleUploads {
+    display: block;
+  }
+  .postInfo, .opHead, .divMessage, .panelUploads, .panelIp, .panelProxyIp,
+    .contentOmissionIndicator, .labelOmission, .labelId {
+    font-size: 100%;
+  }
+  .innerPost, .markedPost {
+    width: 100%;
+    padding: 0;
+  }
+  #threadList {
+    margin: 0;
+  }
+  iframe {
+    display: block;
+    width: 100%;
+  }
+  .divPosts {
+    margin: .25em;
+  }
+  .nameLink::after {
+    content: 'Open';
+  }
+  .hideFileButton::after {
+    content: '(Hide)';
+  }
+  .hiddenFile::after {
+    content: '(Show)';
+  }
+  .originalNameLink, .labelCreated, .sizeLabel, .dimensionLabel {
+    display: none;
+  }
+  .divMessage {
+    margin-left: 1em;
+  }
 }

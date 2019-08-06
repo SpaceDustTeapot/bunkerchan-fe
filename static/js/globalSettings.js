@@ -1,21 +1,91 @@
-if (!DISABLE_JS) {
-  document.getElementById('saveJSButton').style.display = 'inline';
+var globalSettings = {};
 
-  document.getElementById('saveFormButton').style.display = 'none';
+globalSettings.init = function() {
 
-  var siteSettingsRelation = {
+  api.convertButton('saveFormButton', globalSettings.save,
+      'globalSettingsField');
 
-    fieldConcurrentRebuildMessages : {
-      setting : 'concurrentRebuildMessages',
-      type : 'string'
-    },
+  globalSettings.siteSettingsRelation = {
+
     fieldSlaves : {
       setting : 'slaves',
       type : 'array'
     },
+    checkboxSendmail : {
+      type : 'boolean',
+      setting : 'useSendmail',
+    },
     checkboxGlobalBanners : {
       type : 'boolean',
       setting : 'useGlobalBanners',
+    },
+    checkboxDisableLatestPostings : {
+      type : 'boolean',
+      setting : 'disableLatestPostings',
+    },
+    checkboxVerboseCache : {
+      type : 'boolean',
+      setting : 'verboseCache',
+    },
+    checkboxVolunteerSettings : {
+      type : 'boolean',
+      setting : 'allowVolunteerSettings',
+    },
+    checkboxVerboseGenerator : {
+      type : 'boolean',
+      setting : 'verboseGenerator',
+    },
+    checkboxDontProcessLinks : {
+      type : 'boolean',
+      setting : 'dontProcessLinks',
+    },
+    checkboxHttp2 : {
+      type : 'boolean',
+      setting : 'useHttp2',
+    },
+    checkboxBoardStaffArchiving : {
+      type : 'boolean',
+      setting : 'allowBoardStaffArchiving',
+    },
+    checkboxVerboseQueue : {
+      type : 'boolean',
+      setting : 'verboseQueue',
+    },
+    checkboxOmitUnindexedContent : {
+      type : 'boolean',
+      setting : 'omitUnindexedContent',
+    },
+    fieldMaxBoardHashBans : {
+      type : 'string',
+      setting : 'maxBoardHashBans',
+    },
+    fieldMaxBoardGeneralBans : {
+      type : 'string',
+      setting : 'maxBoardGeneralBans',
+    },
+    fieldLatestPostsAmount : {
+      type : 'string',
+      setting : 'latestPostsAmount',
+    },
+    checkboxVerboseGridfs : {
+      type : 'boolean',
+      setting : 'verboseGridfs',
+    },
+    checkboxBlockedReport : {
+      type : 'boolean',
+      setting : 'allowBlockedToReport',
+    },
+    checkboxVerboseMisc : {
+      type : 'boolean',
+      setting : 'verboseMisc',
+    },
+    checkboxVerboseApis : {
+      type : 'boolean',
+      setting : 'verboseApis',
+    },
+    checkboxDisableCatalogPosting : {
+      type : 'boolean',
+      setting : 'disableCatalogPosting',
     },
     checkboxDisableCatalogPosting : {
       type : 'boolean',
@@ -25,16 +95,32 @@ if (!DISABLE_JS) {
       type : 'boolean',
       setting : 'allowTorFiles',
     },
-    checkboxAllowTorPosting : {
+    checkboxUseAlternativeLanguages : {
       type : 'boolean',
-      setting : 'allowTorPosting',
+      setting : 'useAlternativeLanguages',
     },
     fieldIpExpiration : {
       type : 'string',
       setting : 'ipExpirationDays'
     },
+    fieldAuthenticationLimit : {
+      type : 'string',
+      setting : 'authenticationLimit'
+    },
+    fieldClusterPort : {
+      type : 'string',
+      setting : 'clusterPort'
+    },
+    fieldIncrementalSpamIpsSource : {
+      type : 'string',
+      setting : 'incSpamIpsSource'
+    },
     fieldMaster : {
       setting : 'master',
+      type : 'string'
+    },
+    fieldFileLimit : {
+      setting : 'fileLimit',
       type : 'string'
     },
     fieldMessageLength : {
@@ -45,8 +131,20 @@ if (!DISABLE_JS) {
       setting : 'torPort',
       type : 'string'
     },
+    fieldBoardMessageLength : {
+      setting : 'boardMessageLength',
+      type : 'string'
+    },
     fieldSpamIpsSource : {
       setting : 'spamIpsSource',
+      type : 'string'
+    },
+    fieldCaptchaLimit : {
+      setting : 'captchaLimit',
+      type : 'string'
+    },
+    fieldDnsbl : {
+      setting : 'dnsbl',
       type : 'string'
     },
     fieldAddress : {
@@ -117,6 +215,10 @@ if (!DISABLE_JS) {
       setting : 'maxBoardTags',
       type : 'string'
     },
+    fieldArchiveThreshold : {
+      setting : 'archiveThreshold',
+      type : 'string'
+    },
     fieldLatestPostsCount : {
       setting : 'latestPostCount',
       type : 'string'
@@ -167,6 +269,14 @@ if (!DISABLE_JS) {
     },
     fieldTopBoardsCount : {
       setting : 'topBoardsCount',
+      type : 'string'
+    },
+    fieldFlagNameLength : {
+      setting : 'flagNameLength',
+      type : 'string'
+    },
+    fieldStaticExpiration : {
+      setting : 'staticExpiration',
       type : 'string'
     },
     fieldBoardsPerPage : {
@@ -245,16 +355,16 @@ if (!DISABLE_JS) {
       setting : 'frontPageStats',
       type : 'boolean'
     },
-    checkboxSsl : {
+    comboSsl : {
       setting : 'ssl',
-      type : 'boolean'
+      type : 'combo'
     },
     checkboxGlobalBoardModeration : {
       setting : 'allowGlobalBoardModeration',
       type : 'boolean'
     },
-    checkboxSpamBypass : {
-      setting : 'allowSpamBypass',
+    checkboxVersatileBlockBypass : {
+      setting : 'allowVersatileBlockBypass',
       type : 'boolean'
     },
     checkboxMediaThumb : {
@@ -301,21 +411,25 @@ if (!DISABLE_JS) {
       setting : 'bypassMode',
       type : 'combo'
     },
+    comboTorPostingLevel : {
+      type : 'combo',
+      setting : 'torPostingLevel',
+    },
     comboMinClearIpRole : {
       setting : 'clearIpMinRole',
       type : 'combo'
     }
   };
 
-}
+};
 
-function save() {
+globalSettings.save = function() {
 
   var parameters = {};
 
-  for ( var key in siteSettingsRelation) {
+  for ( var key in globalSettings.siteSettingsRelation) {
 
-    var item = siteSettingsRelation[key];
+    var item = globalSettings.siteSettingsRelation[key];
 
     switch (item.type) {
     case 'string':
@@ -354,17 +468,17 @@ function save() {
 
   }
 
-  apiRequest('saveGlobalSettings', parameters, function requestComplete(status,
-      data) {
+  api.formApiRequest('saveGlobalSettings', parameters,
+      function requestComplete(status, data) {
 
-    if (status === 'ok') {
+        if (status === 'ok') {
+          alert('New settings saved.');
+        } else {
+          alert(status + ': ' + JSON.stringify(data));
+        }
 
-      alert('Settings saved.');
+      });
 
-      location.reload(true);
-    } else {
-      alert(status + ': ' + JSON.stringify(data));
-    }
-  });
+};
 
-}
+globalSettings.init();

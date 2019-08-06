@@ -1,21 +1,21 @@
-if (!DISABLE_JS) {
+var loginObj = {};
+// I wish I could go back in time and kill whoever implemented the exposed
+// element bullshit on IE before he was born
+
+loginObj.init = function() {
 
   if (document.getElementById('divCreation')) {
-    document.getElementById('registerJsButton').style.display = 'inline';
-    document.getElementById('registerFormButton').style.display = 'none';
-    document.getElementById('reloadCaptchaButton').style.display = 'inline';
+    api.convertButton('registerFormButton', loginObj.registerAccount,
+        'registerField');
   }
 
-  document.getElementById('loginJsButton').style.display = 'inline';
-  document.getElementById('recoverJsButton').style.display = 'inline';
-  document.getElementById('reloadCaptchaButtonRecover').style.display = 'inline';
+  api.convertButton('recoverFormButton', loginObj.recoverAccount,
+      'recoverField');
+  api.convertButton('loginFormButton', loginObj.loginUser, 'loginField');
 
-  document.getElementById('recoverFormButton').style.display = 'none';
-  document.getElementById('loginFormButton').style.display = 'none';
+};
 
-}
-
-function recoverAccount() {
+loginObj.recoverAccount = function() {
 
   var typedLogin = document.getElementById('recoverFieldLogin').value.trim();
   var typedCaptcha = document.getElementById('fieldCaptchaRecover').value
@@ -29,7 +29,7 @@ function recoverAccount() {
 
   } else if (typedLogin.length) {
 
-    apiRequest('requestAccountRecovery', {
+    api.formApiRequest('requestAccountRecovery', {
       login : typedLogin,
       captcha : typedCaptcha
     }, function requestComplete(status, data) {
@@ -45,9 +45,9 @@ function recoverAccount() {
 
   }
 
-}
+};
 
-function loginUser() {
+loginObj.loginUser = function() {
 
   var typedLogin = document.getElementById('loginFieldLogin').value.trim();
   var typedPassword = document.getElementById('loginFieldPassword').value;
@@ -55,26 +55,26 @@ function loginUser() {
   if (!typedLogin.length || !typedPassword.length) {
     alert('Both login and password are mandatory.');
   } else {
-    apiRequest('login', {
+
+    var redirect = api.getCookies().loginredirect || '/account.js';
+
+    api.formApiRequest('login', {
       login : typedLogin,
-      password : typedPassword
+      password : typedPassword,
+      remember : document.getElementById('checkboxRemember').checked
     }, function requestComplete(status, data) {
 
       if (status === 'ok') {
-
-        document.cookie = 'login=' + typedLogin;
-        document.cookie = 'hash=' + data;
-
-        window.location.pathname = '/account.js';
-
+        window.location.href = redirect;
       } else {
         alert(status + ': ' + JSON.stringify(data));
       }
     });
   }
-}
 
-function registerAccount() {
+};
+
+loginObj.registerAccount = function() {
 
   var typedLogin = document.getElementById('registerFieldLogin').value.trim();
   var typedEmail = document.getElementById('registerFieldEmail').value.trim();
@@ -97,7 +97,7 @@ function registerAccount() {
     alert('Invalid login.');
   } else {
 
-    apiRequest('registerAccount', {
+    api.formApiRequest('registerAccount', {
       login : typedLogin,
       captcha : typedCaptcha,
       password : typedPassword,
@@ -105,12 +105,7 @@ function registerAccount() {
     }, function requestComplete(status, data) {
 
       if (status === 'ok') {
-
-        document.cookie = 'login=' + typedLogin;
-        document.cookie = 'hash=' + data
-
         window.location.pathname = '/account.js';
-
       } else {
         alert(status + ': ' + JSON.stringify(data));
       }
@@ -118,4 +113,6 @@ function registerAccount() {
 
   }
 
-}
+};
+
+loginObj.init();
