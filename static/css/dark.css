@@ -1,4 +1,4 @@
-.theme_dark body {
+body.theme_dark {
 	background: #1E1E1E;
 	color: #999999;
 	font-family: sans-serif;

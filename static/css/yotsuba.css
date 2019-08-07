@@ -1,4 +1,4 @@
-.theme_yotsuba body {
+body.theme_yotsuba {
 	background: #EEF2FF url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAADICAIAAACmkByiAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAE5JREFUKJFjunj1HRMDAwNWzMiILsZIpDpcarDrx28GI17zUeUYiXITLrdg08PISKyfGfGYgT38cLkRm50Dbx9944KYdIUrbohNV0SoAwD1FwRwgMmDbgAAAABJRU5ErkJggg==') repeat-x 50% 0%;
 	color: #000000;
 	font-family: arial,helvetica,sans-serif;
