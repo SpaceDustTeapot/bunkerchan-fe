@@ -1,7 +1,6 @@
 {
   "optional": {
-    "generalHeader": "content/generalheader.html",
-    "boardHeader": "content/boardheader.html",
+    "dynamicHeader": "content/header.html",
     "postingTable": "content/postingForm.html"
   },
   "templated": [
