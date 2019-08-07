@@ -1,0 +1,11 @@
+--- static/css/global.css
++++ static/css/global.css
+@@ -232,7 +232,7 @@ nav {
+   border-bottom: 1px solid #B0790A;
+   padding-bottom: 3px;
+   font-size: 70%;
+-  text-align: center;
++  /*text-align: center;*/
+   z-index: 1;
+ }
+ 

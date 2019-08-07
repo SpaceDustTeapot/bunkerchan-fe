@@ -232,7 +232,7 @@ nav {
   border-bottom: 1px solid #B0790A;
   padding-bottom: 3px;
   font-size: 70%;
-  text-align: center;
+  /*text-align: center;*/
   z-index: 1;
 }
 
@@ -263,6 +263,9 @@ nav span, nav a {
 }
 
 #linkOverboard:before, #navOverboard:before {
+  content: "\e007";
+}
+#linkOverboardSFW:before, #navOverboardSFW:before {
   content: "\e007";
 }
 
@@ -459,6 +462,9 @@ footer {
 
 #navOverboard::after, #linkOverboard::after {
   content: 'overboard';
+}
+#navOverboardSFW::after, #linkOverboardSFW::after {
+  content: 'overboard sfw';
 }
 
 #linkSfwOver::after {
