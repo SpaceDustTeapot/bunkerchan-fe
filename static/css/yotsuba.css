@@ -171,3 +171,6 @@ body.theme_yotsuba {
 	background: #D6DAF0;
 	border: 1px dashed #8899AA;
 }
+.theme_yotsuba #postingForm th{
+	background: #DADCE3;
+}
