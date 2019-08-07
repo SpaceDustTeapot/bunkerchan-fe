@@ -5,7 +5,15 @@ themes.init = function() {
   themes.themes = [ {
     label : 'Clear',
     id : 'clear'
-  } ];
+  },
+  {
+	  label: 'Yotsuba',
+	  id: 'yotsuba'
+  },
+  {
+	  label: 'Dark',
+	  id: 'dark'
+  }	  ];
 
   var postingLink = document.getElementById('navPosting');
 
