@@ -265,6 +265,9 @@ nav span, nav a {
 #linkOverboard:before, #navOverboard:before {
   content: "\e007";
 }
+#linkOverboardSFW:before, #navOverboardSFW:before {
+  content: "\e007";
+}
 
 #settingsButton:before {
   content: "\e041";
@@ -459,6 +462,9 @@ footer {
 
 #navOverboard::after, #linkOverboard::after {
   content: 'overboard';
+}
+#navOverboardSFW::after, #linkOverboardSFW::after {
+  content: 'overboard sfw';
 }
 
 #linkSfwOver::after {
