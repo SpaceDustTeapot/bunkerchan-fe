@@ -1,4 +1,110 @@
-function getCookies() {
+var api = {};
+
+api.mobile = window.innerWidth < 812;
+
+api.htmlReplaceTable = {
+  '<' : '&lt;',
+  '>' : '&gt;',
+  '\"' : '&quot;',
+  '\'' : '&apos;'
+};
+
+api.removeIndicator = function(className, thread) {
+
+  var elements = (thread || document).getElementsByClassName(className);
+
+  if (!elements.length) {
+    return;
+  }
+
+  elements[0].nextSibling.remove();
+  elements[0].remove();
+
+};
+
+api.addIndicator = function(className, title, thread) {
+
+  var spanId = (thread || document).getElementsByClassName('spanId')[0];
+
+  if (!spanId) {
+    spanId = (thread || document).getElementsByClassName('labelCreated')[0];
+  }
+
+  var indicator = document.createElement('span');
+  indicator.className = className;
+  indicator.title = title;
+
+  spanId.parentNode.insertBefore(indicator, spanId.nextSibling);
+  spanId.parentNode.insertBefore(document.createTextNode(' '),
+      spanId.nextSibling);
+
+};
+
+api.resetIndicators = function(data, thread) {
+
+  api.removeIndicator('lockIndicator', thread);
+  api.removeIndicator('pinIndicator', thread);
+  api.removeIndicator('cyclicIndicator', thread);
+  api.removeIndicator('archiveIndicator', thread);
+
+  api.addIndicator('cyclicIndicator', 'Cyclical Thread', thread);
+  api.addIndicator('pinIndicator', 'Sticky', thread);
+  api.addIndicator('lockIndicator', 'Locked', thread);
+  api.addIndicator('archiveIndicator', 'Archived', thread);
+
+  if (!data.locked) {
+    api.removeIndicator('lockIndicator', thread);
+  }
+
+  if (!data.pinned) {
+    api.removeIndicator('pinIndicator', thread);
+  }
+
+  if (!data.cyclic) {
+    api.removeIndicator('cyclicIndicator', thread);
+  }
+
+  if (!data.archived) {
+    api.removeIndicator('archiveIndicator', thread);
+  }
+
+};
+
+api.addEnterEvent = function(element, onclick) {
+
+  element.addEventListener('keydown', function(event) {
+
+    if (event.key === 'Enter') {
+      onclick();
+      event.preventDefault();
+    }
+
+  });
+
+};
+
+api.convertButton = function(button, onclick, inputs) {
+
+  if (typeof (button) === 'string') {
+    button = document.getElementById(button);
+  }
+
+  button.type = 'button';
+  button.onclick = onclick;
+
+  if (!inputs) {
+    return;
+  }
+
+  inputs = document.getElementsByClassName(inputs);
+
+  for (var i = 0; i < inputs.length; i++) {
+    api.addEnterEvent(inputs[i], onclick);
+  }
+
+};
+
+api.getCookies = function() {
 
   var parsedCookies = {};
 
@@ -14,29 +120,33 @@ function getCookies() {
   }
 
   return parsedCookies;
-}
 
-function handleConnectionResponse(xhr, delegate) {
+};
+
+api.handleConnectionResponse = function(xhr, callback, silent) {
+
   var response;
 
   try {
     response = JSON.parse(xhr.responseText);
-
-    if (VERBOSE) {
-      console.log(JSON.stringify(response, null, 2));
-    }
   } catch (error) {
-    alert('Error in parsing response.');
+    if (!silent) {
+      alert('Error in parsing response.');
+    }
     return;
   }
 
   if (response.auth && response.auth.authStatus === 'expired') {
-    document.cookie = 'hash=' + response.auth.newHash + ';path=/';
-
+    document.cookie = 'hash=' + response.auth.newHash + '; path=/; expires='
+        + new Date(response.auth.expiration).toUTCString();
   }
 
   if (response.status === 'error') {
-    alert('Internal server error. ' + response.data);
+
+    if (!silent) {
+      alert(response.data);
+    }
+
   } else if (response.status === 'fileTooLarge') {
     alert('Maximum file size exceeded for a file.');
   } else if (response.status === 'hashBan') {
@@ -63,20 +173,19 @@ function handleConnectionResponse(xhr, delegate) {
   } else if (response.status === 'blank') {
     alert('Parameter ' + response.data + ' was sent in blank.');
   } else if (response.status === 'bypassable') {
-    if (window
-        .confirm('You are blocked, but you can use the block bypass to post. Do you want to get a block bypass?')) {
 
-      window.open('/blockBypass.js');
+    postCommon.displayBlockBypassPrompt(function() {
+      alert('You may now post');
+    });
 
-    }
   } else if (response.status === 'tooLarge') {
     alert('Request refused because it was too large');
-  } else if (response.status === 'construction') {
-    alert('This page is under construction. Come back later, your grandma is almost done sucking me.');
-  } else if (response.status === 'denied') {
-    alert('You are not allowed to perform this operation.');
   } else if (response.status === 'maintenance') {
-    alert('The site is going under maintenance and all of it\'s functionalities are disabled temporarily.');
+
+    if (!silent) {
+      alert('The site is going under maintenance and all of it\'s functionalities are disabled temporarily.');
+    }
+
   } else if (response.status === 'fileParseError') {
     alert('An uploaded file could not be parsed.');
   } else if (response.status === 'parseError') {
@@ -99,12 +208,16 @@ function handleConnectionResponse(xhr, delegate) {
 
         if (appeal) {
 
-          apiRequest('appealBan', {
+          api.formApiRequest('appealBan', {
             appeal : appeal,
             banId : response.data.banId
-          }, function appealed() {
+          }, function appealed(status, data) {
 
-            alert('Ban appealed');
+            if (status !== 'ok') {
+              alert(data);
+            } else {
+              alert('Ban appealed');
+            }
 
           });
 
@@ -116,76 +229,108 @@ function handleConnectionResponse(xhr, delegate) {
 
     }
   } else {
-    delegate(response.status, response.data);
+    callback(response.status, response.data);
   }
 
-}
+};
 
-// Makes a request to the back-end.
-// page: url of the api page
-// parameters: parameter block of the request
-// delegate: callback that will receive (data,status). If the delegate has a
-// function in stop property, it will be called when the connection stops
-// loading.
-function apiRequest(page, parameters, delegate) {
+api.formApiRequest = function(page, parameters, callback, silent, getParameters) {
+
+  var silent;
+
+  page += '.js?json=1';
+
+  getParameters = getParameters || {};
+
+  for ( var parameter in getParameters) {
+    page += '&' + parameter + '='
+        + encodeURIComponent(getParameters[parameter]);
+  }
+
   var xhr = new XMLHttpRequest();
 
   if ('withCredentials' in xhr) {
-    xhr.open('POST', '/.api/' + page, true);
+    xhr.open('POST', '/' + page, true);
   } else if (typeof XDomainRequest != 'undefined') {
 
     xhr = new XDomainRequest();
-    xhr.open('POST', '/.api/' + page);
+    xhr.open('POST', '/' + page);
   } else {
-    alert('This site can\'t run js on your shitty browser because it does not support CORS requests. Disable js and try again.');
+    alert('Update your browser or turn off javascript.');
 
     return;
   }
 
-  xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-
-  if (delegate.hasOwnProperty('progress')) {
-    xhr.upload.onprogress = delegate.progress;
+  if (callback.hasOwnProperty('progress')) {
+    xhr.upload.onprogress = callback.progress;
   }
 
   xhr.onreadystatechange = function connectionStateChanged() {
 
-    if (xhr.readyState == 4) {
+    if (xhr.readyState !== 4) {
+      return;
+    }
 
-      if (delegate.hasOwnProperty('stop')) {
-        delegate.stop();
-      }
+    if (parameters.captcha) {
+      captchaUtils.reloadCaptcha();
+    }
 
-      if (xhr.status != 200) {
+    if (callback.hasOwnProperty('stop')) {
+      callback.stop();
+    }
+
+    if (xhr.status != 200) {
+      if (!silent) {
         alert('Connection failed.');
-        return;
       }
 
-      handleConnectionResponse(xhr, delegate);
+      return;
     }
+
+    api.handleConnectionResponse(xhr, callback, silent);
+
   };
 
-  var parsedCookies = getCookies();
+  var form = new FormData();
 
-  var body = {
-    captchaId : parsedCookies.captchaid,
-    bypassId : parsedCookies.bypass,
-    parameters : parameters,
-    auth : {
-      login : parsedCookies.login,
-      hash : parsedCookies.hash
+  for ( var entry in parameters) {
+
+    if (!parameters[entry] && typeof (parameters[entry] !== 'number')) {
+      continue;
     }
-  };
 
-  if (VERBOSE) {
-    console.log(JSON.stringify(body, null, 2));
+    if (entry !== 'files') {
+      form.append(entry, parameters[entry]);
+    } else {
+
+      var files = parameters.files;
+
+      for (var i = 0; i < files.length; i++) {
+
+        var file = files[i];
+
+        if (file.md5 && file.mime) {
+          form.append('fileMd5', file.md5);
+          form.append('fileMime', file.mime);
+          form.append('fileSpoiler', file.spoiler || '');
+          form.append('fileName', file.name);
+        }
+
+        if (file.content) {
+          form.append('files', file.content, file.name);
+        }
+
+      }
+
+    }
+
   }
 
-  xhr.send(JSON.stringify(body));
+  xhr.send(form);
 
-}
+};
 
-function localRequest(address, callback) {
+api.localRequest = function(address, callback) {
 
   var xhr = new XMLHttpRequest();
 
@@ -196,7 +341,7 @@ function localRequest(address, callback) {
     xhr = new XDomainRequest();
     xhr.open('GET', address);
   } else {
-    alert('This site can\'t run js on your shitty browser because it does not support CORS requests. Disable js and try again.');
+    alert('Update your browser or turn off javascript.');
     return;
   }
 
@@ -218,24 +363,5 @@ function localRequest(address, callback) {
   };
 
   xhr.send();
-}
 
-function savePassword(password) {
-
-  if (typeof (Storage) === "undefined") {
-    return;
-  }
-
-  localStorage.setItem("deletionPassword", password);
-
-}
-
-function getSavedPassword() {
-
-  if (typeof (Storage) === "undefined") {
-    return;
-  }
-
-  return localStorage.deletionPassword;
-
-}
+};

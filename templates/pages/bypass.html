@@ -2,6 +2,9 @@
 <html>
 <head>
 <meta charset="UTF-8" />
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0">
 <link
   href="/.static/css/global.css"
   type="text/css"
@@ -9,22 +12,14 @@
 </head>
 <body>
 
-  <nav>
-    <span id="navLinkSpan"> <span>[</span> <a
-        href="/"
-        id="navLinkHome">home</a> <span>/</span> <a
-        href="/boards.js"
-        id="navBoardList">boards</a> <span>/</span> <a
-        href="/overboard"
-        id="navOverboard">overboard</a> <span>/</span> <a
-        href="/.static/posting.html"
-        id="navPosting">help</a> <span>]</span>
-    </span> <span id="navBoardsSpan"> </span> <span id="navOptionsSpan"> </span>
-  </nav>
+  <script src="/.static/js/themeLoader.js"></script>
+
+  <nav id="header"><span id="navLinkSpan"></span><span id="navBoardSpan"></span></nav>
 
   <header>
     <img
       src="/.static/logo.png"
+      class="logoImg"
       alt="logo" />
   </header>
 
@@ -38,12 +33,13 @@
       <p>
         <span id="indicatorValidBypass">You have a valid block bypass.</span>
       </p>
-      <hr />
-      <h3>Renew bypass</h3>
       <form
+        id="renewForm"
         action="/renewBypass.js"
         enctype="multipart/form-data"
         method="post">
+        <hr />
+        <h3>Renew bypass</h3>
 
         <div class="captchaDiv">
 
@@ -54,31 +50,24 @@
           <br>
           <input
             type="button"
-            class="hidden"
-            id="reloadCaptchaButton"
-            onclick="reloadCaptcha()"
+            class="hidden reloadCaptchaButton"
+            onclick="captchaUtils.reloadCaptcha()"
             value="Reload">
           <span class="captchaTimer"></span>
           <br>
           <input
             name="captcha"
             type="text"
+            class="bypassField"
             id="fieldCaptcha"
             placeholder="Answer">
           <a
             href="/noCookieCaptcha.js"
             class="small">no cookies?</a>
           <br>
-          <input
+          <button
             type="submit"
-            id="bypassFormButton"
-            value="Renew block bypass">
-          <input
-            type="button"
-            id="bypassJsButton"
-            onclick="blockBypass()"
-            value="Renew block bypass"
-            class="hidden">
+            id="bypassFormButton">Renew block bypass</button>
         </div>
       </form>
     </fieldset>
@@ -86,10 +75,10 @@
 
 </body>
 
-<script src="/.static/js/settings.js"></script>
 <script src="/.static/js/api.js"></script>
 <script src="/.static/js/bypass.js"></script>
-<script src="/.static/js/captcha.js"></script>
-<script src="/.static/js/themes.js"></script>
+<script src="/.static/js/captchaUtils.js"></script>
+
+<script src="/.static/js/favouriteBoards.js"></script>
 
 </html>

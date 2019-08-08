@@ -1,6 +1,10 @@
-var embedHTML = '<iframe width="400" height="305" src="https://www.youtube.com/embed/{$id}" frameborder="0" allowfullscreen></iframe>';
+var embed = {};
 
-if (!DISABLE_JS) {
+embed.embedHTML = '<iframe width="400" height="305" ';
+embed.embedHTML += 'src="https://www.youtube.com/embed/{$id}" ';
+embed.embedHTML += 'frameborder="0" allowfullscreen></iframe>';
+
+embed.init = function() {
 
   var messages = document.getElementsByClassName('divMessage');
 
@@ -9,13 +13,14 @@ if (!DISABLE_JS) {
     var links = messages[i].getElementsByTagName('a');
 
     for (var j = 0; j < links.length; j++) {
-      processLinkForEmbed(links[j]);
+      embed.processLinkForEmbed(links[j]);
     }
 
   }
-}
 
-function processLinkForEmbed(link) {
+};
+
+embed.processLinkForEmbed = function(link) {
 
   if (link.href.indexOf('youtube.com/watch') < 0
       && link.href.indexOf('youtu.be/') < 0) {
@@ -34,7 +39,7 @@ function processLinkForEmbed(link) {
 
   link.style.display = 'inline';
 
-  var finalHTML = embedHTML.replace('{$id}', videoId);
+  var finalHTML = embed.embedHTML.replace('{$id}', videoId);
 
   var embedWrapper = document.createElement('div');
   embedWrapper.style.display = 'inline';
@@ -45,7 +50,7 @@ function processLinkForEmbed(link) {
   var embedButton = document.createElement('span');
 
   embedButton.innerHTML = '[Embed]';
-  embedButton.setAttribute('class', 'embedButton');
+  embedButton.className = 'embedButton glowOnHover';
 
   embedButton.onclick = function() {
 
@@ -63,4 +68,6 @@ function processLinkForEmbed(link) {
   embedWrapper.appendChild(div);
   link.parentNode.insertBefore(embedWrapper, link.nextSibling);
 
-}
+};
+
+embed.init();

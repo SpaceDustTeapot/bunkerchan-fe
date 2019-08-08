@@ -1,33 +1,41 @@
-function closeReports(report) {
+var reports = {};
 
-  var reports = document.getElementById('reportDiv').childNodes;
+reports.closeReports = function() {
 
-  var ids = [];
+  var reportDiv = document.getElementById('reportDiv');
 
-  for (var i = 0; i < reports.length; i++) {
+  var cells = [];
 
-    var checkbox = reports[i].getElementsByClassName('closureCheckbox')[0];
+  var params = {
+    duration : document.getElementById('fieldBanDuration').value,
+    banReporter : document.getElementById('banReporterCheckbox').checked,
+    deleteContent : document.getElementById('deleteContentCheckbox').checked
+  };
+
+  for (var i = 0; i < reportDiv.childNodes.length; i++) {
+
+    var checkbox = reportDiv.childNodes[i]
+        .getElementsByClassName('closureCheckbox')[0];
 
     if (checkbox.checked) {
-      ids.push(checkbox.name.substring(7));
+      cells.push(reportDiv.childNodes[i]);
+      params[checkbox.name] = true;
     }
 
   }
 
-  if (!ids.length) {
-    return;
-  }
-
-  apiRequest('closeReports', {
-    reports : ids,
-    deleteContent : document.getElementById('deleteContentCheckbox').checked
-  }, function requestComplete(status, data) {
+  api.formApiRequest('closeReports', params, function requestComplete(status,
+      data) {
 
     if (status === 'ok') {
-      location.reload(true);
+
+      for (i = 0; i < cells.length; i++) {
+        reportDiv.removeChild(cells[i]);
+      }
+
     } else {
       alert(status + ': ' + JSON.stringify(data));
     }
   });
 
-}
+};

@@ -1,75 +1,35 @@
-var themes = [ {
-  file : 'clear.css',
-  label : 'Clear',
-  id : 'clear'
-}, {
-  file : 'jungle.css',
-  label : 'Jungle',
-  id : 'jungle'
-}, {
-  file : 'yotsuba.css',
-  label : 'Yotsuba',
-  id : 'yotsuba'
-}, { 
-  file: 'tomorrow.css',
-  label : 'Dark',
-  id : 'dark'
-}]
+var themes = {};
 
-var customCss;
-var addedTheme;
+themes.init = function() {
 
-function updateCss() {
-
-  if (addedTheme) {
-    addedTheme.parentNode.removeChild(addedTheme);
-    addedTheme = null;
-  }
-
-  for (var i = 0; i < themes.length; i++) {
-    var theme = themes[i];
-
-    if (theme.id === localStorage.selectedTheme) {
-      addedTheme = theme.element;
-      document.head.insertBefore(theme.element, customCss);
-    }
-  }
-
-}
-
-if (!DISABLE_JS) {
-
-  for (var i = 0; i < document.head.children.length; i++) {
-    var element = document.head.children[i];
-
-    if (element.rel === 'stylesheet'
-        && element.href.indexOf('/custom.css') > -1) {
-
-      customCss = element;
-      break;
-    }
-
-  }
-
-  for (var i = 0; i < themes.length; i++) {
-    themes[i].element = document.createElement('link');
-    themes[i].element.type = 'text/css';
-    themes[i].element.rel = 'stylesheet';
-    themes[i].element.href = '/.static/css/' + themes[i].file;
-  }
-
-  updateCss();
+  themes.themes = [ {
+    label : 'Clear',
+    id : 'clear'
+  },
+  {
+	  label: 'Yotsuba',
+	  id: 'yotsuba'
+  },
+  {
+	  label: 'Dark',
+	  id: 'dark'
+  }	  ];
 
   var postingLink = document.getElementById('navPosting');
 
   if (postingLink) {
 
-    var divider = document.createElement('span');
-    divider.innerHTML = '/';
-
     var referenceNode = postingLink.nextSibling;
 
+    postingLink.parentNode.insertBefore(document.createTextNode(' '),
+        referenceNode);
+
+    var divider = document.createElement('span');
+    divider.innerHTML = '/';
     postingLink.parentNode.insertBefore(divider, referenceNode);
+
+    postingLink.parentNode.insertBefore(document.createTextNode(' '),
+        referenceNode);
 
     var themeSelector = document.createElement('select');
     themeSelector.id = 'themeSelector';
@@ -78,9 +38,9 @@ if (!DISABLE_JS) {
     vanillaOption.innerHTML = 'Default';
     themeSelector.appendChild(vanillaOption);
 
-    for (i = 0; i < themes.length; i++) {
+    for (var i = 0; i < themes.themes.length; i++) {
 
-      var theme = themes[i];
+      var theme = themes.themes[i];
 
       var themeOption = document.createElement('option');
       themeOption.innerHTML = theme.label;
@@ -98,16 +58,14 @@ if (!DISABLE_JS) {
       if (!themeSelector.selectedIndex) {
 
         if (localStorage.selectedTheme) {
-
           delete localStorage.selectedTheme;
-
-          updateCss();
+          themeLoader.load();
         }
 
         return;
       }
 
-      var selectedTheme = themes[themeSelector.selectedIndex - 1];
+      var selectedTheme = themes.themes[themeSelector.selectedIndex - 1];
 
       if (selectedTheme.id === localStorage.selectedTheme) {
         return;
@@ -115,7 +73,7 @@ if (!DISABLE_JS) {
 
       localStorage.selectedTheme = selectedTheme.id;
 
-      updateCss();
+      themeLoader.load();
 
     };
 
@@ -123,4 +81,6 @@ if (!DISABLE_JS) {
 
   }
 
-}
+};
+
+themes.init();

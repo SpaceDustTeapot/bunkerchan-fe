@@ -1,9 +1,11 @@
-var playableTypes = [ 'video/webm', 'audio/mpeg', 'video/mp4', 'video/ogg',
-    'audio/ogg', 'audio/webm' ];
+var thumbs = {};
 
-var videoTypes = [ 'video/webm', 'video/mp4', 'video/ogg' ];
+thumbs.init = function() {
 
-if (!DISABLE_JS) {
+  thumbs.playableTypes = [ 'video/webm', 'audio/mpeg', 'video/mp4',
+      'video/ogg', 'audio/ogg', 'audio/webm' ];
+
+  thumbs.videoTypes = [ 'video/webm', 'video/mp4', 'video/ogg' ];
 
   var imageLinks = document.getElementsByClassName('imgLink');
 
@@ -14,22 +16,28 @@ if (!DISABLE_JS) {
   }
 
   for (i = 0; i < temporaryImageLinks.length; i++) {
-    processImageLink(temporaryImageLinks[i]);
+    thumbs.processImageLink(temporaryImageLinks[i]);
   }
+};
 
-}
-
-function expandImage(mouseEvent, link) {
+thumbs.expandImage = function(mouseEvent, link, mime) {
 
   if (mouseEvent.which === 2 || mouseEvent.ctrlKey) {
     return true;
   }
+
+  link.parentNode.classList.toggle('expandedCell');
 
   var thumb = link.getElementsByTagName('img')[0];
 
   if (thumb.style.display === 'none') {
     link.getElementsByClassName('imgExpanded')[0].style.display = 'none';
     thumb.style.display = '';
+
+    if (thumb.getBoundingClientRect().top < 0) {
+      thumb.scrollIntoView();
+    }
+
     return false;
   }
 
@@ -38,26 +46,26 @@ function expandImage(mouseEvent, link) {
   if (expanded) {
     thumb.style.display = 'none';
     expanded.style.display = '';
-    return false;
   } else {
     var expandedSrc = link.href;
 
-    if (thumb.src === expandedSrc) {
+    if (thumb.src === expandedSrc && mime !== 'image/svg+xml') {
       return false;
     }
 
     expanded = document.createElement('img');
     expanded.setAttribute('src', expandedSrc);
-    expanded.setAttribute('class', 'imgExpanded');
+    expanded.className = 'imgExpanded';
 
     thumb.style.display = 'none';
     link.appendChild(expanded);
-    return false;
   }
 
-}
+  return false;
 
-function setPlayer(link, mime) {
+};
+
+thumbs.setPlayer = function(link, mime) {
 
   var path = link.href;
   var parent = link.parentNode;
@@ -66,8 +74,13 @@ function setPlayer(link, mime) {
   src.setAttribute('src', link.href);
   src.setAttribute('type', mime);
 
-  var video = document.createElement(videoTypes.indexOf(mime) > -1 ? 'video'
-      : 'audio');
+  var isVideo = thumbs.videoTypes.indexOf(mime) > -1;
+
+  var video = document.createElement(isVideo ? 'video' : 'audio');
+  if (isVideo) {
+    video.loop = !JSON.parse(localStorage.noAutoLoop || 'false');
+  }
+
   video.setAttribute('controls', true);
   video.style.display = 'none';
 
@@ -77,46 +90,61 @@ function setPlayer(link, mime) {
   hideLink.innerHTML = '[ - ]';
   hideLink.style.cursor = 'pointer';
   hideLink.style.display = 'none';
-  hideLink.setAttribute('class', 'hideLink');
+  hideLink.className = 'hideLink';
   hideLink.onclick = function() {
-    newThumb.style.display = 'inline';
+    newThumbLink.style.display = 'inline';
     video.style.display = 'none';
     hideLink.style.display = 'none';
     video.pause();
   };
 
+  var newThumbLink = document.createElement('a');
+  newThumbLink.href = link.href;
+
   var newThumb = document.createElement('img');
+  newThumbLink.appendChild(newThumb);
+  newThumb.className = 'imgLink';
   newThumb.src = link.childNodes[0].src;
-  newThumb.onclick = function() {
+  newThumbLink.onclick = function(mouseEvent) {
+
+    if (mouseEvent.which === 2 || mouseEvent.ctrlKey) {
+      return true;
+    }
+
     if (!video.childNodes.count) {
       video.appendChild(src);
     }
 
-    newThumb.style.display = 'none';
+    newThumbLink.style.display = 'none';
     video.style.display = 'inline';
     hideLink.style.display = 'inline';
     video.play();
+
+    return false;
   };
   newThumb.style.cursor = 'pointer';
 
   videoContainer.appendChild(hideLink);
   videoContainer.appendChild(video);
-  videoContainer.appendChild(newThumb);
+  videoContainer.appendChild(newThumbLink);
 
   parent.replaceChild(videoContainer, link);
-}
 
-function processImageLink(link) {
+};
+
+thumbs.processImageLink = function(link) {
 
   var mime = link.dataset.filemime;
 
   if (mime.indexOf('image/') > -1) {
 
     link.onclick = function(mouseEvent) {
-      return expandImage(mouseEvent, link);
+      return thumbs.expandImage(mouseEvent, link, mime);
     };
 
-  } else if (playableTypes.indexOf(mime) > -1) {
-    setPlayer(link, mime);
+  } else if (thumbs.playableTypes.indexOf(mime) > -1) {
+    thumbs.setPlayer(link, mime);
   }
-}
+};
+
+thumbs.init();

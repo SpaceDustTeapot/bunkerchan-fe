@@ -1,86 +1,109 @@
-var boardUri;
+var rangeBans = {};
 
-if (!DISABLE_JS) {
-
-  document.getElementById('reloadCaptchaButton').style.display = 'inline';
+rangeBans.init = function() {
 
   var boardIdentifier = document.getElementById('boardIdentifier');
 
   if (boardIdentifier) {
-    boardUri = boardIdentifier.value;
+    api.boardUri = boardIdentifier.value;
   }
 
-  document.getElementById('createFormButton').style.display = 'none';
-  document.getElementById('createJsButton').style.display = 'inline';
+  api.convertButton('createFormButton', rangeBans.placeRangeBan,
+      'rangeBanField');
 
   var rangeBanCells = document.getElementsByClassName('rangeBanCell');
 
   for (var j = 0; j < rangeBanCells.length; j++) {
-    processRangeBanCell(rangeBanCells[j]);
+    rangeBans.processRangeBanCell(rangeBanCells[j]);
   }
-}
 
-function processRangeBanCell(cell) {
+  rangeBans.bansDiv = document.getElementById('rangeBansDiv');
 
-  var button = cell.getElementsByClassName('liftJsButton')[0];
-  button.style.display = 'inline';
+};
 
-  button.onclick = function() {
-    liftBan(cell.getElementsByClassName('idIdentifier')[0].value);
-  };
+rangeBans.processRangeBanCell = function(cell) {
 
-  cell.getElementsByClassName('liftFormButton')[0].style.display = 'none';
+  var button = cell.getElementsByClassName('liftFormButton')[0];
 
-}
+  api.convertButton(button, function() {
+    rangeBans.liftBan(cell);
+  });
 
-function liftBan(ban) {
-  apiRequest('liftBan', {
-    banId : ban
+};
+
+rangeBans.liftBan = function(cell) {
+
+  api.formApiRequest('liftBan', {
+    banId : cell.getElementsByClassName('idIdentifier')[0].value
   }, function requestComplete(status, data) {
 
     if (status === 'ok') {
+      cell.remove();
+    } else {
+      alert(status + ': ' + JSON.stringify(data));
+    }
+  });
 
-      location.reload(true);
+};
+
+rangeBans.showNewRangeBan = function(typedRange, id) {
+
+  var form = document.createElement('form');
+  form.className = 'rangeBanCell';
+  form.action = '/liftBan.js';
+  form.method = 'post';
+  form.enctype = 'multipart/form-data';
+  rangeBans.bansDiv.appendChild(form);
+
+  form.appendChild(document.createElement('hr'));
+
+  var rangePara = document.createElement('p');
+  rangePara.innerHTML = 'Range: ';
+  form.appendChild(rangePara);
+
+  var rangeLabel = document.createElement('span');
+  rangeLabel.innerHTML = typedRange;
+  rangeLabel.className = 'rangeLabel';
+  rangePara.appendChild(rangeLabel);
+
+  var idIdentifier = document.createElement('input');
+  idIdentifier.className = 'idIdentifier';
+  idIdentifier.type = 'hidden';
+  form.appendChild(idIdentifier);
+  idIdentifier.value = id;
+
+  var liftButton = document.createElement('button');
+  liftButton.type = 'submit';
+  liftButton.innerHTML = 'Lift ban';
+  liftButton.className = 'liftFormButton';
+  form.appendChild(liftButton);
+
+  rangeBans.processRangeBanCell(form);
+
+};
+
+rangeBans.placeRangeBan = function() {
+
+  var typedRange = document.getElementById('rangeField').value.trim();
+
+  var parameters = {
+    range : typedRange,
+    boardUri : api.boardUri
+  };
+
+  api.formApiRequest('placeRangeBan', parameters, function requestComplete(
+      status, data) {
+
+    if (status === 'ok') {
+
+      document.getElementById('rangeField').value = '';
+      rangeBans.showNewRangeBan(typedRange, data);
 
     } else {
       alert(status + ': ' + JSON.stringify(data));
     }
   });
-}
 
-function placeRangeBan() {
+};
 
-  var typedCaptcha = document.getElementById('fieldCaptcha').value.trim();
-
-  if (typedCaptcha.length !== 6 && typedCaptcha.length !== 24) {
-    alert('Captchas are exactly 6 (24 if no cookies) characters long.');
-    return;
-  } else if (/\W/.test(typedCaptcha)) {
-    alert('Invalid captcha.');
-    return;
-  }
-
-  var typedRange = document.getElementById('rangeField').value.trim();
-
-  var parameters = {
-    captcha : typedCaptcha,
-    range : typedRange
-  };
-
-  if (boardUri) {
-    parameters.boardUri = boardUri;
-  }
-
-  apiRequest('placeRangeBan', parameters,
-      function requestComplete(status, data) {
-
-        if (status === 'ok') {
-
-          location.reload(true);
-
-        } else {
-          alert(status + ': ' + JSON.stringify(data));
-        }
-      });
-
-}
+rangeBans.init();

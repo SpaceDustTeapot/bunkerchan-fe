@@ -1,62 +1,67 @@
-var watchedMenu;
+var watcher = {};
 
-var isInThread = document.getElementById('threadIdentifier') ? true : false;
-var watcherAlertCounter = 0;
-var elementRelation = {};
+watcher.init = function() {
 
-if (!DISABLE_JS) {
+  watcher.isInThread = document.getElementById('threadIdentifier') ? true
+      : false;
+  watcher.watcherAlertCounter = 0;
+  watcher.elementRelation = {};
 
   var postingLink = document.getElementById('navPosting');
+  var referenceNode = postingLink.nextSibling;
+
+  postingLink.parentNode.insertBefore(document.createTextNode(' '),
+      referenceNode);
 
   var divider = document.createElement('span');
   divider.innerHTML = '/';
-
-  var referenceNode = postingLink.nextSibling;
-
   postingLink.parentNode.insertBefore(divider, referenceNode);
 
-  var watcherButton = document.createElement('span');
-  watcherButton.innerHTML = 'watched threads';
+  postingLink.parentNode.insertBefore(document.createTextNode(' '),
+      referenceNode);
+
+  var watcherButton = document.createElement('a');
   watcherButton.id = 'watcherButton';
-  watcherButton.setAttribute('class', 'navClickable');
+  watcherButton.className = 'coloredIcon';
 
-  var watcherCounter = document.createElement('span');
+  watcher.watcherCounter = document.createElement('span');
 
-  watcherButton.appendChild(watcherCounter);
+  watcherButton.appendChild(watcher.watcherCounter);
 
   postingLink.parentNode.insertBefore(watcherButton, referenceNode);
 
-  watchedMenu = document.createElement('div');
+  watcher.watchedMenu = document.createElement('div');
 
-  var watchedMenuLabel = document.createElement('span');
+  var watchedMenuLabel = document.createElement('label');
   watchedMenuLabel.innerHTML = 'Watched threads';
-  watchedMenuLabel.setAttribute('class', 'watchedMenuLabel');
 
-  watchedMenu.appendChild(watchedMenuLabel);
+  watcher.watchedMenu.appendChild(watchedMenuLabel);
 
   var showingWatched = false;
 
   var closeWatcherMenuButton = document.createElement('span');
   closeWatcherMenuButton.id = 'closeWatcherMenuButton';
+  closeWatcherMenuButton.className = 'coloredIcon glowOnHover';
   closeWatcherMenuButton.onclick = function() {
+
     if (!showingWatched) {
       return;
     }
 
     showingWatched = false;
-    watchedMenu.style.display = 'none';
+    watcher.watchedMenu.style.display = 'none';
 
   };
 
-  watchedMenu.appendChild(closeWatcherMenuButton);
+  watcher.watchedMenu.appendChild(closeWatcherMenuButton);
 
-  watchedMenu.appendChild(document.createElement('hr'));
+  watcher.watchedMenu.appendChild(document.createElement('hr'));
 
-  watchedMenu.id = 'watchedMenu';
-  watchedMenu.style.display = 'none';
-  watchedMenu.style.position = 'absolute';
+  watcher.watchedMenu.id = 'watchedMenu';
+  watcher.watchedMenu.className = 'floatingMenu';
+  watcher.watchedMenu.style.display = 'none';
 
-  document.body.appendChild(watchedMenu);
+  document.body.appendChild(watcher.watchedMenu);
 
   watcherButton.onclick = function() {
 
@@ -65,64 +70,54 @@ if (!DISABLE_JS) {
     }
 
     showingWatched = true;
-    var rect = watcherButton.getBoundingClientRect();
-
-    var previewOrigin = {
-      x : rect.right + 10 + window.scrollX,
-      y : rect.top + window.scrollY
-    };
-
-    watchedMenu.style.left = previewOrigin.x + 'px';
-    watchedMenu.style.top = previewOrigin.y + 'px';
-    watchedMenu.style.display = 'inline';
+    watcher.watchedMenu.style.display = 'block';
 
   }
 
-  document.addEventListener('scroll', function() {
-    closeWatcherMenuButton.onclick();
-  });
-
-  var ops = document.getElementsByClassName('opHead');
+  var ops = document.getElementsByClassName('innerOP');
 
   for (var i = 0; i < ops.length; i++) {
-    processOP(ops[i]);
+    watcher.processOP(ops[i]);
   }
 
-  var storedWatchedData = getStoredWatchedData();
+  var storedWatchedData = watcher.getStoredWatchedData();
 
-  for ( var board in storedWatchedData) {
+  for ( var currentBoard in storedWatchedData) {
 
-    if (storedWatchedData.hasOwnProperty(board)) {
+    if (storedWatchedData.hasOwnProperty(currentBoard)) {
 
-      var threads = storedWatchedData[board];
+      var threads = storedWatchedData[currentBoard];
 
       for ( var thread in threads) {
         if (threads.hasOwnProperty(thread)) {
 
-          if (isInThread && board == boardUri && thread == threadId) {
+          if (watcher.isInThread && currentBoard == api.boardUri
+              && thread == api.threadId) {
             threads[thread].lastSeen = new Date().getTime();
             localStorage.watchedData = JSON.stringify(storedWatchedData);
           }
 
-          addWatchedCell(board, thread, threads[thread]);
+          watcher.addWatchedCell(currentBoard, thread, threads[thread]);
         }
       }
     }
 
   }
 
-  updateWatcherCounter();
+  watcher.updateWatcherCounter();
 
-  scheduleWatchedThreadsCheck();
+  watcher.scheduleWatchedThreadsCheck();
 
-}
+  draggable.setDraggable(watcher.watchedMenu, watchedMenuLabel);
 
-function updateWatcherCounter() {
-  watcherCounter.innerHTML = watcherAlertCounter ? '(' + watcherAlertCounter
-      + ')' : '';
-}
+};
 
-function getStoredWatchedData() {
+watcher.updateWatcherCounter = function() {
+  watcher.watcherCounter.innerHTML = watcher.watcherAlertCounter ? '('
+      + watcher.watcherAlertCounter + ')' : '';
+};
+
+watcher.getStoredWatchedData = function() {
 
   var storedWatchedData = localStorage.watchedData;
 
@@ -134,74 +129,80 @@ function getStoredWatchedData() {
 
   return storedWatchedData;
 
-}
+};
 
-function iterateWatchedThreads(urls, index) {
+watcher.processThread = function(urls, index, data) {
+
+  data = JSON.parse(data);
+  var url = urls[index];
+
+  var posts = data.posts;
+
+  if (posts && posts.length) {
+
+    var lastPost = posts[posts.length - 1];
+
+    var parsedCreation = new Date(lastPost.creation);
+
+    var storedWatchedData = watcher.getStoredWatchedData();
+
+    var watchData = storedWatchedData[url.board][url.thread];
+
+    if (parsedCreation.getTime() > watchData.lastReplied) {
+      watchData.lastReplied = parsedCreation.getTime();
+      localStorage.watchedData = JSON.stringify(storedWatchedData);
+    }
+
+    if (!watcher.elementRelation[url.board]
+        || !watcher.elementRelation[url.board][url.thread]) {
+      watcher.addWatchedCell(url.board, url.thread, watchData);
+    } else if (watchData.lastSeen >= watchData.lastReplied) {
+      watcher.elementRelation[url.board][url.thread].style.display = 'none';
+    } else {
+      watcher.watcherAlertCounter++;
+      watcher.elementRelation[url.board][url.thread].style.display = 'inline';
+    }
+
+  }
+
+  watcher.iterateWatchedThreads(urls, ++index);
+
+};
+
+watcher.iterateWatchedThreads = function(urls, index) {
 
   index = index || 0;
 
   if (index >= urls.length) {
-    updateWatcherCounter();
-    scheduleWatchedThreadsCheck();
+    watcher.updateWatcherCounter();
+    watcher.scheduleWatchedThreadsCheck();
     return;
   }
 
   var url = urls[index];
 
-  localRequest('/' + url.board + '/res/' + url.thread + '.json',
+  api.localRequest('/' + url.board + '/res/' + url.thread + '.json',
       function gotThreadInfo(error, data) {
 
         if (error) {
-          iterateWatchedThreads(urls, ++index);
-          return;
+          watcher.iterateWatchedThreads(urls, ++index);
+        } else {
+          watcher.processThread(urls, index, data);
         }
-
-        data = JSON.parse(data);
-
-        var posts = data.posts;
-
-        if (posts) {
-
-          var lastPost = posts[posts.length - 1];
-
-          var parsedCreation = new Date(lastPost.creation);
-
-          var storedWatchedData = getStoredWatchedData();
-
-          var watchData = storedWatchedData[url.board][url.thread];
-
-          if (parsedCreation.getTime() > watchData.lastReplied) {
-            watchData.lastReplied = parsedCreation.getTime();
-            localStorage.watchedData = JSON.stringify(storedWatchedData);
-          }
-
-          if (!elementRelation[url.board]
-              || !elementRelation[url.board][url.thread]) {
-            addWatchedCell(url.board, url.thread, watchData);
-          } else if (watchData.lastSeen >= watchData.lastReplied) {
-            elementRelation[url.board][url.thread].style.display = 'none';
-          } else {
-            watcherAlertCounter++;
-            elementRelation[url.board][url.thread].style.display = 'inline';
-          }
-
-        }
-
-        iterateWatchedThreads(urls, ++index);
 
       });
 
-}
+};
 
-function runWatchedThreadsCheck() {
+watcher.runWatchedThreadsCheck = function() {
 
-  watcherAlertCounter = 0;
+  watcher.watcherAlertCounter = 0;
 
   localStorage.lastWatchCheck = new Date().getTime();
 
   var urls = [];
 
-  var storedWatchedData = getStoredWatchedData();
+  var storedWatchedData = watcher.getStoredWatchedData();
 
   for ( var board in storedWatchedData) {
 
@@ -212,7 +213,8 @@ function runWatchedThreadsCheck() {
       for ( var thread in threads) {
         if (threads.hasOwnProperty(thread)) {
 
-          if (isInThread && board == boardUri && thread == threadId) {
+          if (watcher.isInThread && board == api.boardUri
+              && thread == api.threadId) {
             threads[thread].lastSeen = new Date().getTime();
             localStorage.watchedData = JSON.stringify(storedWatchedData);
           }
@@ -227,56 +229,59 @@ function runWatchedThreadsCheck() {
 
   }
 
-  iterateWatchedThreads(urls);
-}
+  watcher.iterateWatchedThreads(urls);
 
-function scheduleWatchedThreadsCheck() {
+};
+
+watcher.scheduleWatchedThreadsCheck = function() {
 
   var lastCheck = localStorage.lastWatchCheck;
 
   if (!lastCheck) {
-    runWatchedThreadsCheck();
+    watcher.runWatchedThreadsCheck();
     return;
   }
 
   lastCheck = new Date(+lastCheck);
 
-  lastCheck.setUTCMinutes(lastCheck.getUTCMinutes() + 5);
+  // lastCheck.setUTCMinutes(lastCheck.getUTCMinutes() + 5);
+  lastCheck.setUTCSeconds(lastCheck.getUTCSeconds() + 10);
 
   setTimeout(function() {
-    runWatchedThreadsCheck();
+    watcher.runWatchedThreadsCheck();
   }, lastCheck.getTime() - new Date().getTime());
 
 }
 
-function addWatchedCell(board, thread, watchData) {
+watcher.addWatchedCell = function(board, thread, watchData) {
 
   var cellWrapper = document.createElement('div');
 
   var cell = document.createElement('div');
-  cell.setAttribute('class', 'watchedCell');
+  cell.className = 'watchedCell';
 
-  var labelWrapper = document.createElement('span');
-  labelWrapper.setAttribute('class', 'watchedCellLabel watchedMenuLabel');
+  var labelWrapper = document.createElement('label');
+  labelWrapper.className = 'watchedCellLabel';
 
   var label = document.createElement('a');
-  label.innerHTML = board + '/' + thread;
+
+  label.innerHTML = watchData.label || (board + '/' + thread);
   label.href = '/' + board + '/res/' + thread + '.html';
   labelWrapper.appendChild(label);
 
   var notification = document.createElement('span');
-  notification.setAttribute('class', 'watchedNotification');
+  notification.className = 'watchedNotification';
 
-  if (!elementRelation[board]) {
-    elementRelation[board] = {};
+  if (!watcher.elementRelation[board]) {
+    watcher.elementRelation[board] = {};
   }
 
-  elementRelation[board][thread] = notification;
+  watcher.elementRelation[board][thread] = notification;
 
   if (watchData.lastSeen >= watchData.lastReplied) {
     notification.style.display = 'none';
   } else {
-    watcherAlertCounter++;
+    watcher.watcherAlertCounter++;
   }
 
   labelWrapper.appendChild(notification);
@@ -284,14 +289,14 @@ function addWatchedCell(board, thread, watchData) {
   cell.appendChild(labelWrapper);
 
   var button = document.createElement('span');
-  button.setAttribute('class', 'watchedCellCloseButton');
+  button.className = 'watchedCellCloseButton glowOnHover coloredIcon';
   cell.appendChild(button);
 
   button.onclick = function() {
 
-    watchedMenu.removeChild(cellWrapper);
+    watcher.watchedMenu.removeChild(cellWrapper);
 
-    var storedWatchedData = getStoredWatchedData();
+    var storedWatchedData = watcher.getStoredWatchedData();
 
     var boardThreads = storedWatchedData[board];
 
@@ -307,11 +312,11 @@ function addWatchedCell(board, thread, watchData) {
 
   cellWrapper.appendChild(cell);
   cellWrapper.appendChild(document.createElement('hr'));
-  watchedMenu.appendChild(cellWrapper);
+  watcher.watchedMenu.appendChild(cellWrapper);
 
-}
+};
 
-function processOP(op) {
+watcher.processOP = function(op) {
 
   var checkBox = op.getElementsByClassName('deletionCheckBox')[0];
 
@@ -321,15 +326,15 @@ function processOP(op) {
   var thread = nameParts[1];
 
   var watchButton = document.createElement('span');
-  watchButton.setAttribute('class', 'watchButton');
+  watchButton.className = 'watchButton glowOnHover coloredIcon';
   watchButton.title = "Watch Thread";
 
   checkBox.parentNode.insertBefore(watchButton,
-      checkBox.nextSibling.nextSibling);
+      checkBox.nextSibling.nextSibling.nextSibling);
 
   watchButton.onclick = function() {
 
-    var storedWatchedData = getStoredWatchedData();
+    var storedWatchedData = watcher.getStoredWatchedData();
 
     var boardThreads = storedWatchedData[board] || {};
 
@@ -337,17 +342,34 @@ function processOP(op) {
       return;
     }
 
+    var subject = op.getElementsByClassName('labelSubject');
+    var message = op.getElementsByClassName('divMessage')[0];
+
+    var label = (subject.length ? subject[0].innerHTML : null)
+        || message.innerHTML.replace(/(<([^>]+)>)/ig, "").substr(0, 16).trim();
+
+    if (!label.length) {
+      label = null;
+    } else {
+      label = label.replace(/[<>"']/g, function(match) {
+        return api.htmlReplaceTable[match]
+      });
+    }
+
     boardThreads[thread] = {
       lastSeen : new Date().getTime(),
-      lastReplied : new Date().getTime()
+      lastReplied : new Date().getTime(),
+      label : label
     };
 
     storedWatchedData[board] = boardThreads;
 
     localStorage.watchedData = JSON.stringify(storedWatchedData);
 
-    addWatchedCell(board, thread, boardThreads[thread]);
+    watcher.addWatchedCell(board, thread, boardThreads[thread]);
 
   };
 
-}
+};
+
+watcher.init();

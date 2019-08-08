@@ -1,17 +1,14 @@
 #watcherButton::before {
-  font-family: 'Icons';
   content: '\e065';
   margin-right: 0.25em;
 }
 
 .watchButton::before {
-  font-family: 'Icons';
   content: '\e065';
 }
 
-#closeWatcherMenuButton::before, .close-btn::before, .watchedCellCloseButton::before
-  {
-  font-family: 'Icons';
+#closeWatcherMenuButton::before, .close-btn::before,
+  .watchedCellCloseButton::before {
   content: '\e0db';
 }
 
@@ -25,13 +22,21 @@
   width: 90%;
 }
 
-.watchedMenuLabel {
-  font-size: 80%
-}
-
 .watchedNotification::before {
   font-family: 'Icons';
   content: '\e0D8';
   margin-left: 0.25em;
   color: #A00;
+}
+
+#watchedMenu {
+  position: fixed;
+  left: 100px;
+  top: 25px;
+  z-index: 100;
+}
+
+#watchedMenu label {
+  font-size: 80%;
+  cursor: pointer;
 }

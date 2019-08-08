@@ -1,24 +1,26 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta name="description" content="Bunkerchan is a far left lynxchan based imageboard. where users discuss ideologys like maoism, trotskyism, leninism and marxism">
-<!--twitter meta tags-->
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@ericmusicfan">
 <meta name="twitter:title" content="Bunkerchan.xyz: The Home Of Albania">
 <meta name="twitter:description" content="Bunkerchan is a far left lynxchan based imageboard for left wing politics">
-<meta name="twitter:image" content="https://bunkerchan.xyz/.static/bunker.png">
+<meta name="twitter:image" content="https://bunkerchan.xyz/.static/logo.png">
+<meta name="description" content="Bunkerchan is a far left lynxchan based imageboard. where users discuss ideologys like maoism, trotskyism, leninism and marxism"> 
 <meta charset="UTF-8" />
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0">
 <link
   href="/.static/css/global.css"
   type="text/css"
   rel="stylesheet" />
 <link
-  href="/.static/css/index.css"
+  href="/.static/css/yotsuba.css"
   type="text/css"
   rel="stylesheet" />
 <link
-  href="/.static/css/watcher.css"
+  href="/.static/css/index.css"
   type="text/css"
   rel="stylesheet" />
 <link
@@ -28,57 +30,20 @@
  <script src="/.static/js/yotCheck.js" ></script>
 </head>
 <body onload="CSSYotCheck()">
-<!--<iframe width="1" height="1" src="https://www.youtube.com/embed/gsKn5KX6XnU?autoplay=1" frameborder="0" allowfullscreen></iframe> -->
-<!-- <iframe width="1" height="1" src="https://www.youtube.com/embed/dv13gl0a-FA?autoplay=1" frameborder="0" allowfullscreen></iframe> -->
-<!--<iframe width="1" height="1" src="https://www.youtube.com/embed/DUGsQqM2wZM?autoplay=1" frameborder="0" allowfullscreen></iframe>--> 
-<iframe width="1" height="1" src="https://www.youtube.com/embed/V0WqoPJkZEI?autoplay=1" frameborder="0" allowfullscreen></iframe>
 
- <nav>
-    <span id="navLinkSpan"> <span>[</span> <a
-        href="/"
-        id="navLinkHome">home</a> <span>/</span> <a
-        href="/boards.js"
-        id="navBoardList">boards</a> <span>/</span> <a
-        href="/overboard"
-        id="navOverboard">overboard</a> <span>/</span>
-		<a href="/sfwoverboard" id="linkSfwOver"> overboard sfw</a> <span>/</span> <a
-        href="/.static/posting.html"
-        id="navPosting">help</a> <span>]</span>
-		<span>[</span>
-		<a href="/leftypol">leftypol</a>
-		<!--<span>/</span>
-		<a href="/dprk">dprk</a>-->
-		<span>/</span>
-		<a href="/gulag">gulag</a>
-		<span>/</span> 
-		<a href="/dead">dead</a>
-		<span>/</span>
-		<a href="/tech">tech</a>
-		<span>/</span>
-		<a href="/e">e</a>
-		<span>]</span>
-		<span>[</span>
-		<a href="/GET">GET</a>
-		<span>/</span>
-		<a href="/ref">ref</a>
-		<span>]</span>
-    </span> <span id="navBoardsSpan"> </span> <span id="navOptionsSpan"> </span>
-  </nav>
+  <script src="/.static/js/themeLoader.js"></script>
+
+  <nav id="header"><span id="navLinkSpan"></span><span id="navBoardSpan"></span></nav>
 
   <div id="indexWrapper">
 
     <div
       id="logoBox"
       class="title">
-     <!-- <img
-        src="/.static/corbyn.jpg"
-        alt="logo"
-	width="400"
-	height="400" /> -->
-	<img 
-	src="/.static/bunker.png"
-	alt="logo"
-	/>
+      <img
+        src="/.static/logo.png"
+        class="logoImg"
+        alt="logo" />
     </div>
 
     <div
@@ -102,33 +67,47 @@
       <span>[</span>
       <a
         href="/logs.js"
-        id="linkLogs">logs</a>
+        class="coloredIcon"
+        id="linkLogs"></a>
+      <span>/</span>
+      <a
+        href="/archives.js"
+        class="coloredIcon"
+        id="linkArchives"></a>
       <span>/</span>
       <a
         href="/graphs.js"
-        id="linkGraphs">daily graphs</a>
+        class="coloredIcon"
+        id="linkGraphs"></a>
       <span>/</span>
       <a
-        href="/.static/globalRules.html"
-        id="linkGlobalRules">global rules</a>
+        href="/.static/pages/globalRules.html"
+        class="coloredIcon"
+        id="linkGlobalRules"></a>
       <span>/</span>
       <a
-        href="/.static/links.html"
-        id="linkLinks">links</a>
+        href="/.static/pages/links.html"
+        class="coloredIcon"
+        id="linkLinks"></a>
       <span>/</span>
       <a
-        href="/.static/about.html"
-        id="linkAbout">about</a>
+        href="/.static/pages/about.html"
+        class="coloredIcon"
+        id="linkAbout"></a>
       <span>/</span>
       <a
-        href="/.static/contact.html"
-        id="linkContact">contact</a>
-      <span>/</span>
-      <a id="linkEngine"></a>
+        href="/.static/pages/contact.html"
+        class="coloredIcon"
+        id="linkContact"></a>
       <span>/</span>
       <a
         href="/account.js"
-        id="linkAccount">account</a>
+        class="coloredIcon"
+        id="linkAccount"></a>
+      <span>/</span>
+      <a
+        class="coloredIcon"
+        id="linkEngine"></a>
       <span>]</span>
     </div>
 
@@ -149,9 +128,9 @@
   </footer>
 
 </body>
-<script src="/.static/js/settings.js"></script>
+
 <script src="/.static/js/api.js"></script>
-<script src="/.static/js/themes.js"></script>
-<script src="/.static/js/watcher.js"></script>
+<script src="/.static/js/draggable.js"></script>
+<script src="/.static/js/favouriteBoards.js"></script>
 
 </html>

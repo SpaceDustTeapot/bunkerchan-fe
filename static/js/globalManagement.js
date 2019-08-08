@@ -1,66 +1,188 @@
-if (!DISABLE_JS) {
+var globalManagement = {};
+
+globalManagement.roles = [ 'Admin', 'Global volunteer', 'Global janitor',
+    'User' ];
+
+globalManagement.init = function() {
+
+  api.management = true;
 
   if (document.getElementById('addStaffForm')) {
-    document.getElementById('addJsButton').style.display = 'inline';
-    document.getElementById('closeReportsJsButton').style.display = 'inline';
 
-    document.getElementById('closeReportsFormButton').style.display = 'none';
-    document.getElementById('addFormButton').style.display = 'none';
+    api
+        .convertButton('addFormButton', globalManagement.addUser,
+            'addUserField');
+    api.convertButton('massBanFormButton', globalManagement.massBan,
+        'massBanField');
 
   }
+
+  globalManagement.divStaff = document.getElementById('divStaff');
+
+  api.convertButton('closeReportsFormButton', reports.closeReports,
+      'closeReportsField');
 
   var staffCells = document.getElementsByClassName('staffCell');
 
   for (var i = 0; i < staffCells.length; i++) {
-    processCell(staffCells[i]);
+    globalManagement.processCell(staffCells[i]);
   }
 
-}
+};
 
-function processCell(cell) {
+globalManagement.processCell = function(cell) {
 
-  var button = cell.getElementsByClassName('saveJsButton')[0];
-  button.style.display = 'inline';
-
-  cell.getElementsByClassName('saveFormButton')[0].style.display = 'none';
+  var button = cell.getElementsByClassName('saveFormButton')[0];
 
   var comboBox = cell.getElementsByClassName('roleCombo')[0];
   var user = cell.getElementsByClassName('userIdentifier')[0].value;
 
-  button.onclick = function() {
-    saveUser(user, comboBox);
-  };
-}
+  api.convertButton(button, function() {
+    globalManagement.setUser(user,
+        comboBox.options[comboBox.selectedIndex].value, cell);
+  });
 
-function saveUser(user, comboBox) {
+};
 
-  setUser(user, comboBox.options[comboBox.selectedIndex].value);
-
-}
-
-function addUser() {
+globalManagement.addUser = function() {
 
   var combo = document.getElementById('newStaffCombo');
 
-  setUser(document.getElementById('fieldLogin').value.trim(),
+  globalManagement.setUser(document.getElementById('fieldLogin').value.trim(),
       combo.options[combo.selectedIndex].value);
 
-}
+};
 
-function setUser(login, role) {
+globalManagement.showNewUser = function(login, role) {
 
-  apiRequest('setGlobalRole', {
+  var form = document.createElement('form');
+  form.method = 'post';
+  form.enctype = 'multipart/form-data';
+  form.action = '/setGlobalRole.js';
+  form.className = 'staffCell';
+
+  var nameLabel = document.createElement('span');
+  nameLabel.innerHTML = login;
+  nameLabel.className = 'userLabel';
+  form.appendChild(nameLabel);
+
+  form.appendChild(document.createTextNode(' '));
+
+  var combo = document.createElement('select');
+  combo.name = 'role';
+  combo.className = 'roleCombo';
+  form.appendChild(combo);
+
+  for (var i = document.getElementById('globalSettingsLink') ? 0 : 1; i < globalManagement.roles.length; i++) {
+
+    var option = document.createElement('option');
+    option.innerHTML = globalManagement.roles[i];
+    option.value = (i + 1).toString();
+
+    if (i === role - 1) {
+      option.setAttribute('selected', 'selected');
+    }
+
+    combo.appendChild(option);
+
+  }
+
+  var identifier = document.createElement('input');
+  identifier.className = 'userIdentifier';
+  identifier.type = 'hidden';
+  identifier.value = login;
+  form.appendChild(identifier);
+
+  var wrapper = document.createElement('label');
+  form.appendChild(wrapper);
+
+  var button = document.createElement('button');
+  button.type = 'submit';
+  button.className = 'saveFormButton';
+  button.innerHTML = 'Save role';
+  wrapper.appendChild(button);
+
+  globalManagement.divStaff.appendChild(form);
+
+  globalManagement.processCell(form);
+
+};
+
+globalManagement.setUser = function(login, role, cell) {
+
+  role = +role;
+
+  api.formApiRequest('setGlobalRole', {
     login : login,
-    role : +role
+    role : role
   }, function requestComplete(status, data) {
 
     if (status === 'ok') {
 
-      location.reload(true);
+      if (role <= 3 && cell) {
+        alert('Role changed.');
+      } else if (cell) {
+        cell.remove();
+      } else {
+        globalManagement.showNewUser(login, role);
+      }
 
     } else {
       alert(status + ': ' + JSON.stringify(data));
     }
   });
 
-}
+};
+
+globalManagement.massBan = function() {
+
+  var ipField = document.getElementById('fieldIps');
+  var reasonField = document.getElementById('fieldReason');
+  var durationField = document.getElementById('fieldDuration');
+
+  var typedIps = ipField.value.trim();
+
+  var ipArray = typedIps.split(',');
+
+  var finalIpArray = [];
+
+  for (var i = 0; i < ipArray.length; i++) {
+
+    var ip = ipArray[i].trim();
+
+    if (ip.length) {
+      finalIpArray.push(ip);
+    }
+
+  }
+
+  if (!finalIpArray.length) {
+    alert('No ips informed');
+    return;
+  }
+
+  var typedReason = reasonField.value;
+  var typedDuration = durationField.value;
+
+  api.formApiRequest('massBan', {
+    ips : finalIpArray,
+    reason : typedReason,
+    duration : typedDuration
+  }, function requestCompleted(status, data) {
+
+    if (status === 'ok') {
+
+      ipField.value = '';
+      reasonField.value = '';
+      durationField.value = '';
+
+      alert('Mass ban applied.');
+
+    } else {
+      alert(status + ': ' + JSON.stringify(data));
+    }
+  });
+
+};
+
+globalManagement.init();

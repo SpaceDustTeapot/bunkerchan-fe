@@ -2,29 +2,28 @@
 <html>
 <head>
 <meta charset="UTF-8" />
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0">
 <link
   href="/.static/css/global.css"
+  type="text/css"
+  rel="stylesheet" />
+<link
+  href="/.static/css/flags.css"
   type="text/css"
   rel="stylesheet" />
 </head>
 <body>
 
-  <nav>
-    <span id="navLinkSpan"> <span>[</span> <a
-        href="/"
-        id="navLinkHome">home</a> <span>/</span> <a
-        href="/boards.js"
-        id="navBoardList">boards</a> <span>/</span> <a
-        href="/overboard"
-        id="navOverboard">overboard</a> <span>/</span> <a
-        href="/.static/posting.html"
-        id="navPosting">help</a> <span>]</span>
-    </span> <span id="navBoardsSpan"> </span> <span id="navOptionsSpan"> </span>
-  </nav>
+  <script src="/.static/js/themeLoader.js"></script>
+
+  <nav id="header"><span id="navLinkSpan"></span><span id="navBoardSpan"></span></nav>
 
   <header>
     <img
       src="/.static/logo.png"
+      class="logoImg"
       alt="logo" />
   </header>
 
@@ -42,7 +41,21 @@
           type="hidden"
           name="boardUri"
           id="boardIdentifier">
-        <label>
+
+        <div
+          class="hidden"
+          id="dragAndDropDiv">
+          <div
+            class="dropzone"
+            id="dropzone">
+            Drag flags to upload or
+            <br>
+            click here to select them
+          </div>
+          <div id="selectedDiv"></div>
+        </div>
+
+        <label id="nameLabel">
           Flag Name:
           <input
             name="flagName"
@@ -53,18 +66,13 @@
           type="file"
           id="files"
           name="files">
-        <input
+        <button
           type="submit"
-          value="Add Flag"
-          id="addFormButton">
-        <input
-          type="button"
-          onClick="addFlag()"
-          class="hidden"
-          value="Add flag"
-          id="addJsButton">
+          id="addFormButton">Add Flag</button>
         <p class="small">
           Maximum size allowed: <span id="maxSizeLabel"></span>
+          <br>
+          Maximum name length allowed: <span id="maxNameLengthLabel"></span>
         </p>
       </form>
       <hr />
@@ -74,9 +82,9 @@
 
 </body>
 
-<script src="/.static/js/settings.js"></script>
 <script src="/.static/js/api.js"></script>
 <script src="/.static/js/flags.js"></script>
-<script src="/.static/js/themes.js"></script>
+
+<script src="/.static/js/favouriteBoards.js"></script>
 
 </html>

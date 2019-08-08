@@ -1,10 +1,142 @@
-var shownMenu;
+var hiding = {};
 
-var postHideContent = '<label class="hidePostButton">Hide post</label>';
-var threadHideContent = '<label class="hidePostButton">Hide OP</label><hr>';
-threadHideContent += '<label class="hideThreadButton">Hide thread</label>';
+hiding.init = function() {
 
-function registerHiding(board, thread, post, unhiding) {
+  hiding.updateHidingData();
+
+  hiding.filtered = [];
+
+  document.body.addEventListener('click', function clicked() {
+
+    if (hiding.shownMenu) {
+      hiding.shownMenu.remove();
+      delete hiding.shownMenu;
+    }
+
+  }, true);
+
+  var links = document.getElementsByClassName('linkSelf');
+
+  for (var i = 0; i < links.length; i++) {
+    hiding.setHideMenu(links[i]);
+  }
+
+};
+
+hiding.updateHidingData = function() {
+
+  var storedHidingData = localStorage.hidingData;
+
+  if (!storedHidingData) {
+    hiding.storedHidingData = {};
+    return;
+  }
+
+  hiding.storedHidingData = JSON.parse(storedHidingData);
+
+};
+
+hiding.filterMatches = function(string, filter) {
+
+  var toRet;
+
+  if (!filter.regex) {
+    toRet = string.indexOf(filter.filter) >= 0;
+  } else {
+    toRet = string.match(new RegExp(filter.filter)) ? true : false;
+  }
+
+  return toRet;
+
+};
+
+hiding.hideForFilter = function(linkSelf) {
+
+  var toHide = linkSelf.parentNode.parentNode.parentNode;
+
+  toHide.style.display = 'none';
+  hiding.filtered.push(toHide);
+
+  return true;
+
+};
+
+hiding.checkFilters = function() {
+
+  for (var i = 0; i < hiding.filtered.length; i++) {
+    hiding.filtered[i].style.display = 'block';
+  }
+
+  hiding.filtered = [];
+
+  var links = document.getElementsByClassName('linkSelf');
+
+  for (var i = 0; i < links.length; i++) {
+    hiding.checkFilterHiding(links[i]);
+  }
+
+};
+
+hiding.checkFilterHiding = function(linkSelf) {
+
+  for (var i = 0; i < settingsMenu.loadedFilters.length; i++) {
+
+    var filter = settingsMenu.loadedFilters[i];
+
+    if (filter.type < 2) {
+      var name = linkSelf.parentNode.getElementsByClassName('linkName')[0].innerHTML;
+
+      if (name.indexOf('#') >= 0) {
+
+        var trip = name.substring(name.lastIndexOf('#') + 1);
+
+        name = name.substring(0, name.indexOf('#'));
+
+      }
+
+    }
+
+    switch (filter.type) {
+
+    case 0: {
+      if (hiding.filterMatches(name, filter)) {
+        return hiding.hideForFilter(linkSelf);
+      }
+      break;
+    }
+
+    case 1: {
+      if (trip && hiding.filterMatches(trip, filter)) {
+        return hiding.hideForFilter(linkSelf);
+      }
+      break;
+    }
+
+    case 2: {
+      var subjectLabel = linkSelf.parentNode
+          .getElementsByClassName('labelSubject')[0];
+
+      if (subjectLabel && filterMatches(subjectLabel.innerHTML, filter)) {
+        return hiding.hideForFilter(linkSelf);
+      }
+      break;
+    }
+
+    case 3: {
+      if (filterMatches(linkSelf.parentNode.parentNode
+          .getElementsByClassName('divMessage')[0].innerHTML, filter)) {
+        return hiding.hideForFilter(linkSelf);
+      }
+      break;
+    }
+
+    }
+
+  }
+
+};
+
+hiding.registerHiding = function(board, thread, post, unhiding) {
 
   var storedData = localStorage.hidingData;
 
@@ -29,149 +161,199 @@ function registerHiding(board, thread, post, unhiding) {
 
   localStorage.hidingData = JSON.stringify(hidingData);
 
-}
+  hiding.storedHidingData = hidingData;
 
-function setHideMenu(checkbox) {
+};
 
-  var name = checkbox.name;
+hiding.hidePost = function(linkSelf, board, thread, post) {
 
-  var parts = name.split('-');
+  hiding.toggleHidden(linkSelf.parentNode.parentNode, true);
 
-  var board = parts[0];
+  hiding.registerHiding(board, thread, post);
 
-  var thread = parts[1];
+  var unhidePostButton = document.createElement('span');
 
-  var post = parts[2];
+  var unhideHTML = '[Unhide ' + (post ? 'post' : 'OP') + ' ' + board + '/'
+      + post + ']';
+
+  unhidePostButton.innerHTML = unhideHTML;
+  unhidePostButton.className = 'unhideButton glowOnHover';
+
+  linkSelf.parentNode.parentNode.parentNode.insertBefore(unhidePostButton,
+      linkSelf.parentNode.parentNode);
+
+  unhidePostButton.onclick = function() {
+
+    hiding.registerHiding(board, thread, post, true);
+    unhidePostButton.remove();
+
+    hiding.toggleHidden(linkSelf.parentNode.parentNode, false);
+
+  };
+
+};
+
+hiding.hideThread = function(linkSelf, board, thread) {
+
+  hiding.toggleHidden(linkSelf.parentNode.parentNode.parentNode, true);
+  var unhideThreadButton = document.createElement('span');
+
+  unhideThreadButton.innerHTML = '[Unhide thread ' + board + '/' + thread + ']';
+  unhideThreadButton.className = 'unhideButton glowOnHover';
+  linkSelf.parentNode.parentNode.parentNode.parentNode.insertBefore(
+      unhideThreadButton, linkSelf.parentNode.parentNode.parentNode);
+
+  hiding.registerHiding(board, thread);
+
+  unhideThreadButton.onclick = function() {
+    hiding.toggleHidden(linkSelf.parentNode.parentNode.parentNode, false);
+    unhideThreadButton.remove();
+    hiding.registerHiding(board, thread, null, true);
+  }
+
+};
+
+hiding.buildHideMenu = function(board, thread, post, linkSelf, hideMenu) {
+
+  var postHideButton;
+  postHideButton = document.createElement('div');
+
+  if (post) {
+
+    postHideButton.innerHTML = 'Hide post';
+    hideMenu.appendChild(postHideButton);
+
+  } else {
+
+    postHideButton.innerHTML = 'Hide OP';
+    hideMenu.appendChild(postHideButton);
+
+    hideMenu.appendChild(document.createElement('hr'));
+
+    var threadHideButton = document.createElement('div');
+    threadHideButton.innerHTML = 'Hide thread';
+    hideMenu.appendChild(threadHideButton);
+
+  }
+
+  hideMenu.appendChild(document.createElement('hr'));
+
+  var name = linkSelf.parentNode.getElementsByClassName('linkName')[0].innerHTML;
+
+  var trip;
+
+  if (name.indexOf('#') >= 0) {
+    trip = name.substring(name.lastIndexOf('#') + 1);
+    name = name.substring(0, name.indexOf('#'));
+  }
+
+  var filterNameButton = document.createElement('div');
+  filterNameButton.innerHTML = 'Filter name';
+  filterNameButton.onclick = function() {
+    settingsMenu.createFilter(name, false, 0);
+  };
+  hideMenu.appendChild(filterNameButton);
+
+  hideMenu.appendChild(document.createElement('hr'));
+
+  if (trip) {
+
+    var filterTripButton = document.createElement('div');
+    filterTripButton.innerHTML = 'Filter tripcode';
+    filterTripButton.onclick = function() {
+      settingsMenu.createFilter(trip, false, 1);
+    };
+    hideMenu.appendChild(filterTripButton);
+
+    hideMenu.appendChild(document.createElement('hr'));
+  }
+
+  postHideButton.onclick = function() {
+    hiding.hidePost(linkSelf, board, thread, post || thread);
+  };
+
+  if (!post) {
+
+    threadHideButton.onclick = function() {
+      hiding.hideThread(linkSelf, board, thread);
+    }
+
+  }
+
+};
+
+hiding.toggleHidden = function(element, hide) {
+
+  var className = element.className;
+
+  if (hide) {
+    element.className += ' hidden';
+  } else {
+    element.className = className.replace(' hidden', '');
+  }
+
+};
+
+hiding.setHideMenu = function(linkSelf) {
 
   var hideButton = document.createElement('span');
-  hideButton.className = 'hideButton';
+  hideButton.className = 'hideButton glowOnHover coloredIcon';
   hideButton.title = "Hide";
 
-  checkbox.parentNode.insertBefore(hideButton, checkbox.nextSibling);
+  var parentNode = linkSelf.parentNode;
 
-  var hideMenu = document.createElement('div');
-  hideMenu.className = 'hideMenu';
-  hideMenu.style.display = 'none';
-  hideMenu.style.position = 'absolute';
+  var checkbox = parentNode.getElementsByClassName('deletionCheckBox')[0];
 
-  var menuHTML = post ? postHideContent : threadHideContent;
+  var href = linkSelf.href;
 
-  hideMenu.innerHTML = menuHTML;
+  var parts = href.split('/');
 
-  document.body.appendChild(hideMenu);
+  var board = parts[3];
+
+  var finalParts = parts[5].split('.');
+
+  var thread = finalParts[0];
+
+  var post = finalParts[1].split('#')[1];
+
+  if (post === thread) {
+    post = undefined;
+  }
+
+  parentNode.insertBefore(hideButton, checkbox ? checkbox.nextSibling
+      : parentNode.childNodes[0]);
 
   hideButton.onclick = function() {
 
     var rect = hideButton.getBoundingClientRect();
 
-    var previewOrigin = {
-      x : rect.right + 10 + window.scrollX,
-      y : rect.top + window.scrollY
-    };
+    var hideMenu = document.createElement('div');
+    hideMenu.className = 'floatingMenu hideMenu';
 
-    hideMenu.style.left = previewOrigin.x + 'px';
-    hideMenu.style.top = previewOrigin.y + 'px';
-    hideMenu.style.display = 'inline';
+    hideButton.appendChild(hideMenu);
 
-    shownMenu = hideMenu;
-  };
+    hiding.shownMenu = hideMenu;
 
-  var unhidePostButton = document.createElement('span');
-
-  var unhideHTML = '[Unhide ' + (post ? 'post' : 'OP') + ' ' + board + '/'
-      + (post || thread) + ']';
-
-  unhidePostButton.innerHTML = unhideHTML;
-  unhidePostButton.className = 'unhideButton';
-  unhidePostButton.style.display = 'none';
-  checkbox.parentNode.parentNode.parentNode.insertBefore(unhidePostButton,
-      checkbox.parentNode.parentNode);
-
-  unhidePostButton.onclick = function() {
-
-    registerHiding(board, thread, post || thread, true);
-
-    checkbox.parentNode.parentNode.style.display = post ? 'inline-block'
-        : 'inline';
-    unhidePostButton.style.display = 'none';
+    hiding.buildHideMenu(board, thread, post, linkSelf, hideMenu);
 
   };
 
-  var postHideButton = hideMenu.getElementsByClassName('hidePostButton')[0];
-
-  postHideButton.onclick = function() {
-    checkbox.parentNode.parentNode.style.display = 'none';
-    unhidePostButton.style.display = 'inline';
-
-    registerHiding(board, thread, post || thread);
-  };
-
-  if (!post) {
-    var threadHideButton = hideMenu.getElementsByClassName('hideThreadButton')[0];
-
-    var unhideThreadButton = document.createElement('span');
-
-    unhideThreadButton.innerHTML = '[Unhide thread ' + board + '/' + thread
-        + ']';
-    unhideThreadButton.className = 'unhideButton';
-    unhideThreadButton.style.display = 'none';
-    checkbox.parentNode.parentNode.parentNode.parentNode.insertBefore(
-        unhideThreadButton, checkbox.parentNode.parentNode.parentNode);
-
-    threadHideButton.onclick = function() {
-      checkbox.parentNode.parentNode.parentNode.style.display = 'none';
-      unhideThreadButton.style.display = 'inline';
-
-      registerHiding(board, thread);
-    }
-
-    unhideThreadButton.onclick = function() {
-      checkbox.parentNode.parentNode.parentNode.style.display = 'block';
-      unhideThreadButton.style.display = 'none';
-      registerHiding(board, thread, null, true);
-    }
-
-  }
-
-  var storedHidingData = localStorage.hidingData;
-
-  if (!storedHidingData) {
-    return;
-  }
-
-  storedHidingData = JSON.parse(storedHidingData);
-
-  var boardData = storedHidingData[board];
+  var boardData = hiding.storedHidingData[board];
 
   if (!boardData) {
     return;
   }
 
   if (boardData.posts.indexOf(post || thread) > -1) {
-    postHideButton.onclick();
+    hiding.hidePost(linkSelf, board, thread, post || thread);
   }
 
   if (!post && boardData.threads.indexOf(thread) > -1) {
-    threadHideButton.onclick();
+    hiding.hideThread(linkSelf, board, thread);
   }
 
-}
+  hiding.checkFilterHiding(linkSelf);
 
-if (!DISABLE_JS) {
+};
 
-  document.body.addEventListener('click', function clicked() {
-
-    if (shownMenu) {
-      shownMenu.style.display = 'none';
-      shownMenu = null;
-    }
-
-  }, true);
-
-  var checkboxes = document.getElementsByClassName('deletionCheckBox');
-
-  for (var i = 0; i < checkboxes.length; i++) {
-    setHideMenu(checkboxes[i]);
-  }
-
-}
+hiding.init();

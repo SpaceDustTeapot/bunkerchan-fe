@@ -1,53 +1,84 @@
-var loadedPreviews = [];
-var loadingPreviews = [];
-var loadedContent = {};
-var quoteReference = {};
+var tooltips = {};
 
-var knownPosts = {};
+tooltips.init = function() {
 
-if (!DISABLE_JS) {
+  tooltips.bottomMargin = 25;
+  tooltips.loadingPreviews = {};
+  tooltips.loadedContent = {};
+  tooltips.quoteReference = {};
+  tooltips.knownPosts = {};
+  tooltips.knownData = {};
 
   var posts = document.getElementsByClassName('postCell');
 
   for (var i = 0; i < posts.length; i++) {
-    addToKnownPostsForBackLinks(posts[i])
+    tooltips.addToKnownPostsForBackLinks(posts[i])
   }
 
   var threads = document.getElementsByClassName('opCell');
 
   for (i = 0; i < threads.length; i++) {
-    addToKnownPostsForBackLinks(threads[i])
+    tooltips.addToKnownPostsForBackLinks(threads[i])
   }
+
+  tooltips.cacheExistingHTML('innerOP');
+  tooltips.cacheExistingHTML('innerPost');
 
   var quotes = document.getElementsByClassName('quoteLink');
 
   for (i = 0; i < quotes.length; i++) {
-    processQuote(quotes[i]);
+    tooltips.processQuote(quotes[i]);
   }
-}
 
-function addToKnownPostsForBackLinks(posting) {
+};
+
+tooltips.cacheExistingHTML = function(className) {
+
+  var innerContent = document.getElementsByClassName(className);
+
+  for (var i = 0; i < innerContent.length; i++) {
+
+    var inner = innerContent[i];
+
+    var temp = document.createElement('div');
+    temp.className = 'innerPost';
+    temp.innerHTML = inner.innerHTML;
+
+    var deletionCheckBox = temp.getElementsByClassName('deletionCheckBox')[0];
+
+    if (deletionCheckBox) {
+      deletionCheckBox.remove();
+    }
+
+    var quoteLink = temp.getElementsByClassName('linkSelf')[0];
+    tooltips.loadedContent[quoteLink.href] = temp.outerHTML;
+  }
+
+};
+
+tooltips.addToKnownPostsForBackLinks = function(posting) {
 
   var postBoard = posting.dataset.boarduri;
 
-  var list = knownPosts[postBoard] || {};
-  knownPosts[postBoard] = list;
+  var list = tooltips.knownPosts[postBoard] || {};
+  tooltips.knownPosts[postBoard] = list;
 
   list[posting.id] = {
     added : [],
     container : posting.getElementsByClassName('panelBacklinks')[0]
   };
 
-}
+};
 
-function addBackLink(quoteUrl, quote) {
+tooltips.addBackLink = function(quoteUrl, quote) {
 
-  var matches = quoteUrl.match(/\/(\w+)\/res\/\d+\.html\#(\d+)/);
+  var matches = quoteUrl.match(/\/(\w+)\/res\/(\d+)\.html\#(\d+)/);
 
   var board = matches[1];
-  var post = matches[2];
+  var thread = matches[2];
+  var post = matches[3];
 
-  var knownBoard = knownPosts[board];
+  var knownBoard = tooltips.knownPosts[board];
 
   if (knownBoard) {
 
@@ -83,77 +114,49 @@ function addBackLink(quoteUrl, quote) {
       var backLink = document.createElement('a');
       backLink.innerHTML = innerHTML;
 
-      var superContainer = containerPost.parentNode;
-
-      var backLinkUrl = '/' + sourceBoard + '/res/';
-
-      if (superContainer.className === 'divPosts') {
-
-        backLinkUrl += containerPost.parentNode.parentNode.id;
-        backLinkUrl += '.html#' + sourcePost;
-
-      } else {
-        backLinkUrl += sourcePost + '.html#' + sourcePost;
-      }
+      var backLinkUrl = '/' + sourceBoard + '/res/' + thread + '.html#'
+          + sourcePost;
 
       backLink.href = backLinkUrl;
 
       knownBackLink.container.appendChild(backLink);
 
-      processQuote(backLink, true);
+      tooltips.processQuote(backLink, true);
 
     }
 
   }
 
+};
+
+tooltips.checkHeight = function(tooltip) {
+
+  var windowHeight = document.documentElement.clientHeight + window.scrollY;
+
+  if (tooltip.offsetHeight + tooltip.offsetTop + tooltips.bottomMargin > windowHeight) {
+    tooltip.style.top = (windowHeight - tooltip.offsetHeight - tooltips.bottomMargin)
+        + 'px';
+  }
+
 }
 
-function setFullBorder(tooltip) {
+tooltips.processQuote = function(quote, backLink) {
 
-  var innerPost = tooltip.getElementsByClassName('innerPost')[0];
-
-  var parent = innerPost.parentNode;
-
-  var temp = document.createElement('div');
-  temp.appendChild(innerPost);
-
-  tooltip.innerHTML = '';
-  tooltip.appendChild(innerPost);
-
-  innerPost.style['border-style'] = 'solid';
-  innerPost.style['border-width'] = '1px';
-  innerPost.style['border-color'] = '#117743';
-}
-
-function processQuote(quote, backLink) {
-
-  var tooltip = document.createElement('div');
-  tooltip.style.display = 'none';
-  tooltip.style.position = 'absolute';
-
-  document.body.appendChild(tooltip);
+  var tooltip;
 
   var quoteUrl = quote.href;
 
   if (!backLink) {
-    addBackLink(quoteUrl, quote);
-  }
-
-  if (loadedPreviews.indexOf(quoteUrl) > -1) {
-    tooltip.innerHTML = loadedContent[quoteUrl];
-
-    setFullBorder(tooltip);
-
-  } else {
-    var referenceList = quoteReference[quoteUrl] || [];
-
-    referenceList.push(tooltip);
-
-    quoteReference[quoteUrl] = referenceList;
-    tooltip.innerHTML = 'Loading';
+    tooltips.addBackLink(quoteUrl, quote);
   }
 
   quote.onmouseenter = function() {
+
+    tooltip = document.createElement('div');
+    tooltip.className = 'quoteTooltip';
+
+    document.body.appendChild(tooltip);
+
     var rect = quote.getBoundingClientRect();
 
     var previewOrigin = {
@@ -165,55 +168,105 @@ function processQuote(quote, backLink) {
     tooltip.style.top = previewOrigin.y + 'px';
     tooltip.style.display = 'inline';
 
-    if (loadedPreviews.indexOf(quoteUrl) < 0
-        && loadingPreviews.indexOf(quoteUrl) < 0) {
-      loadQuote(tooltip, quoteUrl);
+    if (tooltips.loadedContent[quoteUrl]) {
+      tooltip.innerHTML = tooltips.loadedContent[quoteUrl];
+
+      tooltips.checkHeight(tooltip);
+
+    } else {
+      tooltip.innerHTML = 'Loading';
+    }
+
+    if (!tooltips.loadedContent[quoteUrl]
+        && !tooltips.loadingPreviews[quoteUrl]) {
+      tooltips.loadQuote(tooltip, quoteUrl);
+    }
+
+    if (!api.isBoard) {
+      var matches = quote.href.match(/\#(\d+)/);
+
+      quote.onclick = function() {
+        thread.markPost(matches[1]);
+      };
     }
 
   };
 
   quote.onmouseout = function() {
-    tooltip.style.display = 'none';
+    if (tooltip) {
+      tooltip.remove();
+      tooltip = null;
+    }
   };
 
-  if (!board) {
-    var matches = quote.href.match(/\#(\d+)/);
+};
 
-    quote.onclick = function() {
-      markPost(matches[1]);
-    };
+tooltips.generateHTMLFromData = function(postingData, tooltip, quoteUrl) {
+
+  if (!postingData) {
+    tooltip.innerHTML = 'Not found';
+    return;
   }
 
-}
+  var tempDiv = posting.addPost(postingData, postingData.boardUri,
+      postingData.threadId, true).getElementsByClassName('innerPost')[0];
 
-function loadQuote(tooltip, quoteUrl) {
+  tempDiv.getElementsByClassName('deletionCheckBox')[0].remove();
 
-  var matches = quoteUrl.match(/\/(\w+)\/res\/\d+\.html\#(\d+)/);
+  tooltip.innerHTML = tempDiv.outerHTML;
+
+  tooltips.checkHeight(tooltip);
+
+  tooltips.loadedContent[quoteUrl] = tempDiv.outerHTML;
+
+};
+
+tooltips.cacheData = function(threadData) {
+
+  for (var i = 0; i < threadData.posts.length; i++) {
+    var postData = threadData.posts[i];
+    tooltips.knownData[threadData.boardUri + '/' + postData.postId] = postData;
+  }
+
+  tooltips.knownData[threadData.boardUri + '/' + threadData.threadId] = threadData;
+
+};
+
+tooltips.loadQuote = function(tooltip, quoteUrl) {
+
+  var matches = quoteUrl.match(/\/(\w+)\/res\/(\d+)\.html\#(\d+)/);
 
   var board = matches[1];
-  var post = matches[2];
+  var thread = +matches[2];
+  var post = +matches[3];
 
-  var previewUrl = '/' + board + '/preview/' + post + '.html';
+  var postingData = tooltips.knownData[board + '/' + post];
 
-  localRequest(previewUrl, function receivedData(error, data) {
+  if (postingData) {
+    tooltips.generateHTMLFromData(postingData, tooltip, quoteUrl);
+    return;
+  }
+
+  var threadUrl = '/' + board + '/res/' + thread + '.json';
+
+  tooltips.loadingPreviews[quoteUrl] = true;
+
+  api.localRequest(threadUrl, function receivedData(error, data) {
+
+    delete tooltips.loadingPreviews[quoteUrl];
+
     if (error) {
-      loadingPreviews.splice(loadingPreviews.indexOf(quoteUrl), 1);
-    } else {
-
-      var referenceList = quoteReference[quoteUrl];
-
-      for (var i = 0; i < referenceList.length; i++) {
-        referenceList[i].innerHTML = data;
-
-        setFullBorder(referenceList[i]);
-      }
-
-      loadedContent[quoteUrl] = data;
-      loadedPreviews.push(quoteUrl);
-      loadingPreviews.splice(loadingPreviews.indexOf(quoteUrl), 1);
+      tooltip.innerHTML = 'Not found';
+      return;
     }
+
+    tooltips.cacheData(JSON.parse(data));
+
+    tooltips.generateHTMLFromData(tooltips.knownData[board + '/' + post],
+        tooltip, quoteUrl);
+
   });
 
-  loadingPreviews.push(quoteUrl);
+};
 
-}
+tooltips.init();

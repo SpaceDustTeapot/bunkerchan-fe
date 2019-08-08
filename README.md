@@ -9,18 +9,4 @@ mongofiles tool and run
 
 > mongofiles -h localhost -d {dbName} -p 27017 -l {/path/to/yourfavicon} put /favicon.ico
 
-
 This front end currently requires you to set the URI of the overboard as "overboard".
-
-For the javascript to work, you will have to create a file named settings.js in the static/js directory and declare the following variables in it:
-* VERBOSE: if true, it will print incoming and outcoming data from the api.
-* DISABLE_JS: if true, javascript will not be used.
-
-Example:
-```
-var VERBOSE = false;
-var DISABLE_JS = false;
-```
-Don't forget to do this.
-
-The setup.sh script can help with that, though.
