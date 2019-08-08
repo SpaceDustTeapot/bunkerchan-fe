@@ -1,14 +1,21 @@
 body.theme_dark {
-	background: #1E1E1E;
 	color: #999999;
 	font-family: sans-serif;
+}
+
+body.theme_dark, .theme_dark .floatingMenu{
+	background: #1E1E1E;
 }
 .theme_dark hr {
 	border: none;
 	border-top: 1px solid #333333;
 }/* LINKS */
-.theme_dark a,  .theme_dark .hideButton,  .theme_dark .unhideButton,  .theme_dark .embedButton,  .theme_dark .navClickable,  .theme_dark #closeWatcherMenuButton,  .theme_dark .watchButton,  .theme_dark .watchedCellCloseButton,  .theme_dark .hideFileButton {
-	color: #CCCCCC;
+.theme_dark a,  .theme_dark .hideButton,  .theme_dark .unhideButton, 
+.theme_dark .embedButton,  .theme_dark .navClickable,  .theme_dark #closeWatcherMenuButton, 
+ .theme_dark .watchButton,  .theme_dark .watchedCellCloseButton, .theme_dark .hideFileButton,
+ .theme_dark .coloredIcon, .theme_dark input[type=checkbox].postingCheckbox+label::before, .theme_dark a.rules:after,
+.theme_dark #selectedTab {
+	color: #CCCCCC !important;
 }
 .theme_dark a:hover,  .theme_dark .hideButton:hover,  .theme_dark .unhideButton:hover,  .theme_dark .embedButton:hover,  .theme_dark .navClickable:hover,  .theme_dark #closeWatcherMenuButton:hover,  .theme_dark .watchButton:hover,  .theme_dark .watchedCellCloseButton:hover,  .theme_dark .hideFileButton:hover {
 	color: #FFFFFF;
@@ -23,10 +30,11 @@ body.theme_dark {
 	font-weight: bold;
 }
 .theme_dark .boardHeader p#labelDescription {
-	color: #AF0A0F;
+	color: #32DD72;
 	font-size: 8pt;
 }/* REPLY + MAKE THREAD FIELDS */
-.theme_dark #newPostFieldset,  .theme_dark #quick-reply table {
+.theme_dark #newPostFieldset,  .theme_dark #quick-reply table, .theme_dark .modalDecorationPanel,
+.theme_dark .floatingMenu, .theme_dark #settingsFieldset, .theme_dark .reportFieldset {
 	border: 1px dashed #333333;
 }
 .theme_dark input,  .theme_dark select,  .theme_dark textarea {
@@ -113,8 +121,13 @@ body.theme_dark {
 .theme_dark .greenText { /* >IMBLYGN */
     color: #B8D962;
 }/* THREAD POSTS */
-.theme_dark .innerPost {  /* normal reply */
+.theme_dark .innerPost, .theme_dark .sideCatalogCell{  /* normal reply */
 	background-color: #333333;
+}
+.theme_dark .sideCatalogMarkedCell{
+	background-color: #000;
+}
+.theme_dark .innerPost{
 	border: 1px solid #555555;
 	border-radius: 10px;
 	-webkit-border-radius: 10px;
@@ -166,7 +179,7 @@ body.theme_dark {
 	color: #32DD72;
 }
 .theme_dark .catalogCell {
-	background: 303030;
+	background: #303030;
 	border: 1px solid #464646;
 	border-radius: 0px;
 }/* BOARD LIST */
@@ -176,4 +189,8 @@ body.theme_dark {
 .theme_dark #divLatestPosts .latestPostCell {
     background: #333333;
     border: 1px solid #555555;
+}
+
+.theme_dark .sideCatalogCell,.theme_dark .sideCatalogMarkedCell, .theme_dark #postingForm th{
+	border: 1px solid #888;
 }
