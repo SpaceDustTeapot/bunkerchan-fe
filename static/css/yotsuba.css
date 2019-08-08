@@ -3,11 +3,20 @@ body.theme_yotsuba {
 	color: #000000;
 	font-family: arial,helvetica,sans-serif;
 }
+
+.theme_yotsuba .floatingMenu{
+	background: #EEF2FF;
+}
+
 .theme_yotsuba hr {
 	border: none;
 	border-top: 1px solid #B7C5D9;
 }/* LINKS */
-.theme_yotsuba a,  .theme_yotsuba .hideButton,  .theme_yotsuba .unhideButton,  .theme_yotsuba .embedButton,  .theme_yotsuba .navClickable,  .theme_yotsuba #closeWatcherMenuButton,  .theme_yotsuba .watchButton,  .theme_yotsuba .watchedCellCloseButton,  .theme_yotsuba .hideFileButton ,.theme_yotsuba .coloredIcon, .theme_yotsuba input[type=checkbox].postingCheckbox+label::before, .theme_yotsuba a.rules:after{
+.theme_yotsuba a,  .theme_yotsuba .hideButton,  .theme_yotsuba .unhideButton, 
+ .theme_yotsuba .embedButton,  .theme_yotsuba .navClickable,  .theme_yotsuba #closeWatcherMenuButton, 
+ .theme_yotsuba .watchButton,  .theme_yotsuba .watchedCellCloseButton,  .theme_yotsuba .hideFileButton ,
+ .theme_yotsuba .coloredIcon, .theme_yotsuba input[type=checkbox].postingCheckbox+label::before, 
+ .theme_yotsuba a.rules:after, .theme_yotsuba #selectedTab{
 	color: #34345C !important;
 }
 .theme_yotsuba a:hover,  .theme_yotsuba .hideButton:hover,  .theme_yotsuba .unhideButton:hover,  .theme_yotsuba .embedButton:hover,  .theme_yotsuba .navClickable:hover,  .theme_yotsuba #closeWatcherMenuButton:hover,  .theme_yotsuba .watchButton:hover,  .theme_yotsuba .watchedCellCloseButton:hover,  .theme_yotsuba .hideFileButton:hover {
@@ -25,7 +34,8 @@ body.theme_yotsuba {
 .theme_yotsuba .boardHeader p#labelDescription {
 	font-size: 8pt;
 }/* REPLY + MAKE THREAD FIELDS */
-.theme_yotsuba #newPostFieldset,  .theme_yotsuba #quick-reply table {
+.theme_yotsuba #newPostFieldset, .theme_yotsuba #quick-reply table, .theme_yotsuba .modalDecorationPanel,
+.theme_yotsuba .floatingMenu, .theme_yotsuba #settingsFieldset, .theme_yotsuba .reportFieldset {
 	border: 1px dashed #B7C5D9;
 }
 .theme_yotsuba input,  .theme_yotsuba select,  .theme_yotsuba textarea {
