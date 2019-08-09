@@ -88,7 +88,7 @@ body.theme_yotsuba {
 	color: #DD0000;
 }
 .theme_yotsuba .noEmailName,  .theme_yotsuba .noEmailName:hover { /* regular anonymous */
-	color: #117743;
+	color: #117743 !important;
 	text-decoration: none;
 	text-shadow: none;
 }

@@ -84,7 +84,7 @@ body.theme_dark, .theme_dark .floatingMenu{
 	text-decoration: underline;
 }
 .theme_dark .noEmailName,  .theme_dark .noEmailName:hover { /* regular anonymous */
-	color: #32DD72;
+	color: #32DD72 !important;
 	text-decoration: none;
 	text-shadow: none;
 }
