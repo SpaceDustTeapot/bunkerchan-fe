@@ -1,5 +1,5 @@
 function CSSYotCheck()
 {
-  var DEFAULT_THEME = "yostuba"
+  var DEFAULT_THEME = "yotsuba"
   localStorage.selectedTheme = localStorage.selectedTheme || DEFAULT_THEME
 }
