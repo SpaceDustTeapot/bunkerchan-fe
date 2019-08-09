@@ -10,15 +10,11 @@ watcher.init = function() {
   var postingLink = document.getElementById('navPosting');
   var referenceNode = postingLink.nextSibling;
 
-  postingLink.parentNode.insertBefore(document.createTextNode(' '),
-      referenceNode);
 
   var divider = document.createElement('span');
   divider.innerHTML = '/';
   postingLink.parentNode.insertBefore(divider, referenceNode);
 
-  postingLink.parentNode.insertBefore(document.createTextNode(' '),
-      referenceNode);
 
   var watcherButton = document.createElement('a');
   watcherButton.id = 'watcherButton';

@@ -21,15 +21,11 @@ themes.init = function() {
 
     var referenceNode = postingLink.nextSibling;
 
-    postingLink.parentNode.insertBefore(document.createTextNode(' '),
-        referenceNode);
 
     var divider = document.createElement('span');
     divider.innerHTML = '/';
     postingLink.parentNode.insertBefore(divider, referenceNode);
 
-    postingLink.parentNode.insertBefore(document.createTextNode(' '),
-        referenceNode);
 
     var themeSelector = document.createElement('select');
     themeSelector.id = 'themeSelector';
