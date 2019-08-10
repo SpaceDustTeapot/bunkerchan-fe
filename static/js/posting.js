@@ -57,6 +57,13 @@ posting.init = function() {
     posting.processIdLabel(ids[i]);
   }
 
+  // Sets post's time create to browser's local time.
+  var postCreateds = document.querySelectorAll('.labelCreated');
+  postCreateds.forEach(function (createdAt) {
+    var dateCreated = new Date(createdAt.innerHTML + ' UTC');
+    createdAt.innerHTML = posting.formatDateToDisplay(dateCreated);
+    createdAt.setAttribute("title", posting.prettyRelativeTimeSinceDate(dateCreated))
+  })
 };
 
 posting.processIdLabel = function(label) {
@@ -128,6 +135,13 @@ posting.addRelativeTime = function(time) {
 
   }
 
+  var content = posting.prettyRelativeTimeSinceDate(timeObject);
+
+  time.nextSibling.nextSibling.innerHTML = '(' + content + ')';
+
+};
+
+posting.prettyRelativeTimeSinceDate = function (timeObject) {
   var now = new Date();
 
   var content;
@@ -154,9 +168,7 @@ posting.addRelativeTime = function(time) {
   } else {
     content = 'Just now'
   }
-
-  time.nextSibling.nextSibling.innerHTML = '(' + content + ')';
-
+  return content;
 };
 
 posting.spoilFiles = function() {
@@ -277,28 +289,29 @@ posting.padDateField = function(value) {
 };
 
 posting.formatDateToDisplay = function(d) {
+  var weekDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
-  var day = posting.padDateField(d.getUTCDate());
+  var weekDay = weekDays[d.getDay()];
 
-  var weekDays = [ 'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat' ];
+  var hour = posting.padDateField(d.getHours());
 
-  var month = posting.padDateField(d.getUTCMonth() + 1);
+  var minute = posting.padDateField(d.getMinutes());
 
-  var year = d.getUTCFullYear();
+  var second = posting.padDateField(d.getSeconds());
 
-  var weekDay = weekDays[d.getUTCDay()];
-
-  var hour = posting.padDateField(d.getUTCHours());
-
-  var minute = posting.padDateField(d.getUTCMinutes());
-
-  var second = posting.padDateField(d.getUTCSeconds());
-
-  var toReturn = month + '/' + day + '/' + year;
-
-  return toReturn + ' (' + weekDay + ') ' + hour + ':' + minute + ':' + second;
+  var monthYearDayOptions = {
+    year: 'numeric',
+    month: 'numeric',
+    day: 'numeric',
+    dateStyle: "short"
+  };
+  var monthYearDay = d.toLocaleString(undefined, monthYearDayOptions);
+  var localTime = d.toLocaleTimeString();
+  // return monthYearDay + ' (' + weekDay + ') ' + hour + ':' + minute + ':' + second;
+  return monthYearDay + ' (' + weekDay + ') ' + localTime;
 
 };
+
 
 posting.formatFileSize = function(size) {
 
