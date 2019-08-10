@@ -1,9 +1,9 @@
 var themes = {};
 
-themes.init = function () {
-  var OVERRIDE_DEFAULT_THEME = "yotsuba";
 
-  localStorage.selectedTheme = localStorage.selectedTheme || OVERRIDE_DEFAULT_THEME;
+themes.init = function () {
+
+  localStorage.selectedTheme = localStorage.selectedTheme || themeLoader.OVERRIDE_DEFAULT_THEME;
 
   themes.themes = [{
     label: 'Default',
