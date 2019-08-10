@@ -307,9 +307,8 @@ posting.formatDateToDisplay = function(d) {
   };
   var monthYearDay = d.toLocaleString(undefined, monthYearDayOptions);
   var localTime = d.toLocaleTimeString();
-  // return monthYearDay + ' (' + weekDay + ') ' + hour + ':' + minute + ':' + second;
-  return monthYearDay + ' (' + weekDay + ') ' + localTime;
 
+  return monthYearDay + ' (' + weekDay + ') ' + localTime;
 };
 
 posting.formatFileSize = function(size) {
