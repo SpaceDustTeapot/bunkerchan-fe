@@ -312,7 +312,6 @@ posting.formatDateToDisplay = function(d) {
 
 };
 
-
 posting.formatFileSize = function(size) {
 
   var orderIndex = 0;
