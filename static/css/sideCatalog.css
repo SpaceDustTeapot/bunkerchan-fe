@@ -2,6 +2,7 @@
   overflow-y: auto;
   height: calc(100vh - 22px);
   margin-top: 22px;
+  -webkit-overflow-scrolling: touch; /*IOS safari mobile, enables momentum/inertia scrolling in the thread view and sidebar view*/
 }
 
 #navSideCatalog:before {
