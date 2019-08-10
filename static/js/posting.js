@@ -1,39 +1,39 @@
 var posting = {};
 
-posting.init = function () {
+posting.init = function() {
 
   posting.idsRelation = {};
   posting.highLightedIds = [];
 
   posting.postCellTemplate = '<div class="innerPost"><div class="postInfo title">'
-    + '<input type="checkbox" class="deletionCheckBox"> <span class="labelSubject">'
-    + '</span> <a class="linkName"></a> <img class="imgFlag"> <span class="labelRole">'
-    + '</span> <span class="labelCreated"></span> <span class="spanId"> Id:<span '
-    + 'class="labelId"></span></span> <a '
-    + 'class="linkSelf">No.</a> <a class="linkQuote"></a> <a class="linkEdit">Edit</a> '
-    + '<span class="panelBacklinks"></span></div>'
-    + '<div>'
-    + '<span class="panelIp"> <span class="panelRange">Broad'
-    + 'range(1/2 octets): <span class="labelBroadRange"> </span> <br>'
-    + 'Narrow range(3/4 octets): <span class="labelNarrowRange"> </span> <br>'
-    + '</span> Ip: <span class="labelIp"></span></span>'
-    + '</div>'
-    + '<div class="panelUploads"></div><div class="divMessage"></div>'
-    + '<div class="divBanMessage"></div><div class="labelLastEdit"></div></div>';
+      + '<input type="checkbox" class="deletionCheckBox"> <span class="labelSubject">'
+      + '</span> <a class="linkName"></a> <img class="imgFlag"> <span class="labelRole">'
+      + '</span> <span class="labelCreated"></span> <span class="spanId"> Id:<span '
+      + 'class="labelId"></span></span> <a '
+      + 'class="linkSelf">No.</a> <a class="linkQuote"></a> <a class="linkEdit">Edit</a> '
+      + '<span class="panelBacklinks"></span></div>'
+      + '<div>'
+      + '<span class="panelIp"> <span class="panelRange">Broad'
+      + 'range(1/2 octets): <span class="labelBroadRange"> </span> <br>'
+      + 'Narrow range(3/4 octets): <span class="labelNarrowRange"> </span> <br>'
+      + '</span> Ip: <span class="labelIp"></span></span>'
+      + '</div>'
+      + '<div class="panelUploads"></div><div class="divMessage"></div>'
+      + '<div class="divBanMessage"></div><div class="labelLastEdit"></div></div>';
 
   posting.uploadCell = '<div class="uploadDetails"><a class="nameLink" target="blank">'
-    + '</a> <span class="hideMobile">(</span><span class="sizeLabel"></span> '
-    + '<span class="dimensionLabel"></span> <a class="originalNameLink"></a><span '
-    + 'class="hideMobile">)</span></div><div class="divHash"><span>MD5: <span '
-    + 'class="labelHash"></span></span></div><a class="imgLink" target="blank"></a>';
+      + '</a> <span class="hideMobile">(</span><span class="sizeLabel"></span> '
+      + '<span class="dimensionLabel"></span> <a class="originalNameLink"></a><span '
+      + 'class="hideMobile">)</span></div><div class="divHash"><span>MD5: <span '
+      + 'class="labelHash"></span></span></div><a class="imgLink" target="blank"></a>';
 
-  posting.sizeOrders = ['B', 'KB', 'MB', 'GB', 'TB'];
+  posting.sizeOrders = [ 'B', 'KB', 'MB', 'GB', 'TB' ];
 
   posting.guiEditInfo = 'Edited last time by {$login} on {$date}.';
 
   posting.reverseHTMLReplaceTable = {};
 
-  for (var key in api.htmlReplaceTable) {
+  for ( var key in api.htmlReplaceTable) {
     posting.reverseHTMLReplaceTable[api.htmlReplaceTable[key]] = key;
   }
 
@@ -59,7 +59,7 @@ posting.init = function () {
 
 };
 
-posting.processIdLabel = function (label) {
+posting.processIdLabel = function(label) {
 
   var id = label.innerHTML;
 
@@ -70,15 +70,15 @@ posting.processIdLabel = function (label) {
 
   array.push(cell);
 
-  label.onmouseover = function () {
+  label.onmouseover = function() {
     label.innerHTML = id + ' (' + array.length + ')';
   }
 
-  label.onmouseout = function () {
+  label.onmouseout = function() {
     label.innerHTML = id;
   }
 
-  label.onclick = function () {
+  label.onclick = function() {
 
     var index = posting.highLightedIds.indexOf(id);
 
@@ -102,7 +102,7 @@ posting.processIdLabel = function (label) {
 
 };
 
-posting.updateAllRelativeTimes = function () {
+posting.updateAllRelativeTimes = function() {
 
   var times = document.getElementsByClassName('labelCreated');
 
@@ -112,7 +112,7 @@ posting.updateAllRelativeTimes = function () {
 
 };
 
-posting.addRelativeTime = function (time) {
+posting.addRelativeTime = function(time) {
 
   var timeObject = new Date(time.innerHTML + ' UTC');
 
@@ -124,7 +124,7 @@ posting.addRelativeTime = function (time) {
 
     time.parentNode.insertBefore(newRelativeLabel, time.nextSibling);
     time.parentNode
-      .insertBefore(document.createTextNode(' '), time.nextSibling);
+        .insertBefore(document.createTextNode(' '), time.nextSibling);
 
   }
 
@@ -159,16 +159,16 @@ posting.addRelativeTime = function (time) {
 
 };
 
-posting.spoilFiles = function () {
+posting.spoilFiles = function() {
 
   var posts = {
-    action: 'spoil'
+    action : 'spoil'
   };
 
   posting.newGetSelectedContent(posts);
 
   api.formApiRequest('contentActions', posts, function requestComplete(status,
-                                                                       data) {
+      data) {
 
     if (status === 'ok') {
 
@@ -181,7 +181,7 @@ posting.spoilFiles = function () {
 
 };
 
-posting.newGetSelectedContent = function (object) {
+posting.newGetSelectedContent = function(object) {
 
   var checkBoxes = document.getElementsByClassName('deletionCheckBox');
 
@@ -195,7 +195,7 @@ posting.newGetSelectedContent = function (object) {
 
 };
 
-posting.reportPosts = function () {
+posting.reportPosts = function() {
 
   var typedReason = document.getElementById('reportFieldReason').value.trim();
   var typedCaptcha = document.getElementById('fieldCaptchaReport').value.trim();
@@ -209,10 +209,10 @@ posting.reportPosts = function () {
   }
 
   var params = {
-    action: 'report',
-    reason: typedReason,
-    captcha: typedCaptcha,
-    global: document.getElementById('checkboxGlobal').checked,
+    action : 'report',
+    reason : typedReason,
+    captcha : typedCaptcha,
+    global : document.getElementById('checkboxGlobal').checked,
   };
 
   posting.newGetSelectedContent(params);
@@ -231,27 +231,27 @@ posting.reportPosts = function () {
 
 };
 
-posting.deletePosts = function () {
+posting.deletePosts = function() {
 
   var typedPassword = document.getElementById('deletionFieldPassword').value
-    .trim();
+      .trim();
 
   var params = {
-    password: typedPassword,
-    deleteMedia: document.getElementById('checkboxMediaDeletion').checked,
-    deleteUploads: document.getElementById('checkboxOnlyFiles').checked,
-    action: 'delete'
+    password : typedPassword,
+    deleteMedia : document.getElementById('checkboxMediaDeletion').checked,
+    deleteUploads : document.getElementById('checkboxOnlyFiles').checked,
+    action : 'delete'
   };
 
   posting.newGetSelectedContent(params);
 
   api.formApiRequest('contentActions', params, function requestComplete(status,
-                                                                        data) {
+      data) {
 
     if (status === 'ok') {
 
       alert(data.removedThreads + ' threads and ' + data.removedPosts
-        + ' posts were successfully deleted.');
+          + ' posts were successfully deleted.');
 
       if (!api.isBoard && !data.removedThreads && data.removedPosts) {
         thread.refreshPosts(true, true);
@@ -266,7 +266,7 @@ posting.deletePosts = function () {
 
 };
 
-posting.padDateField = function (value) {
+posting.padDateField = function(value) {
 
   if (value < 10) {
     value = '0' + value;
@@ -276,30 +276,31 @@ posting.padDateField = function (value) {
 
 };
 
-posting.formatDateToDisplay = function (d) {
+posting.formatDateToDisplay = function(d) {
 
-  var weekDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  var day = posting.padDateField(d.getUTCDate());
 
-  var weekDay = weekDays[d.getDay()];
+  var weekDays = [ 'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat' ];
 
-  var hour = posting.padDateField(d.getHours());
+  var month = posting.padDateField(d.getUTCMonth() + 1);
 
-  var minute = posting.padDateField(d.getMinutes());
+  var year = d.getUTCFullYear();
 
-  var second = posting.padDateField(d.getSeconds());
+  var weekDay = weekDays[d.getUTCDay()];
 
-  var monthYearDayOptions = {
-    year: 'numeric',
-    month: 'numeric',
-    day: 'numeric',
-    dateStyle: "short"
-  };
-  var monthYearDay = d.toLocaleString(undefined, monthYearDayOptions);
-  return monthYearDay + ' (' + weekDay + ') ' + hour + ':' + minute + ':' + second;
+  var hour = posting.padDateField(d.getUTCHours());
+
+  var minute = posting.padDateField(d.getUTCMinutes());
+
+  var second = posting.padDateField(d.getUTCSeconds());
+
+  var toReturn = month + '/' + day + '/' + year;
+
+  return toReturn + ' (' + weekDay + ') ' + hour + ':' + minute + ':' + second;
 
 };
 
-posting.formatFileSize = function (size) {
+posting.formatFileSize = function(size) {
 
   var orderIndex = 0;
 
@@ -314,7 +315,7 @@ posting.formatFileSize = function (size) {
 
 };
 
-posting.setLastEditedLabel = function (post, cell) {
+posting.setLastEditedLabel = function(post, cell) {
 
   var editedLabel = cell.getElementsByClassName('labelLastEdit')[0];
 
@@ -323,8 +324,8 @@ posting.setLastEditedLabel = function (post, cell) {
     var formatedDate = posting.formatDateToDisplay(new Date(post.lastEditTime));
 
     editedLabel.innerHTML = posting.guiEditInfo
-      .replace('{$date}', formatedDate).replace('{$login}',
-        post.lastEditLogin);
+        .replace('{$date}', formatedDate).replace('{$login}',
+            post.lastEditLogin);
 
   } else {
     editedLabel.remove();
@@ -332,7 +333,7 @@ posting.setLastEditedLabel = function (post, cell) {
 
 };
 
-posting.setUploadLinks = function (cell, file, noExtras) {
+posting.setUploadLinks = function(cell, file, noExtras) {
 
   var thumbLink = cell.getElementsByClassName('imgLink')[0];
   thumbLink.href = file.path;
@@ -340,7 +341,7 @@ posting.setUploadLinks = function (cell, file, noExtras) {
   thumbLink.setAttribute('data-filemime', file.mime);
 
   if (file.mime.indexOf('image/') > -1 && !noExtras
-    && (typeof gallery !== 'undefined')) {
+      && (typeof gallery !== 'undefined')) {
     gallery.addGalleryFile(file.path);
   }
 
@@ -359,7 +360,7 @@ posting.setUploadLinks = function (cell, file, noExtras) {
 
 };
 
-posting.getUploadCellBase = function () {
+posting.getUploadCellBase = function() {
 
   var cell = document.createElement('figure');
   cell.innerHTML = posting.uploadCell;
@@ -369,7 +370,7 @@ posting.getUploadCellBase = function () {
 
 }
 
-posting.setUploadCell = function (node, files, noExtras) {
+posting.setUploadCell = function(node, files, noExtras) {
 
   if (!files) {
     return;
@@ -404,7 +405,7 @@ posting.setUploadCell = function (node, files, noExtras) {
 
 };
 
-posting.setPostHideableElements = function (postCell, post, noExtras) {
+posting.setPostHideableElements = function(postCell, post, noExtras) {
 
   var subjectLabel = postCell.getElementsByClassName('labelSubject')[0];
 
@@ -472,8 +473,8 @@ posting.setPostHideableElements = function (postCell, post, noExtras) {
 
 };
 
-posting.setPostLinks = function (postCell, post, boardUri, link, threadId,
-                                 linkQuote, deletionCheckbox) {
+posting.setPostLinks = function(postCell, post, boardUri, link, threadId,
+    linkQuote, deletionCheckbox) {
 
   var postingId = post.postId || threadId;
 
@@ -506,7 +507,7 @@ posting.setPostLinks = function (postCell, post, boardUri, link, threadId,
 
 };
 
-posting.setRoleSignature = function (postingCell, posting) {
+posting.setRoleSignature = function(postingCell, posting) {
 
   var labelRole = postingCell.getElementsByClassName('labelRole')[0];
 
@@ -518,8 +519,8 @@ posting.setRoleSignature = function (postingCell, posting) {
 
 };
 
-posting.setPostComplexElements = function (postCell, post, boardUri, threadId,
-                                           noExtras) {
+posting.setPostComplexElements = function(postCell, post, boardUri, threadId,
+    noExtras) {
 
   posting.setRoleSignature(postCell, post);
 
@@ -531,7 +532,7 @@ posting.setPostComplexElements = function (postCell, post, boardUri, threadId,
   var deletionCheckbox = postCell.getElementsByClassName('deletionCheckBox')[0];
 
   posting.setPostLinks(postCell, post, boardUri, link, threadId, linkQuote,
-    deletionCheckbox);
+      deletionCheckbox);
 
   var panelUploads = postCell.getElementsByClassName('panelUploads')[0];
 
@@ -543,8 +544,8 @@ posting.setPostComplexElements = function (postCell, post, boardUri, threadId,
 
 };
 
-posting.setPostInnerElements = function (boardUri, threadId, post, postCell,
-                                         noExtras) {
+posting.setPostInnerElements = function(boardUri, threadId, post, postCell,
+    noExtras) {
 
   var linkName = postCell.getElementsByClassName('linkName')[0];
 
@@ -571,7 +572,7 @@ posting.setPostInnerElements = function (boardUri, threadId, post, postCell,
   posting.setPostComplexElements(postCell, post, boardUri, threadId, noExtras);
 
   var messageLinks = postCell.getElementsByClassName('divMessage')[0]
-    .getElementsByTagName('a');
+      .getElementsByTagName('a');
 
   for (var i = 0; i < messageLinks.length; i++) {
     embed.processLinkForEmbed(messageLinks[i]);
@@ -625,7 +626,7 @@ posting.setPostInnerElements = function (boardUri, threadId, post, postCell,
 
 };
 
-posting.addPost = function (post, boardUri, threadId, noExtra) {
+posting.addPost = function(post, boardUri, threadId, noExtra) {
 
   var postCell = document.createElement('div');
   postCell.innerHTML = posting.postCellTemplate;
