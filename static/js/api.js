@@ -46,11 +46,13 @@ api.resetIndicators = function(data, thread) {
   api.removeIndicator('pinIndicator', thread);
   api.removeIndicator('cyclicIndicator', thread);
   api.removeIndicator('archiveIndicator', thread);
+  api.removeIndicator('bumpLockIndicator', thread);
 
   api.addIndicator('cyclicIndicator', 'Cyclical Thread', thread);
   api.addIndicator('pinIndicator', 'Sticky', thread);
   api.addIndicator('lockIndicator', 'Locked', thread);
   api.addIndicator('archiveIndicator', 'Archived', thread);
+  api.addIndicator('bumpLockIndicator', 'Bumplocked', thread);
 
   if (!data.locked) {
     api.removeIndicator('lockIndicator', thread);
@@ -66,6 +68,9 @@ api.resetIndicators = function(data, thread) {
 
   if (!data.archived) {
     api.removeIndicator('archiveIndicator', thread);
+  }
+  if (!data.autoSage) {
+    api.removeIndicator('bumpLockIndicator', thread);
   }
 
 };
