@@ -279,6 +279,7 @@ thread.archiveThread = function() {
         locked : document.getElementsByClassName('lockIndicator').length,
         pinned : document.getElementsByClassName('pinIndicator').length,
         cyclic : document.getElementsByClassName('cyclicIndicator').length,
+        cyclic : document.getElementsByClassName('bumpLockIndicator').length,
         archived : true
       });
 
@@ -292,6 +293,7 @@ thread.archiveThread = function() {
 
 thread.saveThreadSettings = function() {
 
+  var autoSage = document.getElementById('checkboxAutoSage').checked;
   var pinned = document.getElementById('checkboxPin').checked;
   var locked = document.getElementById('checkboxLock').checked;
   var cyclic = document.getElementById('checkboxCyclic').checked;
@@ -299,6 +301,7 @@ thread.saveThreadSettings = function() {
   api.formApiRequest('changeThreadSettings', {
     boardUri : api.boardUri,
     threadId : api.threadId,
+    autoSage: autoSage,
     pin : pinned,
     lock : locked,
     cyclic : cyclic
@@ -310,6 +313,7 @@ thread.saveThreadSettings = function() {
         locked : locked,
         pinned : pinned,
         cyclic : cyclic,
+		autoSage: autoSage,
         archived : document.getElementsByClassName('archiveIndicator').length
       });
 
