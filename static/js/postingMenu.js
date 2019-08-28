@@ -715,6 +715,23 @@ postingMenu.setExtraMenuMod = function(innerPart, extraMenu, board, thread,
   };
   extraMenu.appendChild(editButton);
 
+  extraMenu.appendChild(document.createElement('hr'));
+  
+  var postHistoryButton = document.createElement('div');
+  postHistoryButton.innerHTML = 'Post History';
+  
+  postHistoryButton.onclick = function(){
+	var id = post;
+	if(!id){
+		id = thread;
+	}
+	var board = new URL(location.href).pathname.split("/")[1];
+	var url = "/addon.js/posthistory.js?id=" + id + "&board=" + board;
+	location.href = url;
+  };
+  extraMenu.appendChild(postHistoryButton);
+
+  
   if (!post) {
     postingMenu.setExtraMenuThread(extraMenu, board, thread, innerPart);
   }
