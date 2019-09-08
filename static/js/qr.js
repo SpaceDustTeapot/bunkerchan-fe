@@ -105,7 +105,7 @@ qr.setQr = function() {
   qrhtml += '</textarea></td></tr> ';
 
   qrhtml += '<tr><td colspan="2">';
-  qrhtml += '<input id="qrpassword" type="password" placeholder="Password"></td></tr>';
+  qrhtml += '<input id="qrpassword" type="password" placeholder="Password" autocomplete="off"></td></tr>';
 
   var noFlagDiv = document.getElementById('noFlagDiv');
 
