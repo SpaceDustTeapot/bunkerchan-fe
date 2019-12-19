@@ -1,6 +1,9 @@
-Frontend of bunkerchan. Uses lynxchan 2.2.8.
+Frontend of bunkerchan. Uses lynxchan 2.3.x.
 
-old shit below idk lol
+Addons used with this frontend: https://github.com/comraderat/bunkerchan-addons
+
+
+Based on PenumbraLynx
 ----
 **PenumbraLynx** is an updated version of [8TailedLynx](https://gitgud.io/obongo/8TailedLynx)'s Penumbra version.
 
