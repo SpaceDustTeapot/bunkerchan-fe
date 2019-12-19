@@ -1,8 +1,10 @@
 {
   "optional": {
-    "dynamicHeader": "content/header.html",
     "postingTable": "content/postingForm.html",
-    "actionsForm": "content/actionsForm.html"
+    "actionsForm": "content/actionsForm.html",
+	"generalHeader": "content/generalHeader.html",
+	"boardHeader" : "content/boardHeader.html",
+	"threadHeader" : "content/threadHeader.html"
   },
   "templated": [
     "pages/about.html",
