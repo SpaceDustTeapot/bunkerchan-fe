@@ -187,7 +187,6 @@ video {
 }
 
 .multipleUploads .uploadCell:not(.expandedCell) {
-  max-width: 150px;
   float: left;
 }
 
