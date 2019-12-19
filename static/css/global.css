@@ -255,11 +255,11 @@ nav span, nav a {
 }
 
 #navLinkHome:before {
-  content: "\e082";
+  content: "\e078";
 }
 
 #navBoardList:before {
-  content: "\e03a";
+  content: "\e09b";
 }
 
 #linkOverboard:before, #navOverboard:before {
@@ -356,12 +356,6 @@ span.spoiler {
   padding: 1em;
   display: inline-block;
   text-align: left;
-}
-
-#settingsWrapper input {
-  display: block;
-  margin-top: 0.25em;
-  margin-bottom: 0.25em;
 }
 
 .banners {
@@ -487,7 +481,7 @@ footer {
   content: 'settings';
 }
 
-#linkLogs::after {
+#linkGlobalLogs::after {
   content: 'logs';
 }
 
@@ -509,6 +503,10 @@ footer {
 
 #linkAbout::after {
   content: 'about';
+}
+
+#navOptionsSpan a{
+  margin-top: 2px;
 }
 
 #linkContact::after {

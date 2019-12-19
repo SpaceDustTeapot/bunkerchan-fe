@@ -127,6 +127,27 @@ sideCatalog.getRangePanel = function() {
 
 };
 
+sideCatalog.createHistoryLinks = function(cell) {
+
+  var referenceElement = cell.getElementsByClassName('panelBacklinks')[0];
+
+  var historyLink = document.createElement('a');
+  historyLink.innerHTML = '[History]';
+  historyLink.className = 'linkHistory';
+
+  var fileHistoryLink = document.createElement('a');
+  fileHistoryLink.innerHTML = ' [File history]';
+  fileHistoryLink.className = 'linkFileHistory';
+
+  referenceElement.parentNode.insertBefore(historyLink, referenceElement);
+  referenceElement.parentNode.insertBefore(document.createTextNode(' '),
+      referenceElement);
+  referenceElement.parentNode.insertBefore(fileHistoryLink, referenceElement);
+  referenceElement.parentNode.insertBefore(document.createTextNode(' '),
+      referenceElement);
+
+};
+
 sideCatalog.transitionThread = function(cell, threadData, data) {
 
   if (sideCatalog.selectedThreadCell) {
@@ -146,8 +167,12 @@ sideCatalog.transitionThread = function(cell, threadData, data) {
   document.getElementById('threadIdentifier').value = threadData.threadId;
 
   if (document.getElementById('divMod')) {
+
     document.getElementById('controlThreadIdentifier').value = threadData.threadId;
-    document.getElementById('transferThreadIdentifier').value = threadData.threadId;
+
+    if (postingMenu.globalRole <= 3) {
+      document.getElementById('transferThreadIdentifier').value = threadData.threadId;
+    }
 
     document.getElementById('checkboxLock').checked = threadData.locked;
     document.getElementById('checkboxPin').checked = threadData.pinned;
@@ -166,9 +191,6 @@ sideCatalog.transitionThread = function(cell, threadData, data) {
 
   opCell.id = threadData.threadId;
   opCell.className = 'opCell';
-  if (data.files && data.files.length > 1) {
-    opCell.className += ' multipleUploads';
-  }
 
   if (!opCell.getElementsByClassName('labelSubject').length) {
 
@@ -195,6 +217,10 @@ sideCatalog.transitionThread = function(cell, threadData, data) {
 
   }
 
+  if (!opCell.getElementsByClassName('linkHistory')[0]) {
+    sideCatalog.createHistoryLinks(opCell);
+  }
+
   var panelIp = opCell.getElementsByClassName('panelIp')[0];
 
   if (!panelIp) {
@@ -216,6 +242,23 @@ sideCatalog.transitionThread = function(cell, threadData, data) {
 
   } else if (!opCell.getElementsByClassName('panelRange').length) {
     panelIp.insertBefore(sideCatalog.getRangePanel(), panelIp.childNodes[0]);
+  }
+
+  var panelASN = opCell.getElementsByClassName('panelASN')[0];
+
+  if (!panelASN) {
+
+    panelASN = document.createElement('div');
+    panelASN.className = 'panelASN';
+
+    var labelASN = document.createElement('span');
+    labelASN.className = 'labelASN';
+
+    panelASN.appendChild(document.createTextNode('ASN: '));
+    panelASN.appendChild(labelASN);
+
+    panelIp.parentNode.insertBefore(panelASN, panelIp);
+
   }
 
   if (!opCell.getElementsByClassName('imgFlag').length) {
@@ -320,6 +363,8 @@ sideCatalog.transitionThread = function(cell, threadData, data) {
     }
 
   }
+
+  hiding.checkFilters();
 
 };
 

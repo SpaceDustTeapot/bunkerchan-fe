@@ -21,6 +21,8 @@ hiding.init = function() {
     hiding.setHideMenu(links[i]);
   }
 
+  hiding.checkFilters();
+
 };
 
 hiding.updateHidingData = function() {
@@ -116,16 +118,27 @@ hiding.checkFilterHiding = function(linkSelf) {
       var subjectLabel = linkSelf.parentNode
           .getElementsByClassName('labelSubject')[0];
 
-      if (subjectLabel && filterMatches(subjectLabel.innerHTML, filter)) {
+      if (subjectLabel && hiding.filterMatches(subjectLabel.innerHTML, filter)) {
         return hiding.hideForFilter(linkSelf);
       }
       break;
     }
 
     case 3: {
-      if (filterMatches(linkSelf.parentNode.parentNode
+      if (hiding.filterMatches(linkSelf.parentNode.parentNode
           .getElementsByClassName('divMessage')[0].innerHTML, filter)) {
         return hiding.hideForFilter(linkSelf);
+      }
+      break;
+    }
+
+    case 4: {
+      var labelId = linkSelf.parentNode.getElementsByClassName('labelId')[0];
+
+      if (labelId) {
+        if (hiding.buildPostFilterId(linkSelf, labelId.innerHTML) === filter.filter) {
+          return hiding.hideForFilter(linkSelf);
+        }
       }
       break;
     }
@@ -213,6 +226,17 @@ hiding.hideThread = function(linkSelf, board, thread) {
 
 };
 
+hiding.buildPostFilterId = function(linkSelf, id) {
+
+  var checkbox = linkSelf.parentNode.getElementsByClassName('deletionCheckBox')[0];
+  var postData = checkbox.name.split('-');
+  var board = postData[0];
+  var threadId = postData[1];
+
+  return board + '-' + threadId + '-' + id;
+
+};
+
 hiding.buildHideMenu = function(board, thread, post, linkSelf, hideMenu) {
 
   var postHideButton;
@@ -268,6 +292,20 @@ hiding.buildHideMenu = function(board, thread, post, linkSelf, hideMenu) {
     hideMenu.appendChild(document.createElement('hr'));
   }
 
+  var labelId = linkSelf.parentNode.getElementsByClassName('labelId')[0];
+
+  if (labelId) {
+    var filterIdButton = document.createElement('div');
+    filterIdButton.innerHTML = 'Filter id';
+    filterIdButton.onclick = function() {
+      settingsMenu.createFilter(hiding.buildPostFilterId(linkSelf,
+          labelId.innerHTML), false, 4);
+    };
+    hideMenu.appendChild(filterIdButton);
+
+    hideMenu.appendChild(document.createElement('hr'));
+  }
+
   postHideButton.onclick = function() {
     hiding.hidePost(linkSelf, board, thread, post || thread);
   };
@@ -304,20 +342,31 @@ hiding.setHideMenu = function(linkSelf) {
 
   var checkbox = parentNode.getElementsByClassName('deletionCheckBox')[0];
 
-  var href = linkSelf.href;
+  if (!checkbox) {
 
-  var parts = href.split('/');
+    var href = linkSelf.href;
 
-  var board = parts[3];
+    var parts = href.split('/');
 
-  var finalParts = parts[5].split('.');
+    var board = parts[3];
 
-  var thread = finalParts[0];
+    var finalParts = parts[5].split('.');
 
-  var post = finalParts[1].split('#')[1];
+    var thread = finalParts[0];
 
-  if (post === thread) {
-    post = undefined;
+    var post = finalParts[1].split('#')[1];
+
+    if (post === thread) {
+      post = undefined;
+    }
+
+  } else {
+
+    parts = checkbox.name.split('-');
+
+    board = parts[0];
+    thread = parts[1];
+    post = parts[2];
   }
 
   parentNode.insertBefore(hideButton, checkbox ? checkbox.nextSibling

@@ -42,6 +42,14 @@
             id="fieldAddress">
         </label>
         <label>
+          Trusted proxies<sup>1</sup>:
+          <input
+            type="text"
+            class="globalSettingsField"
+            name="trustedProxies"
+            id="fieldTrustedProxies">
+        </label>
+        <label>
           SSL key passphrase:
           <input
             type="password"
@@ -49,7 +57,7 @@
             id="fieldSslPass">
         </label>
         <label>
-          CSP directives (e.g: "default-src 'self'", without the quotations):
+          CSP directives (e.g: "default-src 'self'", without the double quotations):
           <input
             type="text"
             class="globalSettingsField"
@@ -79,6 +87,14 @@
             class="globalSettingsField"
             name="staticExpiration"
             id="fieldStaticExpiration">
+        </label>
+        <label>
+          Limit of files to be processed in a single request:
+          <input
+            type="number"
+            class="globalSettingsField"
+            name="fileProcessingLimit"
+            id="fieldFileProcessingLimit">
         </label>
         <label>
           Maximum size for requests (MB):
@@ -114,6 +130,14 @@
           Use sendmail
         </label>
         <label>
+          <input
+            type="checkbox"
+            class="globalSettingsField"
+            id="checkboxHttp2"
+            name="useHttp2">
+          Use HTTP2 for SSL (Might be unstable due to node's implementation)
+        </label>
+        <label>
           SSL<sup>2</sup> (Make sure you have the proper files)
           <select
             id="comboSsl"
@@ -124,7 +148,7 @@
 
         <p class="title">System settings</p>
         <label>
-          Master Ip:
+          Master IP:
           <input
             type="text"
             class="globalSettingsField"
@@ -132,7 +156,7 @@
             id="fieldMaster">
         </label>
         <label>
-          Slaves ips<sup>1</sup>:
+          Slaves IPs<sup>1</sup>:
           <input
             type="text"
             class="globalSettingsField"
@@ -148,7 +172,15 @@
             id="fieldFePath">
         </label>
         <label>
-          Url for the list of TOR exit node ips:
+          DNSBL Tor detection:
+          <input
+            type="url"
+            class="globalSettingsField"
+            name="torDNSBL"
+            id="fieldTorDNSL">
+        </label>
+        <label>
+          URL for the list of Tor exit node IPs:
           <input
             type="url"
             class="globalSettingsField"
@@ -156,7 +188,7 @@
             id="fieldTorSource">
         </label>
         <label>
-          Url for the list of spammer ips(Requirements for the file format are
+          URL for the list of spammer IPs (Requirements for the file format are
           specified on src/be/readme):
           <input
             type="url"
@@ -165,13 +197,29 @@
             id="fieldSpamIpsSource">
         </label>
         <label>
-          Url for the list of incremental spammer ips(Requirements for the file
+          URL for the list of incremental spammer IPs (Requirements for the file
           format are specified on src/be/readme):
           <input
             type="url"
             class="globalSettingsField"
             name="incSpamIpsSource"
             id="fieldIncrementalSpamIpsSource">
+        </label>
+        <label>
+          DNSBL domain:
+          <input
+            type="text"
+            class="globalSettingsField"
+            name="dnsbl"
+            id="fieldDnsbl">
+        </label>
+        <label>
+          Font used in images:
+          <input
+            type="text"
+            class="globalSettingsField"
+            name="imageFont"
+            id="fieldImageFont">
         </label>
         <label>
           Path to an optional language pack:
@@ -182,7 +230,7 @@
             id="fieldLanguagePack">
         </label>
         <label>
-          Extension used for thumbnails (Will make all gif thumbs do not
+          Extension used for thumbnails (Will make all gif thumbs not
           animate):
           <input
             type="text"
@@ -218,7 +266,7 @@
             id="fieldMaxFileSize">
         </label>
         <label>
-          Allowed mime-types<sup>1</sup>:
+          Allowed MIME types<sup>1</sup>:
           <input
             type="text"
             class="globalSettingsField"
@@ -234,12 +282,36 @@
             id="fieldMaxFiles">
         </label>
         <label>
-          Minimum amount of seconds between posts from the same ip:
+          Total limit of uploaded files on the site:
+          <input
+            type="number"
+            class="globalSettingsField"
+            name="fileLimit"
+            id="fieldFileLimit">
+        </label>
+        <label>
+          Minimum amount of seconds between posts from the same IP:
           <input
             type="number"
             class="globalSettingsField"
             name="floodTimerSec"
             id="fieldFloodInterval">
+        </label>
+        <label>
+          Maximum amount of new captchas served to the same ip every minute:
+          <input
+            type="number"
+            class="globalSettingsField"
+            name="captchaLimit"
+            id="fieldCaptchaLimit">
+        </label>
+        <label>
+          Maximum amount of times accounts can authenticate every minute:
+          <input
+            type="number"
+            class="globalSettingsField"
+            name="authenticationLimit"
+            id="fieldAuthenticationLimit">
         </label>
         <label>
           How many posts a block bypass allows:
@@ -295,7 +367,7 @@
             class="globalSettingsField"
             id="checkboxAllowTorFiles"
             name="allowTorFiles">
-          Allow TOR users to post files
+          Allow Tor users to post files
         </label>
         <label>
           <input
@@ -303,24 +375,32 @@
             class="globalSettingsField"
             id="checkboxDisableSpamCheck"
             name="disableSpamCheck">
-          Disable check on spammer ips (Use it if you can't obtain the spam ip
+          Disable check on spammer IPs (Use it if you can't obtain the spam IP
           list, so users are still able to post)
-        </label>
-        <label>
-          TOR posting permission level:
-          <select
-            id="comboTorPostingLevel"
-            name="torPostingLevel">
-          </select>
         </label>
         <label>
           <input
             type="checkbox"
             class="globalSettingsField"
-            id="checkboxSpamBypass"
-            name="allowSpamBypass">
-          Allow ips caught on the spammer list to use the block bypass if block
-          bypass is not disabled
+            id="checkboxDontProcessLinks"
+            name="dontProcessLinks">
+          Don't turn links into hyperlinks on posts
+        </label>
+        <label>
+          <input
+            type="checkbox"
+            class="globalSettingsField"
+            id="checkboxVersatileBlockBypass"
+            name="allowVersatileBlockBypass">
+          Allow IPs caught on the spammer list or range bans to use the block
+          bypass if block bypass is not disabled
+        </label>
+        <label>
+          Tor posting permission level:
+          <select
+            id="comboTorPostingLevel"
+            name="torPostingLevel">
+          </select>
         </label>
         <label>
           Bypass mode:
@@ -332,7 +412,7 @@
 
         <hr>
 
-        <p class="title">Display Limits</p>
+        <p class="title">Display limits</p>
         <label>
           Amount of latest posts to show on front-page:
           <input
@@ -340,6 +420,14 @@
             class="globalSettingsField"
             name="globalLatestPosts"
             id="fieldGlobalLatestPosts">
+        </label>
+        <label>
+          How many posts show on latests posts:
+          <input
+            type="number"
+            class="globalSettingsField"
+            name="latestPostsAmount"
+            id="fieldLatestPostsAmount">
         </label>
         <label>
           Amount of latest images to show on front-page:
@@ -441,12 +529,13 @@
             id="fieldMaxBoardHashBans">
         </label>
         <label>
-          Maximum number of board range bans:
+          Maximum number of board range and ASN bans (they are counted
+          separately):
           <input
             type="number"
             class="globalSettingsField"
-            name="maxBoardRangeBans"
-            id="fieldMaxBoardRangeBans">
+            name="maxBoardGeneralBans"
+            id="fieldMaxBoardGeneralBans">
         </label>
         <label>
           Maximum number of rules in boards:
@@ -463,6 +552,14 @@
             class="globalSettingsField"
             name="maxFilters"
             id="fieldMaxFilters">
+        </label>
+        <label>
+          Maximum number of banners in boards:
+          <input
+            type="number"
+            class="globalSettingsField"
+            name="maxBoardBanners"
+            id="fieldMaxBoardBanners">
         </label>
         <label>
           Maximum number of tags per board:
@@ -496,11 +593,19 @@
             id="checkboxOmitUnindexedContent">
           Omit content from unindexed boards from front-page or overboards
         </label>
+        <label>
+          <input
+            type="checkbox"
+            class="globalSettingsField"
+            name="allowVolunteerSettings"
+            id="checkboxVolunteerSettings">
+          Allow board volunteers to change board settings
+        </label>
         <hr>
 
         <p class="title">Variables</p>
         <label>
-          Amount of days before removing ips from posts (any value below 1 or
+          Amount of days before removing IPs from posts (any value below 1 or
           null means to never remove):
           <input
             type="number"
@@ -524,8 +629,8 @@
             name="archiveThreshold"
             id="fieldArchiveThreshold">
         </label>
-        Maximum size for custom flag names:
         <label>
+          Maximum size for custom flag names:
           <input
             type="number"
             class="globalSettingsField"
@@ -533,7 +638,7 @@
             id="fieldFlagNameLength">
         </label>
         <label>
-          Mark accounts after these many days of inactivity<sup>2</sup>:
+          Mark accounts after this many days of inactivity:
           <input
             type="number"
             class="globalSettingsField"
@@ -684,6 +789,14 @@
           <input
             type="checkbox"
             class="globalSettingsField"
+            id="checkboxRedactModNames"
+            name="redactModNames">
+          Redact mod names
+        </label>
+        <label>
+          <input
+            type="checkbox"
+            class="globalSettingsField"
             id="checkboxBlockedReport"
             name="allowBlockedToReport">
           Allow blocked or banned users to report
@@ -735,15 +848,7 @@
             class="globalSettingsField"
             id="checkboxFrontPageStats"
             name="frontPageStats">
-          Display total post count and total unique ips on front-page
-        </label>
-        <label>
-          <input
-            type="checkbox"
-            class="globalSettingsField"
-            id="checkboxAutoPruneFiles"
-            name="autoPruneFiles">
-          Prune orphaned files weekly<sup>2</sup>
+          Display total post count and total unique IPs on front-page
         </label>
         <label>
           <input
@@ -751,7 +856,7 @@
             class="globalSettingsField"
             id="checkboxMaintenance"
             name="maintenance">
-          Maintenance mode (Disables input to the server and let users know it
+          Maintenance mode (Disables input to the server and lets users know it
           is under maintenance)
         </label>
         <label>
@@ -790,16 +895,47 @@
           <input
             type="checkbox"
             class="globalSettingsField"
+            id="checkboxUnboundBoardLimits"
+            name="unboundBoardLimits">
+          Unbound board limits, allowing configurations globally disallowed
+        </label>
+        <label>
+          <input
+            type="checkbox"
+            class="globalSettingsField"
+            id="checkboxValidateMimes"
+            name="validateMimes">
+          Validate MIME types using 'file', fall back to the informed MIME if none
+          is found
+        </label>
+        <label>
+          <input
+            type="checkbox"
+            class="globalSettingsField"
+            id="checkboxStripExif"
+            name="stripExif">
+          Strip exif data from files
+        </label>
+        <label>
+          <input
+            type="checkbox"
+            class="globalSettingsField"
             id="checkboxMultipleReports"
             name="multipleReports">
           Allow multiple reports at once
         </label>
         <label>
-          Minimum global role for users to be able to see poster's clear ips:
+          Minimum global role for users to be able to see posters' clear IPs:
           <select
             id="comboMinClearIpRole"
             name="clearIpMinRole">
           </select>
+        </label>
+        <label>
+          Pruning mode:
+          <select
+            id="comboPruningMode"
+            name="pruningMode"></select>
         </label>
         <label>
           Minimum global role required for board creation:

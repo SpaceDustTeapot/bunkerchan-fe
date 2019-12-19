@@ -6,7 +6,7 @@
 }
 
 #galleryLink:before {
-  content: "\e02c";
+  content: "\e083";
 }
 
 .pinIndicator:after {
@@ -40,4 +40,10 @@
 
 .contentAction label, .contentAction img {
   display: block;
+}
+
+#selectedDiv, #selectedDivQr {
+  max-height: 200px;
+  display: inline-block;
+  overflow-y: auto;
 }

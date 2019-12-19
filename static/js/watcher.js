@@ -109,6 +109,15 @@ watcher.init = function() {
 };
 
 watcher.updateWatcherCounter = function() {
+
+  var classList = watcherButton.classList;
+
+  if (watcher.watcherAlertCounter) {
+    classList.add('mobileAlert');
+  } else {
+    classList.remove('mobileAlert');
+  }
+
   watcher.watcherCounter.innerHTML = watcher.watcherAlertCounter ? '('
       + watcher.watcherAlertCounter + ')' : '';
 };

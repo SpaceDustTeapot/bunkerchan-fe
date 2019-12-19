@@ -151,10 +151,12 @@
             name="boardUri"
             id="customCssIdentifier">
 
-          <input
-            type="file"
-            id="files"
-            name="files">
+          <label>
+            <input
+              type="file"
+              id="files"
+              name="files">
+          </label>
 
           <button
             id="cssFormButton"
@@ -180,10 +182,12 @@
               name="boardUri"
               id="customJsIdentifier">
 
-            <input
-              type="file"
-              id="JsFiles"
-              name="files">
+            <label>
+              <input
+                type="file"
+                id="JsFiles"
+                name="files">
+            </label>
 
             <button
               id="jsFormButton"
@@ -212,10 +216,12 @@
             name="boardUri"
             id="customSpoilerIdentifier">
 
-          <input
-            type="file"
-            id="filesSpoiler"
-            name="files">
+          <label>
+            <input
+              type="file"
+              id="filesSpoiler"
+              name="files">
+          </label>
 
           <button
             id="spoilerFormButton"
@@ -252,6 +258,9 @@
         <a id="rangeBansLink">Range bans</a>
       </p>
       <p>
+        <a id="asnBansLink">ASN bans</a>
+      </p>
+      <p>
         <a id="hashBansLink">Hash bans</a>
       </p>
       <p>
@@ -261,15 +270,33 @@
         <a id="closedReportsLink">Closed reports</a>
       </p>
 
+      <form
+        action="/resetBoardLock.js"
+        method="post"
+        enctype="multipart/form-data"
+        id="resetBoardLockForm">
 
-      <hr />
+        <hr />
 
-      <h3>Settings</h3>
+        <input
+          type="hidden"
+          name="boardUri"
+          id="resetLockIdentifier">
+        <button
+          type="submit"
+          id="resetLockButton">Reset auto board lock</button>
+      </form>
+
 
       <form
+        id="settingsForm"
         action="/setBoardSettings.js"
         method="post"
         enctype="multipart/form-data">
+
+        <hr />
+
+        <h3>Settings</h3>
 
         <input
           type="hidden"
@@ -322,7 +349,7 @@
 
         <label>
           For how many days a non-cyclic thread is allowed to be bumped after
-          it's creation:
+          its creation:
           <input
             id="maxBumpAgeField"
             type="number"
@@ -386,7 +413,7 @@
         </label>
 
         <label>
-          Board Message(Maximum length: <span id="messageLengthLabel"></span>):
+          Board Message (maximum length: <span id="messageLengthLabel"></span>):
           <textarea
             name="boardMessage"
             id="boardMessageField"
@@ -405,6 +432,13 @@
           <select
             id="captchaModeComboBox"
             name="captchaMode"></select>
+        </label>
+
+        <label>
+          Preferred language:
+          <select
+            id="languageCombobox"
+            name="preferredLanguage"></select>
         </label>
 
         <label>
@@ -476,7 +510,7 @@
             name=early404
             class="boardSettingsField"
             id="early404Checkbox">
-          Early 404: threads that are not replied at least 5 times will be
+          Early 404: threads that are not replied to at least 5 times will be
           deleted after they leave the top 1/3 threads.
         </label>
         <label>
@@ -503,7 +537,8 @@
 
         <p>1: Separate elements with commas</p>
         <p>2: Will be ignored if values are higher than the global
-          equivalent or are not present on the global equivalent</p>
+          equivalent or are not present on the global equivalent, unless unbound
+          board settings are enabled</p>
 
       </form>
 
@@ -525,7 +560,6 @@
             id="deleteContentCheckbox">
           Delete reported content after closing the reports
         </label>
-
         <label>
           <input
             type="checkbox"
@@ -534,7 +568,6 @@
             id="banReporterCheckbox">
           Ban reporters
         </label>
-
         <label>
           Ban duration:
           <input
@@ -542,6 +575,14 @@
             class="closeReportsField"
             id="fieldBanDuration"
             name="duration">
+        </label>
+        <label>
+          Ban reason:
+          <input
+            type="text"
+            class="closeReportsField"
+            id="fieldBanReason"
+            name="banReason">
         </label>
 
         <button
@@ -570,5 +611,8 @@
 <script src="/.static/js/thumbs.js"></script>
 <script src="/.static/js/embed.js"></script>
 <script src="/.static/js/favouriteBoards.js"></script>
+<script src="/.static/js/captchaUtils.js"></script>
+<script src="/.static/js/captchaModal.js"></script>
+<script src="/.static/js/postingMenu.js"></script>
 
 </html>

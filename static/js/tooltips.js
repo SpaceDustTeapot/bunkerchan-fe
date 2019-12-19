@@ -88,7 +88,8 @@ tooltips.addBackLink = function(quoteUrl, quote) {
 
       var containerPost = quote.parentNode.parentNode;
 
-      if (containerPost.className !== 'opCell') {
+      while (!containerPost.classList.contains('postCell')
+          && !containerPost.classList.contains('opCell')) {
         containerPost = containerPost.parentNode;
       }
 
@@ -120,6 +121,8 @@ tooltips.addBackLink = function(quoteUrl, quote) {
       backLink.href = backLinkUrl;
 
       knownBackLink.container.appendChild(backLink);
+
+      knownBackLink.container.appendChild(document.createTextNode(' '));
 
       tooltips.processQuote(backLink, true);
 

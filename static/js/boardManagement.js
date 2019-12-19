@@ -24,6 +24,13 @@ boardManagement.init = function() {
 
   boardManagement.volunteerCellTemplate = volunteerCellTemplate;
 
+  var resetLockButton = document.getElementById('resetLockButton');
+
+  if (resetLockButton) {
+    resetLockButton.type = 'button';
+    resetLockButton.onclick = boardManagement.resetLock;
+  }
+
   if (document.getElementById('ownerControlDiv')) {
 
     api.convertButton('spoilerFormButton', boardManagement.setSpoiler);
@@ -46,13 +53,34 @@ boardManagement.init = function() {
     }
   }
 
-  api.boardUri = document.getElementById('boardSettingsIdentifier').value;
-
   api.convertButton('closeReportsFormButton', reports.closeReports,
       'closeReportsField');
 
+  var settingsIdentifier = document.getElementById('boardSettingsIdentifier');
+
+  if (!settingsIdentifier) {
+    return;
+  }
+
+  api.boardUri = settingsIdentifier.value;
+
   api.convertButton('saveSettingsFormButton', boardManagement.saveSettings,
       'boardSettingsField');
+
+};
+
+boardManagement.resetLock = function() {
+
+  api.formApiRequest('resetBoardLock', {
+    boardUri : api.boardUri,
+  }, function requestComplete(status, data) {
+
+    if (status === 'ok') {
+      document.getElementById('resetBoardLockForm').remove();
+    } else {
+      alert(status + ': ' + JSON.stringify(data));
+    }
+  });
 
 };
 
@@ -199,8 +227,8 @@ boardManagement.saveSettings = function() {
   } else if (typedAutoCaptcha.length && isNaN(typedAutoCaptcha)) {
     alert('Invalid auto captcha treshold.');
     return;
-  } else if (!typedName.length || !typedName.length) {
-    alert('Both name and description are mandatory.');
+  } else if (!typedName) {
+    alert('Name is mandatory.');
     return;
   } else if (typedMessage.length > 256) {
     alert('Message too long, keep it under 256 characters.');
@@ -213,8 +241,11 @@ boardManagement.saveSettings = function() {
 
   var locationCombo = document.getElementById('locationComboBox');
 
+  var langCombo = document.getElementById('languageCombobox');
+
   var parameters = {
     boardName : typedName,
+    preferredLanguage : langCombo[langCombo.selectedIndex].value,
     captchaMode : combo.options[combo.selectedIndex].value,
     boardMessage : typedMessage,
     autoCaptchaLimit : typedAutoCaptcha,

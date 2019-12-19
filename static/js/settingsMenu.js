@@ -3,7 +3,7 @@ var settingsMenu = {};
 settingsMenu.init = function() {
 
   settingsMenu.loadedFilters = JSON.parse(localStorage.filterData || '[]');
-  settingsMenu.filterTypes = [ 'Name', 'Tripcode', 'Subject', 'Message' ];
+  settingsMenu.filterTypes = [ 'Name', 'Tripcode', 'Subject', 'Message', 'Id' ];
 
   var settingsMenuDiv = document.createElement('div');
 
@@ -199,11 +199,13 @@ settingsMenu.getFiltersContent = function() {
 
   var newFilterTypeCombo = document.createElement('select');
 
-  for (var i = 0; i < settingsMenu.filterTypes.length; i++) {
+  for (var i = 0; i < 4; i++) {
+
     var option = document.createElement('option');
     option.innerHTML = settingsMenu.filterTypes[i];
     newFilterTypeCombo.appendChild(option);
   }
+
   newFilterPanel.appendChild(newFilterTypeCombo);
 
   var newFilterField = document.createElement('input');
@@ -304,6 +306,19 @@ settingsMenu.getOtherContent = function() {
 
   var otherPanel = document.createElement('div');
 
+  var localDiv = document.createElement('div');
+  otherPanel.appendChild(localDiv);
+
+  var localCheckBox = document.createElement('input');
+  localCheckBox.type = 'checkbox';
+  localDiv.appendChild(localCheckBox);
+  localCheckBox.checked = JSON.parse(localStorage.localTime || 'false');
+
+  var localLabel = document.createElement('label');
+  localLabel.className = 'small';
+  localLabel.innerHTML = 'Local Times';
+  localDiv.appendChild(localLabel);
+
   var relativeDiv = document.createElement('div');
   otherPanel.appendChild(relativeDiv);
 
@@ -335,6 +350,7 @@ settingsMenu.getOtherContent = function() {
   saveButton.innerHTML = 'Save';
 
   saveButton.onclick = function() {
+    localStorage.setItem('localTime', localCheckBox.checked);
     localStorage.setItem('relativeTime', relativeCheckBox.checked);
     localStorage.setItem('noAutoLoop', noAutoLoopCheckBox.checked);
   }

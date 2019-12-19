@@ -5,13 +5,15 @@ posting.init = function() {
   posting.idsRelation = {};
   posting.highLightedIds = [];
 
-  posting.postCellTemplate = '<div class="innerPost"><div class="postInfo title">'
+  posting.postCellTemplate = '<div class="innerPost"><h3 class="labelBoard"></h3><div class="postInfo title">'
       + '<input type="checkbox" class="deletionCheckBox"> <span class="labelSubject">'
       + '</span> <a class="linkName"></a> <img class="imgFlag"> <span class="labelRole">'
       + '</span> <span class="labelCreated"></span> <span class="spanId"> Id:<span '
       + 'class="labelId"></span></span> <a '
-      + 'class="linkSelf">No.</a> <a class="linkQuote"></a> <a class="linkEdit">Edit</a> '
-      + '<span class="panelBacklinks"></span></div>'
+      + 'class="linkSelf">No.</a> <a class="linkQuote"></a> <a class="linkEdit">[Edit]</a> '
+      + '<a class="linkHistory">[History]</a> <a class="linkFileHistory">[File history]</a>'
+      + ' <span class="panelBacklinks"></span></div>'
+      + '<div class="panelASN">ASN: <span class="labelASN"></span> </div>'
       + '<div>'
       + '<span class="panelIp"> <span class="panelRange">Broad'
       + 'range(1/2 octets): <span class="labelBroadRange"> </span> <br>'
@@ -44,11 +46,24 @@ posting.init = function() {
 
   }
 
-  if (localStorage.relativeTime && JSON.parse(localStorage.relativeTime)) {
+  if (localStorage.localTime && JSON.parse(localStorage.localTime)) {
 
+    var times = document.getElementsByClassName('labelCreated');
+
+    for (var i = 0; i < times.length; i++) {
+      posting.setLocalTime(times[i]);
+    }
+
+    posting.localTimes = true;
+  }
+
+  if (localStorage.relativeTime && JSON.parse(localStorage.relativeTime)) {
     posting.updateAllRelativeTimes();
     setInterval(posting.updateAllRelativeTimes, 1000 * 60 * 5);
+  }
 
+  if (typeof (thread) !== 'undefined') {
+    return;
   }
 
   var ids = document.getElementsByClassName('labelId');
@@ -64,6 +79,121 @@ posting.init = function() {
     createdAt.innerHTML = posting.formatDateToDisplay(dateCreated);
     createdAt.setAttribute("title", posting.prettyRelativeTimeSinceDate(dateCreated))
   })
+};
+
+posting.setLocalTime = function(time) {
+
+  time.innerHTML = api.formatDateToDisplay(new Date(time.innerHTML + ' UTC'),
+      true);
+
+};
+
+posting.applyBans = function(captcha) {
+
+  var typedReason = document.getElementById('reportFieldReason').value.trim();
+  var typedDuration = document.getElementById('fieldDuration').value.trim();
+  var typedMessage = document.getElementById('fieldbanMessage').value.trim();
+  var banType = document.getElementById('comboBoxBanTypes').selectedIndex;
+
+  var params = {
+    action : 'ban',
+    reason : typedReason,
+    captcha : captcha,
+    banType : banType,
+    duration : typedDuration,
+    banMessage : typedMessage,
+    global : document.getElementById('checkboxGlobal').checked
+  };
+
+  posting.newGetSelectedContent(params);
+
+  api.formApiRequest('contentActions', params, function requestComplete(status,
+      data) {
+
+    if (status === 'ok') {
+      alert('Bans applied');
+    } else {
+      alert(status + ': ' + JSON.stringify(data));
+    }
+
+  });
+};
+
+posting.banPosts = function() {
+
+  if (!document.getElementsByClassName('panelRange').length) {
+    posting.applyBans();
+    return;
+  }
+
+  var typedCaptcha = document.getElementById('fieldCaptchaReport').value.trim();
+
+  if (typedCaptcha && /\W/.test(typedCaptcha)) {
+    alert('Invalid captcha.');
+    return;
+  }
+
+  if (typedCaptcha.length == 24 || !typedCaptcha) {
+    thread.applyBans(typedCaptcha);
+  } else {
+    var parsedCookies = api.getCookies();
+
+    api.formaApiRequest('solveCaptcha', {
+      captchaId : parsedCookies.captchaid,
+      answer : typedCaptcha
+    }, function solvedCaptcha(status, data) {
+
+      if (status !== 'ok') {
+        alert(status);
+        return;
+      }
+
+      posting.applyBans(parsedCookies.captchaid);
+    });
+  }
+
+};
+
+posting.deleteFromIpOnBoard = function() {
+
+  var checkBoxes = document.getElementsByClassName('deletionCheckBox');
+
+  for (var i = 0; i < checkBoxes.length; i++) {
+    var checkBox = checkBoxes[i];
+
+    if (checkBox.checked) {
+      var splitName = checkBox.name.split('-')[0];
+      break;
+    }
+
+  }
+
+  if (!splitName) {
+    return;
+  }
+
+  var redirect = '/' + splitName + '/';
+
+  var confirmationBox = document
+      .getElementById('ipDeletionConfirmationCheckbox');
+
+  var param = {
+    action : 'ip-deletion',
+    confirmation : confirmationBox.checked
+  };
+
+  posting.newGetSelectedContent(param);
+
+  api.formApiRequest('contentActions', param, function requestComplete(status,
+      data) {
+
+    if (status === 'ok') {
+      window.location.pathname = redirect;
+    } else {
+      alert(status + ': ' + JSON.stringify(data));
+    }
+  });
+
 };
 
 posting.processIdLabel = function(label) {
@@ -121,7 +251,7 @@ posting.updateAllRelativeTimes = function() {
 
 posting.addRelativeTime = function(time) {
 
-  var timeObject = new Date(time.innerHTML + ' UTC');
+  var timeObject = new Date(time.innerHTML + (posting.localTimes ? '' : ' UTC'));
 
   if (time.nextSibling.nextSibling.className !== 'relativeTime') {
 
@@ -265,7 +395,20 @@ posting.deletePosts = function() {
       alert(data.removedThreads + ' threads and ' + data.removedPosts
           + ' posts were successfully deleted.');
 
-      if (!api.isBoard && !data.removedThreads && data.removedPosts) {
+      if (typeof latestPostings !== 'undefined') {
+
+        var checkBoxes = document.getElementsByClassName('deletionCheckBox');
+
+        for (var i = checkBoxes.length - 1; i >= 0; i--) {
+          var checkBox = checkBoxes[i];
+
+          if (checkBox.checked) {
+            checkBox.parentNode.parentNode.parentNode.remove();
+          }
+
+        }
+
+      } else if (!api.isBoard && !data.removedThreads && data.removedPosts) {
         thread.refreshPosts(true, true);
       } else if (data.removedThreads || data.removedPosts) {
         window.location.pathname = '/';
@@ -276,39 +419,6 @@ posting.deletePosts = function() {
     }
   });
 
-};
-
-posting.padDateField = function(value) {
-
-  if (value < 10) {
-    value = '0' + value;
-  }
-
-  return value;
-
-};
-
-posting.formatDateToDisplay = function(d) {
-  var weekDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-
-  var weekDay = weekDays[d.getDay()];
-
-  var hour = posting.padDateField(d.getHours());
-
-  var minute = posting.padDateField(d.getMinutes());
-
-  var second = posting.padDateField(d.getSeconds());
-
-  var monthYearDayOptions = {
-    year: 'numeric',
-    month: 'numeric',
-    day: 'numeric',
-    dateStyle: "short"
-  };
-  var monthYearDay = d.toLocaleString(undefined, monthYearDayOptions);
-  var localTime = d.toLocaleTimeString();
-
-  return monthYearDay + ' (' + weekDay + ') ' + localTime;
 };
 
 posting.formatFileSize = function(size) {
@@ -332,7 +442,7 @@ posting.setLastEditedLabel = function(post, cell) {
 
   if (post.lastEditTime) {
 
-    var formatedDate = posting.formatDateToDisplay(new Date(post.lastEditTime));
+    var formatedDate = api.formatDateToDisplay(new Date(post.lastEditTime));
 
     editedLabel.innerHTML = posting.guiEditInfo
         .replace('{$date}', formatedDate).replace('{$login}',
@@ -352,7 +462,7 @@ posting.setUploadLinks = function(cell, file, noExtras) {
   thumbLink.setAttribute('data-filemime', file.mime);
 
   if (file.mime.indexOf('image/') > -1 && !noExtras
-      && (typeof gallery !== 'undefined')) {
+      && (typeof gallery !== 'undefined') && !api.mobile) {
     gallery.addGalleryFile(file.path);
   }
 
@@ -465,6 +575,12 @@ posting.setPostHideableElements = function(postCell, post, noExtras) {
     imgFlag.remove();
   }
 
+  if (!post.asn) {
+    postCell.getElementsByClassName('panelASN')[0].remove();
+  } else {
+    postCell.getElementsByClassName('labelASN')[0].innerHTML = post.asn;
+  }
+
   if (!post.ip) {
     postCell.getElementsByClassName('panelIp')[0].remove();
   } else {
@@ -485,11 +601,12 @@ posting.setPostHideableElements = function(postCell, post, noExtras) {
 };
 
 posting.setPostLinks = function(postCell, post, boardUri, link, threadId,
-    linkQuote, deletionCheckbox) {
+    linkQuote, deletionCheckbox, preview) {
 
   var postingId = post.postId || threadId;
 
-  var linkStart = '/' + boardUri + '/res/' + threadId + '.html#';
+  var linkStart = (preview ? '/' + boardUri + '/res/' + threadId + '.html' : '')
+      + '#';
 
   linkQuote.href = linkStart;
   link.href = linkStart;
@@ -498,6 +615,8 @@ posting.setPostLinks = function(postCell, post, boardUri, link, threadId,
   linkQuote.href += 'q' + postingId;
 
   var linkEdit = postCell.getElementsByClassName('linkEdit')[0];
+  var linkHistory = postCell.getElementsByClassName('linkHistory')[0];
+  var linkFileHistory = postCell.getElementsByClassName('linkFileHistory')[0];
 
   var complement = (post.postId ? 'postId' : 'threadId') + '=' + postingId;
 
@@ -506,6 +625,17 @@ posting.setPostLinks = function(postCell, post, boardUri, link, threadId,
     linkEdit.href += complement;
   } else if (linkEdit) {
     linkEdit.remove();
+  }
+
+  if (api.mod && post.ip) {
+    linkFileHistory.href = '/mediaManagement.js?boardUri=' + boardUri + '&';
+    linkFileHistory.href += complement;
+
+    linkHistory.href = '/latestPostings.js?boardUri=' + boardUri + '&';
+    linkHistory.href += complement;
+  } else if (linkHistory) {
+    linkHistory.remove();
+    linkFileHistory.remove();
   }
 
   var checkboxName = boardUri + '-' + threadId;
@@ -531,7 +661,7 @@ posting.setRoleSignature = function(postingCell, posting) {
 };
 
 posting.setPostComplexElements = function(postCell, post, boardUri, threadId,
-    noExtras) {
+    noExtras, preview) {
 
   posting.setRoleSignature(postCell, post);
 
@@ -543,20 +673,25 @@ posting.setPostComplexElements = function(postCell, post, boardUri, threadId,
   var deletionCheckbox = postCell.getElementsByClassName('deletionCheckBox')[0];
 
   posting.setPostLinks(postCell, post, boardUri, link, threadId, linkQuote,
-      deletionCheckbox);
+      deletionCheckbox, preview);
 
   var panelUploads = postCell.getElementsByClassName('panelUploads')[0];
 
   if (!post.files || !post.files.length) {
     panelUploads.remove();
   } else {
+
+    if (post.files.length > 1) {
+      panelUploads.className += ' multipleUploads';
+    }
+
     posting.setUploadCell(panelUploads, post.files, noExtras);
   }
 
 };
 
 posting.setPostInnerElements = function(boardUri, threadId, post, postCell,
-    noExtras) {
+    noExtras, preview) {
 
   var linkName = postCell.getElementsByClassName('linkName')[0];
 
@@ -570,7 +705,11 @@ posting.setPostInnerElements = function(boardUri, threadId, post, postCell,
 
   var labelCreated = postCell.getElementsByClassName('labelCreated')[0];
 
-  labelCreated.innerHTML = posting.formatDateToDisplay(new Date(post.creation));
+  labelCreated.innerHTML = api.formatDateToDisplay(new Date(post.creation));
+
+  if (posting.localTimes) {
+    posting.setLocalTime(labelCreated);
+  }
 
   if (localStorage.relativeTime && JSON.parse(localStorage.relativeTime)) {
     posting.addRelativeTime(labelCreated);
@@ -580,7 +719,8 @@ posting.setPostInnerElements = function(boardUri, threadId, post, postCell,
 
   posting.setPostHideableElements(postCell, post, noExtras);
 
-  posting.setPostComplexElements(postCell, post, boardUri, threadId, noExtras);
+  posting.setPostComplexElements(postCell, post, boardUri, threadId, noExtras,
+      preview);
 
   var messageLinks = postCell.getElementsByClassName('divMessage')[0]
       .getElementsByTagName('a');
@@ -637,7 +777,7 @@ posting.setPostInnerElements = function(boardUri, threadId, post, postCell,
 
 };
 
-posting.addPost = function(post, boardUri, threadId, noExtra) {
+posting.addPost = function(post, boardUri, threadId, noExtra, preview) {
 
   var postCell = document.createElement('div');
   postCell.innerHTML = posting.postCellTemplate;
@@ -645,13 +785,15 @@ posting.addPost = function(post, boardUri, threadId, noExtra) {
   postCell.id = post.postId;
   postCell.setAttribute('class', 'postCell');
 
-  if (post.files && post.files.length > 1) {
-    postCell.className += ' multipleUploads';
-  }
-
   postCell.setAttribute('data-boarduri', boardUri);
 
-  posting.setPostInnerElements(boardUri, threadId, post, postCell, noExtra);
+  if (preview) {
+    var labelBoard = '/' + boardUri + '/';
+    postCell.getElementsByClassName('labelBoard')[0].innerHTML = labelBoard;
+  }
+
+  posting.setPostInnerElements(boardUri, threadId, post, postCell, noExtra,
+      preview);
 
   return postCell;
 
