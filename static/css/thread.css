@@ -1,0 +1,49 @@
+/*Elements that show on threads on both catalogs and regular posting places*/
+.lockIndicator:before {
+  font-family: Icons;
+  content: "\e08a";
+  color: #A00;
+}
+
+#galleryLink:before {
+  content: "\e083";
+}
+
+.pinIndicator:after {
+  font-family: Icons;
+  content: "\e0a8";
+  color: #A00;
+}
+
+.archiveIndicator:after {
+  font-family: Icons;
+  content: "\e023";
+  color: #A00;
+}
+
+.cyclicIndicator:after {
+  font-family: Icons;
+  content: "\e08c";
+  color: #A00;
+}
+
+.bumpLockIndicator:after {
+  font-family: Icons;
+  content: "\e0db";
+  color: #A00;
+}
+
+.galleryImage {
+  max-width: 100vw;
+  max-height: 100vh;
+}
+
+.contentAction label, .contentAction img {
+  display: block;
+}
+
+#selectedDiv, #selectedDivQr {
+  max-height: 200px;
+  display: inline-block;
+  overflow-y: auto;
+}
