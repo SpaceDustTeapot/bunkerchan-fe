@@ -7,8 +7,8 @@ body.theme_yotsuba {
 	border: none;
 	border-top: 1px solid #B7C5D9;
 }/* LINKS */
-.theme_yotsuba a,  .theme_yotsuba .hideButton,  .theme_yotsuba .unhideButton,  .theme_yotsuba .embedButton,  .theme_yotsuba .navClickable,  .theme_yotsuba #closeWatcherMenuButton,  .theme_yotsuba .watchButton,  .theme_yotsuba .watchedCellCloseButton,  .theme_yotsuba .hideFileButton {
-	color: #34345C;
+.theme_yotsuba a,  .theme_yotsuba .hideButton,  .theme_yotsuba .unhideButton,  .theme_yotsuba .embedButton,  .theme_yotsuba .navClickable,  .theme_yotsuba #closeWatcherMenuButton,  .theme_yotsuba .watchButton,  .theme_yotsuba .watchedCellCloseButton,  .theme_yotsuba .hideFileButton ,.theme_yotsuba .coloredIcon, .theme_yotsuba input[type=checkbox].postingCheckbox+label::before, .theme_yotsuba a.rules:after{
+	color: #34345C !important;
 }
 .theme_yotsuba a:hover,  .theme_yotsuba .hideButton:hover,  .theme_yotsuba .unhideButton:hover,  .theme_yotsuba .embedButton:hover,  .theme_yotsuba .navClickable:hover,  .theme_yotsuba #closeWatcherMenuButton:hover,  .theme_yotsuba .watchButton:hover,  .theme_yotsuba .watchedCellCloseButton:hover,  .theme_yotsuba .hideFileButton:hover {
 	color: #DD0000;
@@ -110,8 +110,14 @@ body.theme_yotsuba {
 .theme_yotsuba .labelId { /* id font */
 	font-size: 12px;
 }/* THREAD POSTS */
-.theme_yotsuba .innerPost {  /* normal reply */
+.theme_yotsuba .innerPost, .theme_yotsuba .sideCatalogCell{ 
 	background-color: #D6DAF0;
+}
+
+.theme_yotsuba .sideCatalogMarkedCell{
+	background-color: #EAEDFF;
+}
+.theme_yotsuba .innerPost{  /* normal reply */
 	border: 1px solid #B7C5D9;
 	border-left: none;
 	border-top: none;
@@ -173,4 +179,8 @@ body.theme_yotsuba {
 }
 .theme_yotsuba #postingForm th{
 	background: #DADCE3;
+}
+
+.theme_yotsuba .sideCatalogCell,.theme_yotsuba .sideCatalogMarkedCell, .theme_yotsuba #postingForm th{
+	border: 1px solid #888;
 }
