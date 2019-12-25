@@ -153,7 +153,7 @@ body.theme_dark, .theme_dark .floatingMenu{
 .theme_dark #quick-reply table {
 	padding: 0em;
 }
-.theme_dark #quick-reply th {
+.theme_dark #quick-reply th, .theme_dark .modalTableBody th{
 	background-color: #333333;
 }
 .theme_dark .post-table td {
@@ -191,6 +191,10 @@ body.theme_dark, .theme_dark .floatingMenu{
     border: 1px solid #555555;
 }
 
-.theme_dark .sideCatalogCell,.theme_dark .sideCatalogMarkedCell, .theme_dark #postingForm th{
+.theme_dark .sideCatalogCell,.theme_dark .sideCatalogMarkedCell, .theme_dark #postingForm th,  .theme_dark .modalTableBody th{
 	border: 1px solid #888;
+}
+ 
+.theme_dark .modalDecorationPanel{
+	background: #1E1E1E;
 }

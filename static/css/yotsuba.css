@@ -187,10 +187,13 @@ body.theme_yotsuba {
 	background: #D6DAF0;
 	border: 1px dashed #8899AA;
 }
-.theme_yotsuba #postingForm th{
+.theme_yotsuba #postingForm th, .theme_yotsuba .modalTableBody th{
 	background: #DADCE3;
 }
 
-.theme_yotsuba .sideCatalogCell,.theme_yotsuba .sideCatalogMarkedCell, .theme_yotsuba #postingForm th{
+.theme_yotsuba .sideCatalogCell,.theme_yotsuba .sideCatalogMarkedCell, .theme_yotsuba #postingForm th,  .theme_yotsuba .modalTableBody th{
 	border: 1px solid #888;
+}
+.theme_yotsuba .modalDecorationPanel{
+	background: #EEF2FF;
 }
