@@ -712,20 +712,27 @@ postingMenu.setExtraMenuMod = function(innerPart, extraMenu, board, thread,
 
   extraMenu.appendChild(document.createElement('hr'));
   
-  var postHistoryButton = document.createElement('div');
-  postHistoryButton.innerHTML = 'Post History';
+  var postFileHistory = function(subUrl, buttonText){
+	  var newButton = document.createElement('div');
+	  newButton.innerHTML = buttonText;
+	  
+	  newButton.onclick = function(){
+		var board = new URL(location.href).pathname.split("/")[1];
+		var url = `/ErrorFrontendCode${subUrl}.html`;
+		if(post){
+		  url = `/${subUrl}.js?boardUri=${board}&postId=${post}`;
+		}
+		else if(thread){
+		  url = `/${subUrl}.js?boardUri=${board}&threadId=${thread}`;
+		}
+		location.href = url;
+	  };
+	  extraMenu.appendChild(newButton);
+  }
   
-  postHistoryButton.onclick = function(){
-	var id = post;
-	if(!id){
-		id = thread;
-	}
-	var board = new URL(location.href).pathname.split("/")[1];
-	var url = "/addon.js/posthistory.js?id=" + id + "&board=" + board;
-	location.href = url;
-  };
-  extraMenu.appendChild(postHistoryButton);
-
+  postFileHistory("latestPostings",'Post History');
+  extraMenu.appendChild(document.createElement('hr'));
+  postFileHistory("mediaManagement",'File History'); 
   
   if (!post) {
     postingMenu.setExtraMenuThread(extraMenu, board, thread, innerPart);
