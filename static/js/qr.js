@@ -91,6 +91,11 @@ qr.setQr = function() {
     qrhtml += '<tr><td colspan="2"><input id="qrname" type="text"';
     qrhtml += ' maxlength="35" autocomplete="off" placeholder="Name"></td> </tr>';
   }
+  
+  qrhtml += '<tr><td colspan="2">';
+  qrhtml += '<input id="qremail" type="text" maxlength="40" ';
+  qrhtml += 'autocomplete="off" placeholder="Email">';
+  qrhtml += '</td> </tr> ';
 
   qrhtml += '<tr><td colspan="2">';
   qrhtml += '<input id="qrsubject" type="text" maxlength="100"';
@@ -152,10 +157,6 @@ qr.setQr = function() {
 
   qrhtml += '</tbody><tbody class="hidden" id="qrExtra">';
 
-  qrhtml += '<tr><td colspan="2">';
-  qrhtml += '<input id="qremail" type="text" maxlength="40" ';
-  qrhtml += 'autocomplete="off" placeholder="Email">';
-  qrhtml += '</td> </tr> ';
 
   qrhtml += '<tr><td colspan="2">';
   qrhtml += '<input id="qrpassword" type="password" placeholder="Password"></td></tr>';
