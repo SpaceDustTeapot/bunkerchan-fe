@@ -717,7 +717,6 @@ postingMenu.setExtraMenuMod = function(innerPart, extraMenu, board, thread,
 	  newButton.innerHTML = buttonText;
 	  
 	  newButton.onclick = function(){
-		var board = new URL(location.href).pathname.split("/")[1];
 		var url = `/ErrorFrontendCode${subUrl}.html`;
 		if(post){
 		  url = `/${subUrl}.js?boardUri=${board}&postId=${post}`;
@@ -729,8 +728,20 @@ postingMenu.setExtraMenuMod = function(innerPart, extraMenu, board, thread,
 	  };
 	  extraMenu.appendChild(newButton);
   }
+
+  var postHistoryButton = document.createElement('div');
+  postHistoryButton.innerHTML = 'Post History';
   
-  postFileHistory("latestPostings",'Post History');
+  postHistoryButton.onclick = function(){
+	var id = post;
+	if(!id){
+		id = thread;
+	}
+	var url = "/addon.js/posthistory.js?id=" + id + "&board=" + board;
+	location.href = url;
+  };
+  extraMenu.appendChild(postHistoryButton);
+
   extraMenu.appendChild(document.createElement('hr'));
   postFileHistory("mediaManagement",'File History'); 
   
