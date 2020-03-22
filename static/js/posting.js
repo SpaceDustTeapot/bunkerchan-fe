@@ -538,7 +538,7 @@ posting.setPostHideableElements = function(postCell, post, noExtras) {
 
   if (post.id) {
     var labelId = postCell.getElementsByClassName('labelId')[0];
-    labelId.setAttribute('style', 'background-color: #' + post.id);
+    // labelId.setAttribute('style', 'background-color: #' + post.id);
     labelId.innerHTML = post.id;
 
     if (!noExtras) {
