@@ -1,0 +1,473 @@
+/*colgate*/
+/*theme_colgate*/
+
+.theme_colgate{
+  background: #e8e8ff;
+  color: #000000;
+  font-family: serif;
+  font-size: 120%;
+}
+
+.theme_colgate hr {
+  border-top: 2px solid gray;
+}
+
+.theme_colgate .small {
+  font-family: sans-serif;
+}
+
+.theme_colgate a,
+.theme_colgate .hideButton,
+.theme_colgate .unhideButton,
+.theme_colgate .embedButton,
+.theme_colgate .navClickable,
+.theme_colgate #closeWatcherMenuButton,
+.theme_colgate .watchButton,
+.theme_colgate .watchedCellCloseButton,
+.theme_colgate .hideFileButton,
+.theme_colgate .coloredIcon {
+  color: #000080;
+}
+.theme_colgate a:hover,
+.theme_colgate .extraMenuButton:hover,
+.theme_colgate .hideButton:hover,
+.theme_colgate .unhideButton:hover,
+.theme_colgate .embedButton:hover,
+.theme_colgate .navClickable:hover,
+.theme_colgate #closeWatcherMenuButton:hover,
+.theme_colgate .watchButton:hover,
+.theme_colgate .watchedCellCloseButton:hover,
+.theme_colgate .hideFileButton:hover,
+.theme_colgate .coloredIcon:hover {
+  color: #35e;
+  text-shadow: none; /* gets rid of the stupid glow effect */
+}
+
+/* BOARD TITLE */
+.theme_colgate .boardHeader {
+  font-family: sans-serif;
+}
+.theme_colgate .boardHeader p {
+  color: #000000;
+}
+.theme_colgate .boardHeader p#labelName,
+.theme_colgate #catalogId {
+  color: #000080;
+  font-size: 28px;
+  font-family: serif;
+}
+.theme_colgate .boardHeader p#labelDescription {
+  font-size: 10pt;
+}
+
+/* REPLY + MAKE THREAD FIELDS */
+.theme_colgate #newPostFieldset {
+  border: none;
+  background: none;
+}
+.theme_colgate input,
+.theme_colgate select,
+.theme_colgate textarea {
+  background: #ffffff;
+  border-radius: 0px;
+  border: 1px solid #aaaaaa;
+  color: #000000;
+}
+
+.theme_colgate input:hover,
+.theme_colgate select:hover,
+.theme_colgate textarea:hover {
+  border: 1px solid #000000;
+}
+
+.theme_colgate input:focus,
+.theme_colgate textarea:focus,
+.theme_colgate #postingForm input:focus,
+.theme_colgate #postingForm textarea:focus,
+.theme_colgate .modalDecorationPanel input[type="text"]:focus,
+.theme_colgate #settingsMenu input[type="text"]:focus,
+.theme_colgate #settingsMenu textarea:focus {
+  box-shadow: none;
+  border: 1px solid #000000;
+}
+.theme_colgate #postingForm th {
+  background: #a8b8f0;
+  border-radius: 0px;
+  border: none;
+}
+
+.theme_colgate input[type="checkbox"].postingCheckbox + label::before,
+.theme_colgate a.rules::after {
+  color: #000000;
+}
+
+/* BUTTON, DROPZONE, CAPTCHA */
+.theme_colgate input[type="button"],
+.theme_colgate input[type="submit"],
+.theme_colgate button {
+  font-family: sans-serif;
+  background: lightgrey;
+  border: 1px solid darkgray;
+  border-radius: 0px;
+  color: #000000;
+  font-weight: 400;
+}
+
+.theme_colgate textarea {
+  font-family: serif;
+  font-size: 80%;
+}
+
+.theme_colgate #formButton,
+.theme_colgate #togglePosting {
+  outline-style: outset;
+  outline-width: 2px;
+  background: #ccf;
+  outline-color: #a8b8f0;
+  border: none;
+}
+.theme_colgate #formButton:focus,
+.theme_colgate #togglePosting:focus {
+  outline-style: inset;
+}
+
+.theme_colgate .dropzone,
+.theme_colgate .selectedCell {
+  font-family: serif;
+  font-size: 80%;
+  background: #dadce3;
+  border: 2px dashed rgba(125, 125, 125, 0.4);
+  border-radius: 0px;
+  color: rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+  transition: 0.2s;
+  text-align: center;
+}
+
+/* ANNOUNCEMENT */
+.theme_colgate #divMessage {
+  color: #ff0000;
+  font-size: 18px;
+  font-weight: bold;
+} /* THREAD FIELDS */
+.theme_colgate .title,
+.theme_colgate .unhideButton {
+  font-weight: 400; /* makes timestamp not bold */
+}
+
+.theme_colgate .labelSubject {
+  /* subject */
+  font-size: 20px;
+  font-weight: 800;
+  color: #1010e0;
+}
+.theme_colgate .linkName {
+  /* email field, sage */
+  color: #203090;
+  border-bottom: 1px dashed #6080e0;
+  font-size: 18px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.theme_colgate .linkName:hover {
+  color: #35e;
+}
+.theme_colgate .linkName.noEmailName,
+.theme_colgate .linkName.noEmailName:hover {
+  /* regular anonymous */
+  color: #203090;
+  font-size: 16px;
+  font-weight: 600;
+  text-decoration: none;
+  text-shadow: none;
+  border-bottom: none;
+}
+.theme_colgate .linkSelf,
+.theme_colgate .linkQuote {
+  /* post number */
+  font-size: 16px;
+  color: #0010b0;
+}
+.theme_colgate .linkSelf:hover,
+.theme_colgate .linkQuote:hover {
+  color: #35e;
+}
+.theme_colgate .panelBacklinks a {
+  /* backlinks */
+  font-size: 16px;
+  color: #0010b0;
+}
+.theme_colgate .panelBacklinks a:hover {
+  color: #35e;
+}
+.theme_colgate .quoteLink {
+  /* >> */
+  color: #0010b0;
+  text-decoration: underline;
+}
+.theme_colgate .quoteLink:hover {
+  color: #35e;
+}
+.theme_colgate .labelRole {
+  /*font-family: serif;*/
+  font-size: 16px;
+}
+.theme_colgate .labelRole:before {
+  /* capcode prefix */
+  font-size: 16px;
+}
+.theme_colgate .labelOmission {
+  /* posts omitted */
+  color: #707070;
+}
+.theme_colgate .labelLastEdit {
+  /* edited post */
+  font-size: 10px;
+}
+.theme_colgate .theme_colgate .labelId {
+  /* id font */
+  font-size: 16px;
+}
+.theme_colgate .labelCreated {
+  font-size: 16px;
+}
+.theme_colgate .relativeTime {
+  font-size: 16px;
+}
+/* THREAD POSTS */
+.theme_colgate .postCell {
+  margin: 0;
+}
+.theme_colgate .innerPost {
+  /* normal reply */
+  background-color: #d6daf0;
+  border: 2px solid #e8e8ff;
+  border-radius: 0px;
+}
+.theme_colgate .markedPost {
+  /* highlighted reply */
+  background: none;
+  border: none;
+  border-radius: 0px;
+}
+
+.theme_colgate .innerPost .divMessage,
+.theme_colgate .markedPost .divMessage,
+.theme_colgate .innerOP .divMessage {
+  margin-bottom: 0em;
+}
+
+.theme_colgate .uploadDetails {
+  font-family: sans-serif;
+}
+
+/*code tekst*/
+.theme_colgate code {
+  font-size: 10px;
+}
+
+/* spoiler hover */
+.theme_colgate span.spoiler:hover {
+  background: #000000;
+  color: #ffffff;
+}
+/* QUICK REPLY */
+.theme_colgate #quick-reply table {
+  background: #243a86;
+  color: white;
+  border: none;
+}
+.theme_colgate #quick-reply table .coloredIcon,
+.theme_colgate #quick-reply table input[type="checkbox"].postingCheckbox + label::before {
+  color: #ffffff;
+}
+
+.theme_colgate #quick-reply th {
+  border: none;
+  background: none;
+  padding: 0px;
+}
+.theme_colgate #quick-reply th .handle {
+  font-family: sans-serif;
+  font-size: 120%;
+  font-weight: 600;
+}
+
+.theme_colgate #quick-reply textarea {
+  font-size: 12pt;
+}
+
+/* NAVIGATION BAR */
+.theme_colgate nav {
+  font-family: sans-serif;
+  background-color: #243a86;
+  border-bottom: none;
+  color: #ffff00;
+  font-size: 12px;
+  margin: 0 0 0 0;
+  padding-top: 1px;
+  padding-bottom: 3px;
+}
+
+.theme_colgate nav a,
+.theme_colgate nav a:hover,
+.theme_colgate nav .coloredIcon,
+.theme_colgate nav .coloredIcon:hover {
+  color: #ffff00;
+}
+/* Watched threads menu box */
+.theme_colgate #watchedMenu {
+  background: #243a86;
+  border: none;
+  color: #ffff00;
+}
+
+.theme_colgate #watchedMenu .coloredIcon,
+.theme_colgate .watchedCell a {
+  color: white;
+}
+.theme_colgate #watchedMenu #closeWatcherMenuButton {
+  color: #ffff00;
+}
+
+/*settings menu*/
+.theme_colgate #settingsMenu {
+  background: #243a86;
+  color: #ffffff;
+  border: none;
+}
+.theme_colgate #settingsMenu hr {
+  border: none;
+}
+.theme_colgate .floatingMenu .headerLabel {
+  font-family: sans-serif;
+  font-size: 120%;
+  font-weight: 600;
+}
+
+.theme_colgate #selectedTab {
+  text-shadow: none;
+  color: #ffff00;
+  cursor: pointer;
+}
+.theme_colgate #closeSettingsMenuButton {
+  color: #ffffff;
+}
+
+.theme_colgate #closeSettingsMenuButton:hover {
+  text-shadow: none;
+}
+
+/*side catalog*/
+.theme_colgate .sideCatalogCell {
+  background-color: #d6daf0;
+  border: none;
+  border-radius: 0px;
+}
+
+.theme_colgate .sideCatalogMarkedCell {
+  background: none;
+  border: none;
+}
+
+/*post menus*/
+.theme_colgate .floatingMenu {
+  background-color: #243a86;
+  color: #ffffff;
+}
+
+/*forms*/
+.theme_colgate #showFormsButton {
+  font-size: 80%;
+  color: #000000;
+}
+
+/*report field, ban field*/
+.theme_colgate .modalDecorationPanel {
+  background-color: #243a86;
+  color: #ffffff;
+  border: none;
+}
+.theme_colgate .modalHeader {
+  font-family: sans-serif;
+  font-size: 120%;
+  font-weight: 600;
+}
+.theme_colgate .modalTableBody th {
+  border: none;
+  background: none;
+  border-radius: 0px;
+}
+
+/* CATALOG */
+.theme_colgate .catalogCell {
+  background: #d6daf0;
+  border: none;
+  border-radius: 0px;
+}
+
+/*boards*/
+.theme_colgate .boardsCell {
+  background-color: #d6daf0;
+  padding-left: 15px;
+  height: 50px;
+  margin: 2px 0 2px 0;
+}
+
+.theme_colgate .boardsCellHeader,
+.theme_colgate .boardsCellTags {
+  padding-top: 2px;
+  vertical-align: middle;
+}
+.theme_colgate .boardsCell hr {
+  border: none;
+}
+
+.theme_colgate #boardsWrapper input[type="submit"] {
+  font-family: sans-serif;
+}
+
+.theme_colgate .boardPages,
+.theme_colgate .boardPages a {
+  color: #000000;
+}
+
+/* FRONT PAGE */
+.theme_colgate #divLatestPosts .latestPostCell {
+  background: #d6daf0;
+  border: none;
+  border-radius: 0px;
+}
+
+.theme_colgate #infoBox {
+  color: #000080;
+}
+
+/*help page, links page ,rules page,options below forums, ...*/
+.theme_colgate #settingsFieldset,
+.theme_colgate .reportFieldset {
+  background: #d6daf0;
+  border: none;
+  border-top: 30px solid #d6daf0;
+}
+
+.theme_colgate fieldset legend,
+.theme_colgate fieldset #divMod p {
+  font-size: 120%;
+  font-weight: bold;
+}
+
+.theme_colgate #settingsFieldset legend {
+  font-size: 150%;
+}
+
+.theme_colgate #settingsFieldset h1 {
+  font-size: 140%;
+}
+
+.theme_colgate .refreshButton,
+.theme_colgate .hidden.reloadCaptchaButton,
+.theme_colgate fieldset button {
+  font-family: sans-serif;
+}

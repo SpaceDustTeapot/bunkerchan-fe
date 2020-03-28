@@ -13,6 +13,10 @@ themes.init = function() {
   {
 	  label: 'Dark',
 	  id: 'dark'
+  },
+  {
+	  label: 'Colgate',
+	  id: 'colgate'
   }	  ];
 
   var postingLink = document.getElementById('navPosting');
