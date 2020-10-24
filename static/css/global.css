@@ -455,14 +455,14 @@ footer {
 }
 
 #navOverboard::after, #linkOverboard::after {
-  content: 'overboard';
+  content: 'overboard NSFW';
 }
 #navOverboardSFW::after, #linkOverboardSFW::after {
-  content: 'overboard sfw';
+  content: 'overboard';
 }
 
 #linkSfwOver::after {
-  content: 'overboard sfw';
+  content: 'overboard';
 }
 
 #navPosting::after {
