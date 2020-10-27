@@ -74,6 +74,22 @@
             id="fieldPort">
         </label>
         <label>
+         WS Port<sup>2</sup>:
+          <input
+            type="number"
+            class="globalSettingsField"
+            name="wsPort"
+            id="fieldWsPort">
+        </label>
+        <label>
+         WSS Port<sup>2</sup>:
+          <input
+            type="number"
+            class="globalSettingsField"
+            name="wssPort"
+            id="fieldWssPort">
+        </label>
+        <label>
           Tor Port<sup>2</sup>:
           <input
             type="number"
@@ -379,6 +395,14 @@
             name="allowTorFiles">
           Allow Tor users to post files
         </label>
+          <label>
+          <input
+            type="checkbox"
+            class="globalSettingsField"
+            id="checkboxDisableBanCaptcha"
+            name="disableBanCaptcha">
+          Disable captcha for bans
+        </label>
         <label>
           <input
             type="checkbox"
@@ -634,6 +658,15 @@
             id="checkboxVolunteerSettings">
           Allow board volunteers to change board settings
         </label>
+        <label>
+          <input
+            type="checkbox"
+            class="globalSettingsField"
+            name="lowercaseBoardUris"
+            id="checkboxLowercaseBoardUris">
+          Force new boards to use lowercase uris
+        </label>
+        
         <hr>
 
         <p class="title">Variables</p>
@@ -851,6 +884,15 @@
             name="allowGlobalBoardModeration">
           Allow global staff to moderate boards
         </label>
+         <label>
+          <input
+            type="checkbox"
+            class="globalSettingsField"
+            id="checkboxUnlockHistory"
+            name="unlockHistory">
+          Unlock poster history across boards for users without access to
+          clear-text ips
+        </label>
         <label>
           <input
             type="checkbox"
@@ -977,6 +1019,15 @@
             name="boardCreationRequirement">
           </select>
         </label>
+         <label>
+          Bypass validation range:
+          <input
+            type="text"
+            class="globalSettingsField"
+            name="bypassValidationRange"
+            id="fieldBypassValidationRange">
+        </label>
+        
         <button
           type="submit"
           id="saveFormButton">Save</button>
