@@ -58,7 +58,11 @@
           type="hidden"
           name="postId"
           id="postIdIdentifier">
-
+		<input
+		  type="hidden"
+		  name="banId"
+		  id="banIdentifier">
+		  
         <button type="submit">Filter</button>
       </form>
 
@@ -66,6 +70,23 @@
         class="hidden"
         id="selectAllButton"
         onclick="mediaManagement.selectAll()">Select all</button>
+		
+	   <div id="banPanel">
+          <label>
+            <span>Ban reason:</span>
+            <input
+              type="text"
+              name="reason"
+              id="reasonField">
+          </label>
+          <label>
+            <input
+              name="ban"
+              id="banCheckbox"
+              type="checkbox">
+            <span>Ban deleted files</span>
+          </label>
+      </div>
 
       <form
         action="/deleteMedia.js"

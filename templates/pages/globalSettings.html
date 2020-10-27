@@ -247,6 +247,15 @@
             name="tempDirectory"
             id="fieldTempDir">
         </label>
+        <label>
+          <input
+            type="checkbox"
+            class="globalSettingsField"
+            id="checkboxDiskMedia"
+            name="diskMedia">
+          Store media files on disk
+        </label>
+        
 
         <hr>
         <p class="title">Posting settings</p>
@@ -396,6 +405,13 @@
           Allow IPs caught on the spammer list or range bans to use the block
           bypass if block bypass is not disabled
         </label>
+         <label>
+          Captcha security level:
+          <select
+            id="comboCaptchaMode"
+            name="captchaMode">
+          </select>
+        </label>
         <label>
           Tor posting permission level:
           <select
@@ -453,6 +469,14 @@
             class="globalSettingsField"
             name="latestPostCount"
             id="fieldLatestPostsCount">
+        </label>
+        <label>
+          Number of preview posts on pinned threads:
+          <input
+            type="number"
+            class="globalSettingsField"
+            name="latestPostPinned"
+            id="fieldLatestPostPinned">
         </label>
         <label>
           Maximum amount of threads per board:
@@ -553,6 +577,14 @@
             class="globalSettingsField"
             name="maxFilters"
             id="fieldMaxFilters">
+        </label>
+        <label>
+          Maximum filter length:
+          <input
+            type="number"
+            class="globalSettingsField"
+            name="maxFilterLength"
+            id="fieldMaxFilterLength">
         </label>
         <label>
           Maximum number of banners in boards:

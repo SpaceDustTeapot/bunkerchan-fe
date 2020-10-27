@@ -270,6 +270,17 @@
       <p>
         <a id="closedReportsLink">Closed reports</a>
       </p>
+		 <p>
+        <a id="openReportsLink">
+          Open reports(<span id="openReportsLabel"></span>)
+        </a>
+      </p>
+      <p>
+        <a id="appealedBansLink">
+          Appealed bans(<span id="appealedBansLabel"></span>)
+        </a>
+      </p>
+		
 
       <form
         action="/resetBoardLock.js"
@@ -403,6 +414,18 @@
             class="boardSettingsField"
             name="autoCaptchaLimit">
         </label>
+        
+        <label>
+          Enable captcha for all posts if this many replies are posted within
+          one hour:
+          <input
+            id="autoFullCaptchaThresholdField"
+            type="number"
+            class="boardSettingsField"
+            name="autoFullCaptchaLimit">
+        </label>
+
+        
 
         <label>
           Tags (separate with commas):
@@ -551,7 +574,7 @@
         method="post"
         action="/closeReports.js"
         enctype="multipart/form-data">
-        <div id="reportDiv"></div>
+
 
         <label>
           <input
