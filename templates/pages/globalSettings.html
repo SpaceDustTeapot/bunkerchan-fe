@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-<link rel="shortcut icon" type="image/x-icon" href="/.static/favicon.ico"/>
 <meta charset="UTF-8" />
 <meta
   name="viewport"
@@ -58,7 +57,8 @@
             id="fieldSslPass">
         </label>
         <label>
-          CSP directives (e.g: "default-src 'self'", without the double quotations):
+          CSP directives (e.g: "default-src 'self'", without the double
+          quotations):
           <input
             type="text"
             class="globalSettingsField"
@@ -137,6 +137,14 @@
             name="disable304">
           Disable http response 304 (Only turn on if you know what you are
           doing, will consume lots more of bandwidth)
+        </label>
+        <label>
+          <input
+            type="checkbox"
+            class="globalSettingsField"
+            id="checkboxUseCacheControl"
+            name="useCacheControl">
+          Use cache-control header instead of expires.
         </label>
         <label>
           <input
@@ -247,8 +255,7 @@
             id="fieldLanguagePack">
         </label>
         <label>
-          Extension used for thumbnails (Will make all gif thumbs not
-          animate):
+          Extension used for thumbnails (Will make all gif thumbs not animate):
           <input
             type="text"
             class="globalSettingsField"
@@ -271,7 +278,14 @@
             name="diskMedia">
           Store media files on disk
         </label>
-        
+        <label>
+          <input
+            type="checkbox"
+            class="globalSettingsField"
+            id="checkboxDisableEmail"
+            name="disableEmail">
+          Disable sending e-mails to users
+        </label>
 
         <hr>
         <p class="title">Posting settings</p>
@@ -395,7 +409,7 @@
             name="allowTorFiles">
           Allow Tor users to post files
         </label>
-          <label>
+        <label>
           <input
             type="checkbox"
             class="globalSettingsField"
@@ -429,7 +443,7 @@
           Allow IPs caught on the spammer list or range bans to use the block
           bypass if block bypass is not disabled
         </label>
-         <label>
+        <label>
           Captcha security level:
           <select
             id="comboCaptchaMode"
@@ -666,7 +680,6 @@
             id="checkboxLowercaseBoardUris">
           Force new boards to use lowercase uris
         </label>
-        
         <hr>
 
         <p class="title">Variables</p>
@@ -884,7 +897,7 @@
             name="allowGlobalBoardModeration">
           Allow global staff to moderate boards
         </label>
-         <label>
+        <label>
           <input
             type="checkbox"
             class="globalSettingsField"
@@ -980,8 +993,8 @@
             class="globalSettingsField"
             id="checkboxValidateMimes"
             name="validateMimes">
-          Validate MIME types using 'file', fall back to the informed MIME if none
-          is found
+          Validate MIME types using 'file', fall back to the informed MIME if
+          none is found
         </label>
         <label>
           <input
@@ -1019,7 +1032,7 @@
             name="boardCreationRequirement">
           </select>
         </label>
-         <label>
+        <label>
           Bypass validation range:
           <input
             type="text"
@@ -1027,7 +1040,6 @@
             name="bypassValidationRange"
             id="fieldBypassValidationRange">
         </label>
-        
         <button
           type="submit"
           id="saveFormButton">Save</button>
@@ -1051,7 +1063,7 @@
 
 <script src="/.static/js/api.js"></script>
 <script src="/.static/js/globalSettings.js"></script>
-
+<script src="/.static/js/themes.js"></script>
 <script src="/.static/js/favouriteBoards.js"></script>
 
 </html>
